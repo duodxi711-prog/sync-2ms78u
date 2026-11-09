@@ -170,6 +170,16 @@
     section.view:first-of-type{page-break-before:auto}
     body{background:#fff}
   }
+  /* 语言切换 */
+  html[data-lang="en"] .lang-zh, html[data-lang="en"] .t-zh{display:none!important}
+  html:not([data-lang="en"]) .lang-en, html:not([data-lang="en"]) .t-en{display:none!important}
+  .title-row{justify-content:flex-start}
+  .langsw{margin-left:auto;display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff;align-self:center}
+  .langsw button{border:0;background:transparent;padding:5px 12px;font:inherit;font-size:13px;color:var(--ink2);cursor:pointer}
+  .langsw button+button{border-left:1px solid var(--line)}
+  .langsw button.on{background:var(--ink);color:#fff;font-weight:600}
+  .new-mini{font-size:10px;font-weight:700;color:#fff;background:#d9480f;padding:0 5px;border-radius:4px}
+  @media print{.langsw{display:none}}
 </style>
 </head>
 <body>
@@ -177,23 +187,25 @@
 <header class="top">
   <div class="top-inner">
     <div class="title-row">
-      <h1>信息同步</h1>
-      <span class="meta">v1.2 · 更新 2026-11-09 · 收录 3 套方法 · 6 个 offer · 团队执行参考</span>
+      <h1><span class="t-zh">信息同步</span><span class="t-en">Info Sync</span></h1>
+      <span class="meta"><span class="t-zh">v1.3 · 更新 2026-11-09 · 收录 3 套方法 · 6 个 offer · 团队执行参考</span><span class="t-en">v1.3 · Updated 2026-11-09 · 3 methods · 6 offers · Team reference</span></span>
+      <div class="langsw" role="group" aria-label="Language"><button type="button" data-lang="zh">中文</button><button type="button" data-lang="en">EN</button></div>
     </div>
     <nav class="tabs" id="tabs">
-      <a href="#overview" data-view="overview">方法总览</a>
-      <a href="#offers" data-view="offers">Offer 清单<span class="new">NEW</span></a>
-      <a href="#m01" data-view="m01" data-c="m01"><span class="num">M01</span>Arthur · 视力 / 减肥</a>
-      <a href="#m02" data-view="m02" data-c="m02"><span class="num">M02</span>Silva · LungVicks 肺部</a>
-      <a href="#m03" data-view="m03" data-c="m03"><span class="num">M03</span>Vince · 记忆 / 减肥</a>
+      <a href="#overview" data-view="overview"><span class="t-zh">方法总览</span><span class="t-en">Overview</span></a>
+      <a href="#offers" data-view="offers"><span class="t-zh">Offer 清单</span><span class="t-en">Offer List</span><span class="new">NEW</span></a>
+      <a href="#m01" data-view="m01" data-c="m01"><span class="num">M01</span><span class="t-zh">Arthur · 视力 / 减肥</span><span class="t-en">Arthur · Vision / Weight loss</span></a>
+      <a href="#m02" data-view="m02" data-c="m02"><span class="num">M02</span><span class="t-zh">Silva · LungVicks 肺部</span><span class="t-en">Silva · LungVicks Lung</span></a>
+      <a href="#m03" data-view="m03" data-c="m03"><span class="num">M03</span><span class="t-zh">Vince · 记忆 / 减肥</span><span class="t-en">Vince · Memory / Weight loss</span></a>
     </nav>
   </div>
 </header>
 
 <main>
+<div class="lang lang-zh" lang="zh-CN">
 
 <!-- ======================= 总览 ======================= -->
-<section class="view" id="view-overview">
+<section class="view" data-view="overview">
   <h2>方法总览</h2>
   <div class="note">根据合作方会议、群聊、方法文档及团队后续确认整理。具体参数按各方法来源记录；<b>优先采用每张方法卡所列的最新口径</b>。本文记录合作方的做法及经验，不将其效果判断视为收益保证。</div>
 
@@ -264,7 +276,7 @@
 </section>
 
 <!-- ======================= Offer 清单 ======================= -->
-<section class="view" id="view-offers">
+<section class="view" data-view="offers">
   <h2>Offer 清单</h2>
   <p style="color:var(--ink2)">当前在跑或准备测试的 offer，以及各自对应的投放方法和素材进度。<span class="cat">同步更新：2026-11-09</span></p>
 
@@ -305,7 +317,7 @@
 </section>
 
 <!-- ======================= M01 ======================= -->
-<section class="view c01" id="view-m01">
+<section class="view c01" data-view="m01">
   <div class="m-head">
     <span class="badge">M01</span>
     <h2>Arthur：视力 / 减肥产品</h2>
@@ -427,7 +439,7 @@
 </section>
 
 <!-- ======================= M02 ======================= -->
-<section class="view c02" id="view-m02">
+<section class="view c02" data-view="m02">
   <div class="m-head">
     <span class="badge">M02</span>
     <h2>Silva Torres：LungVicks 肺部产品</h2>
@@ -522,7 +534,7 @@
 </section>
 
 <!-- ======================= M03 ======================= -->
-<section class="view c03" id="view-m03">
+<section class="view c03" data-view="m03">
   <div class="m-head">
     <span class="badge">M03</span>
     <h2>Vince：分阶段素材测试与放量 · 记忆 / 减肥</h2>
@@ -671,24 +683,524 @@
   <div class="lead">测试目标：找到 1–2 个表现好的 Lead / Lander，以及几条可进入放量阶段的胜出素材。</div>
 </section>
 
+</div>
+
+<div class="lang lang-en" lang="en">
+
+<!-- ======================= Overview (EN) ======================= -->
+<section class="view" data-view="overview">
+  <h2>Methods Overview</h2>
+  <div class="note">Compiled from partner meetings, group chats, method documents and later team confirmations. Parameters are recorded as given by each source; <b>always follow the latest version listed on each method card</b>. This page records partners' practices and experience — their performance judgments are not a guarantee of results.</div>
+
+  <div class="m-cards">
+    <a class="m-card c01" href="#m01">
+      <div class="no">M01 · Arthur (Brazilian media buyer)</div>
+      <div class="nm">Vision / Weight-loss offers</div>
+      <div class="offers-for"><span class="offer-pill">VisiVra <small>Vision</small></span><span class="offer-pill">SlimZol <small>Weight loss</small></span></div>
+      <div class="ds">CBO + Bid Cap + 1-N-N, testing multiple video creatives; once a winner is found, duplicate it to other ad accounts.</div>
+      <div class="go">View method →</div>
+    </a>
+    <a class="m-card c02" href="#m02">
+      <div class="no">M02 · Silva Torres (advertiser contact)</div>
+      <div class="nm">LungVicks lung offer</div>
+      <div class="offers-for"><span class="offer-pill">LungVicks <small>Lung</small></span></div>
+      <div class="ds">1-X-X + Bid Cap; 8–20 ads per ad set sharing one creative logic, with staggered bids across ad sets.</div>
+      <div class="go">View method →</div>
+    </a>
+    <a class="m-card c03" href="#m03">
+      <div class="no">M03 · Vince (affiliate member)</div>
+      <div class="nm">Staged creative testing &amp; scaling</div>
+      <div class="offers-for"><span class="offer-pill">VapoBrain <small>Memory</small></span><span class="offer-pill">YOBURN <small>Weight loss</small></span></div>
+      <div class="ds">Single-creative testing → pre-scale validation → full scaling, while optimizing the Lead / Lander split. Currently used for two BuyGoods offers.</div>
+      <div class="go">View method →</div>
+    </a>
+  </div>
+
+  <h3>M01 vs M02 parameters</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Item</th><th class="c01h">M01 · Arthur / VisiVra · SlimZol</th><th class="c02h">M02 · Silva Torres / LungVicks</th></tr></thead>
+      <tbody>
+        <tr><td class="k">Offers</td><td>VisiVra (vision), SlimZol (weight loss)</td><td>LungVicks (lung)</td></tr>
+        <tr><td class="k">Category</td><td>Vision; weight loss</td><td>Lung / COPD</td></tr>
+        <tr><td class="k">Platform</td><td>JVZoo + BuyGoods</td><td>JVZoo</td></tr>
+        <tr><td class="k">Optimization event</td><td>Purchase</td><td>Purchase</td></tr>
+        <tr><td class="k">Structure</td><td>Latest team version: 1-N-N, e.g. 1-10-10</td><td>1-X-X, 8–20 ads per ad set</td></tr>
+        <tr><td class="k">Creative setup</td><td>Multiple ad sets testing multiple video creatives</td><td>Ads in the same ad set share one logic, e.g. hook variants of one winning ad</td></tr>
+        <tr><td class="k">Campaign daily budget</td><td><b>$50,000</b></td><td><b>$2,000</b></td></tr>
+        <tr><td class="k">Bid Cap</td><td><b>Vision example: $200</b> / ad set</td><td><b>$245–$250</b> / ad set, a different amount for each ad set</td></tr>
+        <tr><td class="k">Age</td><td>Vision: 55+</td><td>55+ recommended</td></tr>
+        <tr><td class="k">Audience</td><td>Age 55+ confirmed in the latest update</td><td>Open audience</td></tr>
+        <tr><td class="k">Catalog</td><td>Vision: test both with and without catalog</td><td>Not covered in the plan provided</td></tr>
+        <tr><td class="k">Launch observation</td><td>About two days</td><td>A slow first day can be normal</td></tr>
+        <tr><td class="k">Key follow-up actions</td><td>Check where budget flows, duplicate campaigns, copy winning creatives to other accounts</td><td>With no conversion history in the category, start with a slightly higher bid, then lower it day by day</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note">All amounts are in USD. <b>Bid Cap</b> is the bid setting; <b>payout</b> is the commission per sale. They are labeled separately throughout. M01 parameters marked "vision" come from VisiVra; SlimZol-specific bids, platform and other parameters have not been provided yet.</div>
+
+  <div class="tag-index">
+    <h4>Tag index</h4>
+    <div class="tbl-wrap">
+      <table>
+        <tbody>
+          <tr><td>#Vision #VisiVra #WeightLoss #SlimZol #Arthur</td><td><a href="#m01">M01</a></td></tr>
+          <tr><td>#Memory #VapoBrain #WeightLoss #YOBURN #BuyGoods</td><td><a href="#m03">M03</a></td></tr>
+          <tr><td>#Memory #NeuroTamine #Digistore24 #Newsbreak #AnyMethod</td><td><a href="#offers">Offer list</a></td></tr>
+          <tr><td>#Lung #COPD #LungVicks #SilvaTorres</td><td><a href="#m02">M02</a></td></tr>
+          <tr><td>#BidCap #55plus #JVZoo #MultiCreative</td><td><a href="#m01">M01</a>, <a href="#m02">M02</a></td></tr>
+          <tr><td>#CBO #Catalog #BuyGoods #PlatformSplit #CrossAccountDuplication</td><td><a href="#m01">M01</a></td></tr>
+          <tr><td>#OpenAudience #HookVariants #StaggeredBids</td><td><a href="#m02">M02</a></td></tr>
+          <tr><td>#Vince #StagedTesting #SingleCreativeTest #PreScale #IC #LanderSplit #CBO #BidCap #Catalog</td><td><a href="#m03">M03</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= Offer list (EN) ======================= -->
+<section class="view" data-view="offers">
+  <h2>Offer List</h2>
+  <p style="color:var(--ink2)">Offers currently running or about to be tested, with their matching method and creative status. <span class="cat">Last synced: 2026-11-09</span></p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Offer</th><th>Category</th><th>Platform</th><th>Method</th><th>Creatives</th></tr></thead>
+      <tbody>
+        <tr><td><b>VisiVra</b></td><td>Vision</td><td>JVZoo + BuyGoods</td><td><a href="#m01" class="hl" style="color:var(--m01)">M01 · Arthur</a></td><td><span class="st ok">In shared folder</span> <span class="cat">w1, w2, BEST</span></td></tr>
+        <tr><td><b>SlimZol</b> <span class="new-mini">NEW</span></td><td>Weight loss</td><td class="cat">TBC</td><td><a href="#m01" class="hl" style="color:var(--m01)">M01 · Arthur</a></td><td><span class="st ok">On cloud drive</span> <span class="cat">减肥类 / SLIMZOL (WHITE = regular people, BLACK = with celebrities)</span></td></tr>
+        <tr><td><b>LungVicks</b></td><td>Lung / COPD</td><td>JVZoo</td><td><a href="#m02" class="hl" style="color:var(--m02)">M02 · Silva Torres</a></td><td><span class="st ok">On cloud drive</span> <span class="cat">COPD / LungsVicks</span></td></tr>
+        <tr><td><b>VapoBrain</b> <span class="new-mini">NEW</span></td><td>Memory</td><td>BuyGoods</td><td><a href="#m03" class="hl" style="color:var(--m03)">M03 · Vince</a></td><td><span class="st ok">On cloud drive</span> <span class="cat">记忆类 / VapoBrain-Ads</span></td></tr>
+        <tr><td><b>YOBURN</b> <span class="new-mini">NEW</span></td><td>Weight loss</td><td>BuyGoods</td><td><a href="#m03" class="hl" style="color:var(--m03)">M03 · Vince</a></td><td><span class="st ok">On cloud drive</span> <span class="cat">减肥类 / YoBurn02-Ads</span></td></tr>
+        <tr><td><b>NeuroTamine</b> <span class="new-mini">NEW</span></td><td>Memory</td><td>Digistore24</td><td><b>Any</b> <span class="cat">any method can be used</span></td><td><span class="st ok">Sent to WeCom group</span> <span class="cat">NeuroTamine_Ads.zip</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="hot">
+    <span class="badge">NEW · Memory</span>
+    <h3>NeuroTamine: memory offer performing well on Newsbreak</h3>
+    <ul class="clean">
+      <li>Performs well on <b>Newsbreak</b>. On Meta there is <b>no required method</b> — any approach can be used (M01, M02, M03 or others).</li>
+      <li>Platform: Digistore24.</li>
+      <li>Creatives: <span class="st ok">Sent to WeCom group</span> as <span class="mono">NeuroTamine_Ads.zip</span> (about 293 MB); download it from the group files.</li>
+    </ul>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>ID</th><th>VSL</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">360</td><td class="mono">FB-ShippingCap-Digistore24-NeuroTamine(MOD01)</td></tr>
+          <tr><td class="mono">363</td><td class="mono">FB-ShippingCap-Digistore24-NeuroTamine(MOD1036)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="note">The Platform column is based on information provided and the VSL names. SlimZol's platform, VSL and payout, and YOBURN's VSL, have not been provided yet and will be added later. For VapoBrain's VSL and creative location, see <a href="#m03">M03</a>. Folder names on the cloud drive are kept in their original Chinese.</div>
+</section>
+
+<!-- ======================= M01 (EN) ======================= -->
+<section class="view c01" data-view="m01">
+  <div class="m-head">
+    <span class="badge">M01</span>
+    <h2>Arthur: Vision / Weight-loss offers</h2>
+    <div class="sub">Recommended by Arthur, a Brazilian media buyer</div>
+    <div class="offers-for"><span class="lbl">Offers</span><span class="offer-pill">VisiVra <small>Vision</small></span><span class="offer-pill">SlimZol <small>Weight loss · new</small></span></div>
+    <div class="kv">
+      <div><span>Payout per sale (VisiVra)</span>$240 payout; "CPA 240" in the team's product brief refers to this payout</div>
+      <div><span>Sources</span>2026-11-03 meeting, the team's latest condensed plan, Steven's follow-up Q&amp;A</div>
+      <div><span>Last compiled</span>2026-11-06</div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="l">Campaign daily budget</div><div class="v">$50,000</div><div class="s">CBO</div></div>
+      <div class="stat"><div class="l">Bid Cap / ad set</div><div class="v">$200</div><div class="s">Vision example</div></div>
+      <div class="stat"><div class="l">Structure</div><div class="v">1-10-10</div><div class="s">1-N-N</div></div>
+      <div class="stat"><div class="l">Age</div><div class="v">55+</div><div class="s">Video only</div></div>
+    </div>
+    <div class="note" style="margin-top:16px">The parameters below, and items marked "vision" in sections 6 and 7, come from VisiVra. <b>SlimZol uses the same method structure</b>; its bids, VSL, payout and other specifics have not been provided yet.</div>
+    <div class="tags"><span class="tag">#Arthur</span><span class="tag">#Vision</span><span class="tag">#VisiVra</span><span class="tag">#WeightLoss</span><span class="tag">#SlimZol</span><span class="tag">#CBO</span><span class="tag">#BidCap</span><span class="tag">#Catalog</span><span class="tag">#55plus</span><span class="tag">#JVZoo</span><span class="tag">#BuyGoods</span><span class="tag">#PlatformSplit</span><span class="tag">#MultiCreative</span><span class="tag">#CrossAccountDuplication</span></div>
+  </div>
+
+  <h3><span class="idx">1</span>Core setup</h3>
+  <div class="lead">CBO + Bid Cap + 1-N-N, testing multiple video creatives; once a winner is found, duplicate it to other ad accounts.</div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Level</th><th>Item</th><th>Setting</th></tr></thead>
+      <tbody>
+        <tr><td class="lvl"><span class="lvl-tag">Campaign</span></td><td class="k">Conversion goal</td><td>Purchase</td></tr>
+        <tr><td class="lvl"><span class="lvl-tag">Campaign</span></td><td class="k">Budget type</td><td>CBO — budget set at campaign level</td></tr>
+        <tr><td class="lvl"><span class="lvl-tag">Campaign</span></td><td class="k">Daily budget</td><td class="hl">$50,000</td></tr>
+        <tr><td class="lvl"><span class="lvl-tag">Campaign</span></td><td class="k">Bid strategy</td><td>Switch Highest Volume to <b>Bid Cap</b></td></tr>
+        <tr><td class="lvl"><span class="lvl-tag">Ad Set</span></td><td class="k">Structure</td><td>Latest team plan: 1-N-N, e.g. <b>1-10-10</b></td></tr>
+        <tr><td class="lvl"><span class="lvl-tag">Ad Set</span></td><td class="k">Bid Cap</td><td>Vision example: <span class="hl">$200</span></td></tr>
+        <tr><td class="lvl"><span class="lvl-tag">Ad Set</span></td><td class="k">Age</td><td>55+</td></tr>
+        <tr><td class="lvl"><span class="lvl-tag">Ad Set / Ad</span></td><td class="k">Creatives</td><td>Test different video creatives across ad sets; keep all other settings identical</td></tr>
+        <tr><td class="lvl"><span class="lvl-tag">Ad</span></td><td class="k">Format</td><td>Video only</td></tr>
+        <tr><td class="lvl"><span class="lvl-tag">Catalog</span></td><td class="k">Vision offers</td><td>Test both with and without catalog</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note"><b>Structure:</b> per the team's latest wording, 1-10-10 means 1 campaign, 10 ad sets, 10 ads per ad set. How creatives are combined across ad sets is left to whoever runs the campaign.</div>
+  <div class="note warn"><b>Change note:</b> the early meeting example was 1-10-1; this card uses the later 1-10-10 version. "One creative per ad set" from the original condensed draft has been reworded as "different video creatives per ad set" to fit the multi-ad structure.</div>
+  <p>Create a separate campaign for each product; vision, lung and other categories can be tested in parallel.</p>
+
+  <h3><span class="idx">2</span>VSLs &amp; creatives</h3>
+  <p><b>VisiVra (vision)</b></p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Platform</th><th>ID</th><th>Priority VSL</th></tr></thead>
+      <tbody>
+        <tr><td>BuyGoods</td><td class="mono">376</td><td class="mono">FB-Elevate-BuyGoods-VisiVra(MOD01-240)</td></tr>
+        <tr><td>JVZoo</td><td class="mono">378</td><td class="mono">FB-Elevate-JVzoo-VisiVra(MOD01-240)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Creatives are in the shared folder:</p>
+  <div class="grid2">
+    <div class="folder"><div class="chips"><span class="chip">w1</span><span class="chip">w2</span></div><div style="margin-top:6px">Newly produced, fresh creatives</div></div>
+    <div class="folder"><div class="chips"><span class="chip">BEST</span></div><div style="margin-top:6px">Creatives that have already performed well</div></div>
+  </div>
+  <p style="margin-top:16px"><b>SlimZol (weight loss)</b> <span class="st ok">Creatives on cloud drive</span></p>
+  <div class="grid2">
+    <div class="ftree">
+      <div class="cap">Cloud drive location</div>
+      <div class="row l1"><span class="fi"></span>团队文件-素材盘-请分类 <span class="cat">(team creative drive)</span></div>
+      <div class="row l2"><span class="fi"></span>减肥类 <span class="cat">(weight loss)</span></div>
+      <div class="row l3"><span class="fi"></span>SLIMZOL</div>
+      <div class="row l4 target"><span class="fi"></span><span class="nm">W1 - WHITE</span><span class="desc">regular people</span></div>
+      <div class="row l4 target"><span class="fi"></span><span class="nm">W1 - BLACK</span><span class="desc">with celebrities</span></div>
+    </div>
+  </div>
+
+  <h3><span class="idx">3</span>RedTrack two-platform test</h3>
+  <p>You can set up two funnels at the same time to test JVZoo and BuyGoods, each with its own VSL / offer link.</p>
+  <ul class="clean">
+    <li>Check actual checkout conversions on both platforms every day.</li>
+    <li>Adjust the traffic split based on results, sending more traffic to the better-performing platform.</li>
+    <li>The 80% split mentioned in the meeting was an example, not a fixed ratio.</li>
+  </ul>
+
+  <h3><span class="idx">4</span>Starting accounts &amp; observation period</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Item</th><th>Arthur's advice</th></tr></thead>
+      <tbody>
+        <tr><td class="k">Starting accounts</td><td><b>3–5 accounts</b></td></tr>
+        <tr><td class="k">Account type</td><td>Aged accounts with spend history; he also uses agency accounts, about 40% of his own accounts</td></tr>
+        <tr><td class="k">Launch observation</td><td><b>About two days</b>; account history and creative performance can affect how fast spend starts</td></tr>
+        <tr><td class="k">Still no spend after two days</td><td>In his experience, consider dropping that ad or offer</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note">"About 40% agency accounts" describes Arthur's own account mix — it is not a ratio the team must follow. Arthur attributes whether spend picks up mainly to creative and offer quality, and did not give any ratio of "launch X accounts and Y will spend."</div>
+
+  <h3><span class="idx">5</span>Adjustments after launch</h3>
+  <ol class="steps">
+    <li><b>Find winning creatives:</b> watch actual purchases and ad performance.</li>
+    <li><b>Check where budget flows:</b> his target is <span class="hl">90%–99%</span> of campaign spend going to the winning creative.</li>
+    <li><b>Keep the ad sets:</b> per his latest stated practice, keep the other ad sets running rather than raising bids set by set to steer budget.</li>
+    <li><b>Budget not flowing as expected:</b> duplicate the whole campaign, pause the original, and keep watching the new one.</li>
+    <li><b>Expand across accounts:</b> copy proven winning creatives to other accounts for further testing and scaling.</li>
+  </ol>
+
+  <h3><span class="idx">6</span>CPC reference for vision offers</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>CPC</th><th>Arthur's verbal judgment</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">~$1.50</td><td><span class="act-go">Keep watching</span> · no sales yet, but keep watching if it shows potential</td></tr>
+        <tr><td class="mono">~$1.80, with sales</td><td><span class="act-go">Can keep</span></td></tr>
+        <tr><td class="mono">~$1.80, no sales</td><td><span class="act-stop">Lean towards dropping</span></td></tr>
+        <tr><td class="mono">~$2.00</td><td><span class="act-mid">High</span> · he considers this high for vision offers</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note"><b>How to read this:</b> these CPCs are experience-based references; the meeting gave no matching click volume, spend or observation window, so they are not turned into automatic kill rules. His earlier "drop bad ads" remark and his later "keep ad sets, handle it at campaign level" are both recorded; current guidance follows the later one.</div>
+
+  <h3><span class="idx">7</span>Catalog rule (follow-up)</h3>
+  <p>When Steven followed up, Arthur replied: main categories use a catalog; <b>for vision, test both catalog and non-catalog versions</b>. This card follows the vision rule.</p>
+</section>
+
+<!-- ======================= M02 (EN) ======================= -->
+<section class="view c02" data-view="m02">
+  <div class="m-head">
+    <span class="badge">M02</span>
+    <h2>Silva Torres: LungVicks lung offer</h2>
+    <div class="sub">Recommended by Silva Torres, LungVicks advertiser contact · LungVicks / COPD, JVZoo</div>
+    <div class="kv">
+      <div><span>Offer volume</span>The team's product brief says about 500 sales / day — a description of the offer's scale</div>
+      <div><span>Sources</span>LungVicks group chat, recommended plan and creative confirmation on 2026-11-05; Steven's product notes</div>
+      <div><span>Last compiled</span>2026-11-06</div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="l">Campaign daily budget</div><div class="v">$2,000</div><div class="s">Bid Cap</div></div>
+      <div class="stat"><div class="l">Bid Cap / ad set</div><div class="v">$245–$250</div><div class="s">Staggered, down to the cents</div></div>
+      <div class="stat"><div class="l">Ads per ad set</div><div class="v">8–20</div><div class="s">1-X-X</div></div>
+      <div class="stat"><div class="l">Audience / age</div><div class="v">Open · 55+</div><div class="s">Age is recommended</div></div>
+    </div>
+    <div class="tags"><span class="tag">#SilvaTorres</span><span class="tag">#Lung</span><span class="tag">#COPD</span><span class="tag">#LungVicks</span><span class="tag">#BidCap</span><span class="tag">#55plus</span><span class="tag">#JVZoo</span><span class="tag">#OpenAudience</span><span class="tag">#HookVariants</span><span class="tag">#MultiCreative</span><span class="tag">#StaggeredBids</span></div>
+  </div>
+
+  <h3><span class="idx">1</span>Core setup</h3>
+  <div class="lead">1-X-X + Bid Cap; each ad set holds creatives with a shared logic, and bids are staggered across ad sets.</div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Level</th><th>Item</th><th>Setting</th></tr></thead>
+      <tbody>
+        <tr><td class="lvl"><span class="lvl-tag">Campaign</span></td><td class="k">Goal</td><td>Optimize for Purchase from day one</td></tr>
+        <tr><td class="lvl"><span class="lvl-tag">Campaign</span></td><td class="k">Daily budget</td><td class="hl">$2,000</td></tr>
+        <tr><td class="lvl"><span class="lvl-tag">Campaign</span></td><td class="k">Bid strategy</td><td>Bid Cap</td></tr>
+        <tr><td class="lvl"><span class="lvl-tag">Ad Set</span></td><td class="k">Structure</td><td>Multiple ad sets under one campaign</td></tr>
+        <tr><td class="lvl"><span class="lvl-tag">Ad Set</span></td><td class="k">Ads per ad set</td><td><b>8–20</b></td></tr>
+        <tr><td class="lvl"><span class="lvl-tag">Ad Set</span></td><td class="k">Creative grouping</td><td>Group by shared logic, e.g. different hooks / openings of the same winning ad</td></tr>
+        <tr><td class="lvl"><span class="lvl-tag">Ad Set</span></td><td class="k">Bid</td><td><span class="hl">$245–$250</span>, a different amount for each ad set, down to the cents</td></tr>
+        <tr><td class="lvl"><span class="lvl-tag">Ad Set</span></td><td class="k">Audience</td><td>Open audience</td></tr>
+        <tr><td class="lvl"><span class="lvl-tag">Ad Set</span></td><td class="k">Age</td><td>55+ recommended</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note">X means the number is set by how creatives are organized; the advertiser did not fix the number of ad sets, nor require the two X values to be equal.</div>
+
+  <h3><span class="idx">2</span>Creative grouping example</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Ad set</th><th>Creative logic</th><th class="num">Count</th></tr></thead>
+      <tbody>
+        <tr><td><b>A</b></td><td>Different openings of core ad A</td><td class="num">8–20</td></tr>
+        <tr><td><b>B</b></td><td>Different openings of core ad B</td><td class="num">8–20</td></tr>
+        <tr><td><b>C</b></td><td>Another set of creatives sharing one theme</td><td class="num">8–20</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note">This table only illustrates the grouping logic; it is not limited to three ad sets. Every ad should fit its ad set's shared logic.</div>
+
+  <h3><span class="idx">3</span>Bidding &amp; launch</h3>
+  <ul class="clean">
+    <li>Standard bid range is <span class="hl">$245–$250</span> per ad set, with amounts staggered.</li>
+    <li>If the Pixel has no conversions in this category, they suggest <b>starting with a slightly higher bid and lowering it day by day</b>; no specific step size was given.</li>
+    <li>First-day spend may be slow; they said speed depends on account quality.</li>
+    <li>This plan does not set a fixed two-day observation period; follow the advertiser's own guidance.</li>
+  </ul>
+
+  <h3><span class="idx">4</span>Priority VSLs</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>ID</th><th>VSL</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">374</td><td class="mono">Facebook-LV-JV-LungVicks-VickTrick(ML03)</td></tr>
+        <tr><td class="mono">375</td><td class="mono">Facebook-LV-JV-LungVicks-VickTrick(ML06)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>VSLs have been set up by Steven; use them by the name and ID above.</p>
+
+  <h3><span class="idx">5</span>Priority creatives</h3>
+  <div class="grid2" style="margin-bottom:12px">
+    <div class="ftree">
+      <div class="cap">Cloud drive location <span class="st ok">On cloud drive</span></div>
+      <div class="row l1"><span class="fi"></span>团队文件-素材盘-请分类 <span class="cat">(team creative drive)</span></div>
+      <div class="row l2"><span class="fi"></span>COPD</div>
+      <div class="row l3 target"><span class="fi"></span><span class="nm">LungsVicks</span></div>
+    </div>
+  </div>
+  <p>10 creatives in total, by folder:</p>
+  <div class="grid2">
+    <div class="folder"><div class="fn">LungVicks / LEVA 02 folder</div>
+      <div class="chips"><span class="chip">AD178</span><span class="chip">AD185</span></div></div>
+    <div class="folder"><div class="fn">LungVicks / first creative folder</div>
+      <div class="chips"><span class="chip">AD061</span><span class="chip">AD099</span><span class="chip">AD123</span><span class="chip">AD397</span><span class="chip">AD694</span><span class="chip">AD022</span><span class="chip">AD113</span><span class="chip">AD035</span></div></div>
+  </div>
+  <div class="note">Priority order: AD061, AD178, AD099, AD185, AD123, AD397, AD694, AD022, AD113, AD035. Silva reconfirmed on 2026-11-05 that these remain the priority picks. Organize these creatives and their variants by shared logic, 8–20 per ad set.</div>
+
+  <h3><span class="idx">6</span>Creative supply</h3>
+  <p>They said that after launch they can supply <b>at least 100</b> new ads per week, and <b>200 or more per week</b> if volume is high. This is the advertiser's stated support; actual delivery may vary.</p>
+</section>
+
+<!-- ======================= M03 (EN) ======================= -->
+<section class="view c03" data-view="m03">
+  <div class="m-head">
+    <span class="badge">M03</span>
+    <h2>Vince: Staged creative testing &amp; scaling · Memory / Weight loss</h2>
+    <div class="sub">Provided by Vince, affiliate member · Facebook Ads offer testing and scaling process</div>
+    <div class="offers-for"><span class="lbl">Offers (BuyGoods)</span><span class="offer-pill">VapoBrain <small>Memory · new</small></span><span class="offer-pill">YOBURN <small>Weight loss · new</small></span></div>
+    <div class="kv">
+      <div><span>Creatives</span>VapoBrain and YOBURN are both on the cloud drive</div>
+      <div><span>Source</span>Facebook Ads Testing &amp; Scaling Blueprint (Facebook_Ads_Blueprint_EN.docx)</div>
+      <div><span>Last compiled</span>2026-11-06</div>
+      <div><span>Terms</span>All amounts in USD; CPA = cost per acquisition; IC = Initiate Checkout</div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="l">Stage 1 · Creative testing</div><div class="v">20–30</div><div class="s">One campaign each, 3 days</div></div>
+      <div class="stat"><div class="l">Stage 2 · Pre-scale validation</div><div class="v">$240 Bid Cap</div><div class="s">Two structures, $1,000 each</div></div>
+      <div class="stat"><div class="l">Stage 3 · Full scaling</div><div class="v">±10% / hour</div><div class="s">Adjust bids to spend pace</div></div>
+    </div>
+    <div class="tags"><span class="tag">#Memory</span><span class="tag">#VapoBrain</span><span class="tag">#WeightLoss</span><span class="tag">#YOBURN</span><span class="tag">#BuyGoods</span><span class="tag">#Vince</span><span class="tag">#StagedTesting</span><span class="tag">#SingleCreativeTest</span><span class="tag">#PreScale</span><span class="tag">#CBO</span><span class="tag">#BidCap</span><span class="tag">#Catalog</span><span class="tag">#IC</span><span class="tag">#LanderSplit</span></div>
+  </div>
+
+  <div class="lead">Test creatives individually first, validate the winners, then scale budget — while optimizing the Lead / Lander split.</div>
+
+  <h3><span class="idx">★</span>Offers: VSLs &amp; creatives</h3>
+  <div class="grid2">
+    <div class="offer-box">
+      <div class="ttl">VapoBrain <span class="cat">Memory · BuyGoods</span></div>
+      <div class="sm">VSL</div>
+      <div class="mono" style="font-size:13px;background:#f8f9fb;border:1px solid var(--line2);border-radius:8px;padding:8px 12px;word-break:break-all">FB-BH-BuyGoods-VapoBrain-VicksTrick(MOD01-240)</div>
+      <div class="sm">Creative location <span class="st ok">On cloud drive</span></div>
+      <div class="ftree">
+        <div class="row l1"><span class="fi"></span>团队文件-素材盘-请分类 <span class="cat">(team creative drive)</span></div>
+        <div class="row l2"><span class="fi"></span>记忆类 <span class="cat">(memory)</span></div>
+        <div class="row l3 target"><span class="fi"></span><span class="nm">VapoBrain-Ads</span></div>
+      </div>
+    </div>
+    <div class="offer-box">
+      <div class="ttl">YOBURN <span class="cat">Weight loss · BuyGoods</span></div>
+      <div class="sm">VSL</div>
+      <div class="cat">TBC</div>
+      <div class="sm">Creative location <span class="st ok">On cloud drive</span></div>
+      <div class="ftree">
+        <div class="row l1"><span class="fi"></span>团队文件-素材盘-请分类 <span class="cat">(team creative drive)</span></div>
+        <div class="row l2"><span class="fi"></span>减肥类 <span class="cat">(weight loss)</span></div>
+        <div class="row l3 target"><span class="fi"></span><span class="nm">YoBurn02-Ads</span></div>
+      </div>
+    </div>
+  </div>
+
+  <h3><span class="idx">1</span>Creative testing</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Item</th><th>Setting</th></tr></thead>
+      <tbody>
+        <tr><td class="k">Number tested</td><td>Usually <b>20–30</b> creatives</td></tr>
+        <tr><td class="k">Method</td><td>One campaign per creative; 30 creatives = 30 campaigns</td></tr>
+        <tr><td class="k">Structure</td><td>CBO <b>1-5-5</b></td></tr>
+        <tr><td class="k">Bidding</td><td><b>No</b> Bid Cap</td></tr>
+        <tr><td class="k">Campaign daily budget</td><td><b>1/3</b> of target CPA</td></tr>
+        <tr><td class="k">Test period</td><td><b>3 days</b>, spending about one target CPA in total; pause early if a stop-loss rule triggers</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Condition</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr><td>Spend ≥ $60 with no IC</td><td class="act-stop">Pause the creative</td></tr>
+        <tr><td>CPC ≥ $5</td><td class="act-stop">Pause the creative</td></tr>
+        <tr><td>Only 1 sale over the 3-day test</td><td class="act-stop">Cut the creative</td></tr>
+        <tr><td>2 or more sales during the test</td><td><span class="act-go">Move to pre-scale validation</span>, still judged together with CPA</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3><span class="idx">2</span>Pre-scale validation</h3>
+  <p>For each creative that passes, <b>build both structures below at the same time</b>. Prefer the creative's original test account; a backup account also works.</p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Structure</th><th class="num">Bid Cap</th><th class="num">Starting budget</th></tr></thead>
+      <tbody>
+        <tr><td>CBO 1-100-1</td><td class="num">$240</td><td class="num">$1,000</td></tr>
+        <tr><td>CBO 1-10-1</td><td class="num">$240</td><td class="num">$1,000</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <ul class="clean">
+    <li><span class="act-stop">After a full day</span> with no sales within target CPA: likely the creative can't sustain scale.</li>
+    <li><span class="act-mid">Breakeven or small loss on day one</span>: run one more day before deciding.</li>
+    <li><span class="act-go">Steady sales, performing well</span>: raise budget based on sales and cost per IC.</li>
+  </ul>
+  <p><b>Budget increase examples:</b></p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Current performance</th><th>Example action from the document</th></tr></thead>
+      <tbody>
+        <tr><td>Budget $1,000, spent $300, 2 sales, CPA $150</td><td>Raise to <b>$2,000</b>; up to <b>$3,000</b> depending on cost per IC</td></tr>
+        <tr><td>Budget $1,000, spent $300, 3 sales, CPA $100</td><td>Raise to <b>$3,000</b>; up to <b>$5,000</b> depending on cost per IC</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3><span class="idx">3</span>Full scaling</h3>
+  <ul class="clean">
+    <li>Keep raising budgets on well-performing campaigns based on sales, CPA and supporting metrics.</li>
+    <li>Watch actual spend pace; if spend is too slow or too fast, adjust bids up or down by <span class="hl">10%</span> per hour, then recheck the pace.</li>
+    <li>How much to raise budget depends on actual performance; the table above is only an example.</li>
+  </ul>
+
+  <h3><span class="idx">4</span>Accounts, Pixel &amp; delivery settings</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Item</th><th>Practice</th></tr></thead>
+      <tbody>
+        <tr><td class="k">Accounts</td><td>Prefer accounts with sales history in the same category</td></tr>
+        <tr><td class="k">Pixel</td><td>One Pixel per category</td></tr>
+        <tr><td class="k">Audience</td><td>Use Advantage+ once the Pixel has good category data</td></tr>
+        <tr><td class="k">Catalog</td><td>Vince's team currently uses a catalog in every funnel</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3><span class="idx">5</span>Funnel verdict</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Verdict</th><th>Criteria</th></tr></thead>
+      <tbody>
+        <tr><td class="act-go" style="white-space:nowrap">Validated</td><td>Overall ROAS and CPA are good, and at least 20% of tested creatives reached 2+ sales with CPA in the ideal range</td></tr>
+        <tr><td class="act-mid" style="white-space:nowrap">Promising</td><td>Overall small loss, breakeven or small profit, but some creatives passed and can move to pre-scale; or selling creatives meet supporting metrics</td></tr>
+        <tr><td class="act-stop" style="white-space:nowrap">Likely cut</td><td>No creative reached 2+ sales with good CPA, and the funnel is losing money overall with very high CPA (the document uses over $400 as an example)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3><span class="idx">6</span>Lead / Lander split optimization</h3>
+  <p>During testing, compare sales, CPA and cost per IC across Leads / Landers; send more traffic to the better versions and remove those that keep losing money.</p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Version</th><th>Example performance</th><th>Example allocation</th></tr></thead>
+      <tbody>
+        <tr><td><b>Lead 01</b></td><td>0 sales, cost per IC $230</td><td class="act-stop">Cut</td></tr>
+        <tr><td><b>Lead 02</b></td><td>3 sales, CPA $170, cost per IC $60</td><td class="act-mid">20%–30% of traffic</td></tr>
+        <tr><td><b>Lead 03</b></td><td>7 sales, CPA $60, cost per IC $45</td><td class="act-go">70%–80% of traffic</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note">IC is used for creative stop-loss, sizing budget increases and split optimization, always judged together with actual sales and CPA.</div>
+  <div class="lead">Testing goal: find 1–2 strong Leads / Landers and a few winning creatives ready to scale.</div>
+</section>
+
+</div>
+
 </main>
 
-<footer>信息同步 · v1.2 · 2026-11-09 · 团队内部执行参考，非收益保证</footer>
+<footer><span class="t-zh">信息同步 · v1.3 · 2026-11-09 · 团队内部执行参考，非收益保证</span><span class="t-en">Info Sync · v1.3 · 2026-11-09 · Internal team reference, not a guarantee of results</span></footer>
 
 <script>
 (function(){
   var views=["overview","offers","m01","m02","m03"];
+  var root=document.documentElement;
+  function setLang(l,save){
+    l=(l==="en")?"en":"zh";
+    root.setAttribute("data-lang",l);
+    root.setAttribute("lang",l==="en"?"en":"zh-CN");
+    document.title=l==="en"?"Info Sync":"信息同步";
+    document.querySelectorAll(".langsw button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-lang")===l);});
+    if(save){try{localStorage.setItem("sync-lang",l);}catch(e){}}
+  }
   function show(){
     var h=(location.hash||"").replace("#","");
     if(views.indexOf(h)<0) h="overview";
-    views.forEach(function(v){
-      document.getElementById("view-"+v).classList.toggle("active",v===h);
+    document.querySelectorAll("section.view").forEach(function(sec){
+      sec.classList.toggle("active",sec.getAttribute("data-view")===h);
     });
     document.querySelectorAll("#tabs a").forEach(function(a){
       a.classList.toggle("active",a.getAttribute("data-view")===h);
     });
     window.scrollTo(0,0);
   }
+  var init="zh";
+  try{var q=new URLSearchParams(location.search).get("lang"); if(q) init=q; else init=localStorage.getItem("sync-lang")||"zh";}catch(e){}
+  setLang(init,false);
+  document.querySelectorAll(".langsw button").forEach(function(b){
+    b.addEventListener("click",function(){setLang(b.getAttribute("data-lang"),true);});
+  });
   window.addEventListener("hashchange",show);
   show();
 })();
