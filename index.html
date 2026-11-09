@@ -208,6 +208,17 @@
   .ocard .totop{margin-top:auto;padding-top:10px;font-size:12px;color:var(--muted);text-decoration:none;align-self:flex-end}
   .ocard .totop:hover{color:var(--ink)}
   @media (max-width:640px){.ocards{grid-template-columns:1fr}}
+  /* VSL 复制按钮 */
+  .vrow{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .vrow>.vname{min-width:0;word-break:normal!important;overflow-wrap:anywhere}
+  .cpy{flex:0 0 auto;display:inline-flex;align-items:center;gap:4px;border:1px solid var(--line);background:#fff;
+    color:var(--muted);border-radius:6px;padding:2px 7px;font:inherit;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+    font-size:11.5px;line-height:1.5;cursor:pointer;white-space:nowrap;transition:color .15s,border-color .15s,background .15s}
+  .cpy:hover{color:var(--ink);border-color:#c9cfd8}
+  .cpy svg{width:12px;height:12px}
+  .cpy.done{color:#13865f;border-color:#bfe5d3;background:#e6f6ee}
+  .cpy.fail{color:#9a6b00;border-color:#f3e0b3;background:#fff4e0}
+  @media print{.cpy{display:none}}
 </style>
 </head>
 <body>
@@ -1096,6 +1107,66 @@
   });
   window.addEventListener("hashchange",show);
   show();
+})();
+</script>
+<script>
+(function(){
+  var ICON='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5"/><path d="M10.5 5.5V3.5a1.5 1.5 0 0 0-1.5-1.5H4A1.5 1.5 0 0 0 2.5 3.5V9A1.5 1.5 0 0 0 4 10.5h1.5"/></svg>';
+  function en(){return document.documentElement.getAttribute("data-lang")==="en";}
+  function label(st){
+    if(st==="done") return en()?"Copied":"已复制";
+    if(st==="fail") return en()?"Press Ctrl/⌘+C":"请按 Ctrl/⌘+C";
+    return "";
+  }
+  function vslText(cell){
+    var t="";
+    cell.childNodes.forEach(function(n){
+      if(n.nodeType===3) t+=n.textContent;
+      else if(n.nodeType===1 && !n.classList.contains("lvl-tag") && !n.classList.contains("cpy")) t+=n.textContent;
+    });
+    return t.trim();
+  }
+  function fallback(text,cell){
+    try{
+      var ta=document.createElement("textarea");ta.value=text;ta.setAttribute("readonly","");
+      ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();
+      var ok=document.execCommand("copy");document.body.removeChild(ta);if(ok) return true;
+    }catch(e){}
+    try{var r=document.createRange();r.selectNodeContents(cell);var sel=window.getSelection();sel.removeAllRanges();sel.addRange(r);}catch(e){}
+    return false;
+  }
+  function setState(b,st){
+    b.className="cpy"+(st?" "+st:"");
+    var l=label(st);
+    b.innerHTML=(st==="done"?"✓":ICON)+(l?"<span>"+l+"</span>":"");
+    b.title=en()?"Copy VSL":"复制 VSL";
+    clearTimeout(b._t);
+    if(st) b._t=setTimeout(function(){setState(b,"");},st==="fail"?3000:1500);
+  }
+  document.querySelectorAll("td.mono, div.mono").forEach(function(cell){
+    var text=vslText(cell);
+    if(!/^(FB|Facebook)-/.test(text)) return;
+    var b=document.createElement("button");b.type="button";b.setAttribute("aria-label","Copy VSL");
+    setState(b,"");
+    b.addEventListener("click",function(e){
+      e.preventDefault();
+      var done=function(){setState(b,"done");};
+      var fail=function(){setState(b,fallback(text,cell)?"done":"fail");};
+      try{
+        if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done,fail);}
+        else fail();
+      }catch(err){fail();}
+    });
+    var row=document.createElement("div");row.className="vrow";
+    var nm=document.createElement("span");nm.className="vname";
+    while(cell.firstChild) nm.appendChild(cell.firstChild);
+    row.appendChild(nm);row.appendChild(b);cell.appendChild(row);
+  });
+  document.querySelectorAll(".langsw button").forEach(function(btn){
+    btn.addEventListener("click",function(){
+      document.querySelectorAll(".cpy").forEach(function(b){ if(!b.classList.contains("done")&&!b.classList.contains("fail")) setState(b,""); });
+    });
+  });
 })();
 </script>
 </body>
