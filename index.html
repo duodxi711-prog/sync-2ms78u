@@ -183,6 +183,31 @@
   .langsw button.on{background:var(--ink);color:#fff;font-weight:600}
   .new-mini{font-size:10px;font-weight:700;color:#fff;background:#d9480f;padding:0 5px;border-radius:4px}
   @media print{.langsw{display:none}}
+  /* Offer 详情卡片 */
+  .cnt{--c:#d9480f;--c-bg:#fff3ec}
+  a.olink{font-weight:700;text-decoration:none;border-bottom:1.5px dashed var(--faint)}
+  a.olink:hover{border-bottom-color:var(--ink)}
+  a.vcount{font-weight:600;text-decoration:none;color:var(--accent);white-space:nowrap}
+  a.mlink{color:var(--c)}
+  .ocards{display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:14px;margin-top:6px}
+  .ocard{background:#fff;border:1px solid var(--line);border-top:4px solid var(--c);border-radius:var(--radius);padding:16px 18px 12px;scroll-margin-top:130px;display:flex;flex-direction:column}
+  .ocard.flash{animation:flash 1.8s ease}
+  @keyframes flash{0%,40%{box-shadow:0 0 0 4px var(--c-bg),0 0 0 6px var(--c)}100%{box-shadow:none}}
+  .ocard .oh{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .ocard .on{font-size:17px;font-weight:700}
+  .ocard .ocat{font-size:12px;font-weight:600;padding:1px 9px;border-radius:999px;background:var(--c-bg);color:var(--c)}
+  .ocard .obadge{font-size:11px;font-weight:700;color:#fff;background:#d9480f;padding:1px 8px;border-radius:5px}
+  .ocard .om{font-size:13px;color:var(--ink2);margin:6px 0 2px}
+  .ocard .om a{color:var(--c);font-weight:600}
+  .ocard .sec{font-size:12px;color:var(--muted);margin:12px 0 4px;display:flex;align-items:center;gap:6px}
+  .ocard .vtbl{margin:0}
+  .ocard .vtbl td{padding:7px 10px;font-size:12.5px;word-break:break-all}
+  .ocard .vtbl td.vid{width:1%;white-space:nowrap;color:var(--ink);font-weight:600}
+  .ocard .ftree{margin-top:0}
+  .ocard .onote{font-size:12.5px;color:var(--ink2);background:#f8f9fb;border-radius:8px;padding:8px 12px;margin-top:10px}
+  .ocard .totop{margin-top:auto;padding-top:10px;font-size:12px;color:var(--muted);text-decoration:none;align-self:flex-end}
+  .ocard .totop:hover{color:var(--ink)}
+  @media (max-width:640px){.ocards{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -281,42 +306,26 @@
 <!-- ======================= Offer 清单 ======================= -->
 <section class="view" data-view="offers">
   <h2>Offer 清单</h2>
-  <p style="color:var(--ink2)">当前在跑或准备测试的 offer，以及各自对应的投放方法和素材进度。<span class="cat">同步更新：2026-11-09</span></p>
-
-  <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Offer</th><th>品类</th><th>平台</th><th>对应方法</th><th>素材状态</th></tr></thead>
-      <tbody>
-        <tr><td><b>VisiVra</b></td><td>视力</td><td>JVZoo + BuyGoods</td><td><a href="#m01" class="hl" style="color:var(--m01)">M01 · Arthur</a></td><td><span class="st ok">已在云盘</span> <span class="cat">眼睛 / VisiVra</span></td></tr>
-        <tr><td><b>SlimZol</b> <span class="new" style="font-size:10px;font-weight:700;color:#fff;background:#d9480f;padding:0 5px;border-radius:4px">NEW</span></td><td>减肥</td><td class="cat">待补充</td><td><a href="#m01" class="hl" style="color:var(--m01)">M01 · Arthur</a></td><td><span class="st ok">已在云盘</span> <span class="cat">减肥类 / SLIMZOL（WHITE 素人、BLACK 含名人）</span></td></tr>
-        <tr><td><b>LungVicks</b></td><td>肺部 COPD</td><td>JVZoo</td><td><a href="#m02" class="hl" style="color:var(--m02)">M02 · Silva Torres</a></td><td><span class="st ok">已在云盘</span> <span class="cat">COPD / LungsVicks</span></td></tr>
-        <tr><td><b>VapoBrain</b> <span class="new" style="font-size:10px;font-weight:700;color:#fff;background:#d9480f;padding:0 5px;border-radius:4px">NEW</span></td><td>记忆</td><td>BuyGoods</td><td><a href="#m03" class="hl" style="color:var(--m03)">M03 · Vince</a></td><td><span class="st ok">已在云盘</span> <span class="cat">记忆类 / VapoBrain-Ads</span></td></tr>
-        <tr><td><b>YOBURN</b> <span class="new" style="font-size:10px;font-weight:700;color:#fff;background:#d9480f;padding:0 5px;border-radius:4px">NEW</span></td><td>减肥</td><td>BuyGoods</td><td><a href="#m03" class="hl" style="color:var(--m03)">M03 · Vince</a></td><td><span class="st ok">已在云盘</span> <span class="cat">减肥类 / YoBurn02-Ads</span></td></tr>
-        <tr><td><b>NeuroTamine</b> <span class="new" style="font-size:10px;font-weight:700;color:#fff;background:#d9480f;padding:0 5px;border-radius:4px">NEW</span></td><td>记忆</td><td>Digistore24</td><td><b>不限</b> <span class="cat">可用任何方式投放</span></td><td><span class="st ok">已发企业微信群</span> <span class="cat">NeuroTamine_Ads.zip</span></td></tr>
-      </tbody>
-    </table>
+  <p style="color:var(--ink2)">当前在跑或准备测试的 offer，以及各自对应的投放方法、VSL 和素材位置。点 offer 名称或 VSL 可跳到下方详情。<span class="cat">同步更新：2026-11-09</span></p>
+  <div class="tbl-wrap"><table>
+  <thead><tr><th>Offer</th><th>品类</th><th>平台</th><th>对应方法</th><th>VSL</th><th>素材</th></tr></thead><tbody>
+  <tr><td><a class="olink" href="#offer-visivra">VisiVra</a></td><td>视力</td><td>JVZoo + BuyGoods</td><td><a href="#m01" class="hl mlink c01">M01 · Arthur</a></td><td><a class="vcount" href="#offer-visivra">2 条 ↓</a></td><td><span class="st ok">已在云盘</span> <span class="cat">眼睛 / VisiVra</span></td></tr>
+  <tr><td><a class="olink" href="#offer-slimzol">SlimZol</a> <span class="new-mini">NEW</span></td><td>减肥</td><td><span class="cat">待补充</span></td><td><a href="#m01" class="hl mlink c01">M01 · Arthur</a></td><td><span class="cat">待补充</span></td><td><span class="st ok">已在云盘</span> <span class="cat">减肥类 / SLIMZOL</span></td></tr>
+  <tr><td><a class="olink" href="#offer-lungvicks">LungVicks</a></td><td>肺部 COPD</td><td>JVZoo</td><td><a href="#m02" class="hl mlink c02">M02 · Silva Torres</a></td><td><a class="vcount" href="#offer-lungvicks">2 条 ↓</a></td><td><span class="st ok">已在云盘</span> <span class="cat">COPD / LungsVicks</span></td></tr>
+  <tr><td><a class="olink" href="#offer-vapobrain">VapoBrain</a> <span class="new-mini">NEW</span></td><td>记忆</td><td>BuyGoods</td><td><a href="#m03" class="hl mlink c03">M03 · Vince</a></td><td><a class="vcount" href="#offer-vapobrain">1 条 ↓</a></td><td><span class="st ok">已在云盘</span> <span class="cat">记忆类 / VapoBrain-Ads</span></td></tr>
+  <tr><td><a class="olink" href="#offer-yoburn">YOBURN</a> <span class="new-mini">NEW</span></td><td>减肥</td><td>BuyGoods</td><td><a href="#m03" class="hl mlink c03">M03 · Vince</a></td><td><span class="cat">待补充</span></td><td><span class="st ok">已在云盘</span> <span class="cat">减肥类 / YoBurn02-Ads</span></td></tr>
+  <tr><td><a class="olink" href="#offer-neurotamine">NeuroTamine</a> <span class="new-mini">NEW</span></td><td>记忆</td><td>Digistore24</td><td><b>不限</b> <span class="cat">任何方式</span></td><td><a class="vcount" href="#offer-neurotamine">2 条 ↓</a></td><td><span class="st ok">已发企业微信群</span> <span class="cat">NeuroTamine_Ads.zip</span></td></tr>
+  </tbody></table></div>
+  <h3>详情卡片</h3>
+  <div class="ocards">
+  <div class="ocard c01" data-offer="visivra"><div class="oh"><span class="on">VisiVra</span><span class="ocat">视力</span></div><div class="om">平台：JVZoo + BuyGoods · 方法：<a href="#m01">M01 · Arthur</a> · payout $240 / 单</div><div class="sec">VSL</div><div class="tbl-wrap vtbl"><table><tbody><tr><td class="mono vid">376</td><td class="mono"><span class="lvl-tag">BuyGoods</span> FB-Elevate-BuyGoods-VisiVra(MOD01-240)</td></tr><tr><td class="mono vid">378</td><td class="mono"><span class="lvl-tag">JVZoo</span> FB-Elevate-JVzoo-VisiVra(MOD01-240)</td></tr></tbody></table></div><div class="sec">素材位置 <span class="st ok">已在云盘</span></div><div class="ftree"><div class="row l1"><span class="fi"></span>团队文件-素材盘-请分类</div><div class="row l2"><span class="fi"></span>眼睛</div><div class="row l3 target"><span class="fi"></span><span class="nm">VisiVra</span></div></div><div class="onote">素材分组：w1、w2 为新鲜素材，BEST 为已有良好表现的素材。</div><a class="totop" href="#offers">↑ 回到总表</a></div>
+  <div class="ocard c01" data-offer="slimzol"><div class="oh"><span class="on">SlimZol</span> <span class="new-mini">NEW</span><span class="ocat">减肥</span></div><div class="om">平台：待补充 · 方法：<a href="#m01">M01 · Arthur</a></div><div class="sec">VSL</div><div class="cat">待补充</div><div class="sec">素材位置 <span class="st ok">已在云盘</span></div><div class="ftree"><div class="row l1"><span class="fi"></span>团队文件-素材盘-请分类</div><div class="row l2"><span class="fi"></span>减肥类</div><div class="row l3"><span class="fi"></span>SLIMZOL</div><div class="row l4 target"><span class="fi"></span><span class="nm">W1 - WHITE</span><span class="desc">素人</span></div><div class="row l4 target"><span class="fi"></span><span class="nm">W1 - BLACK</span><span class="desc">含名人</span></div></div><div class="onote">平台、VSL、payout 待补充；沿用 M01 方法结构。</div><a class="totop" href="#offers">↑ 回到总表</a></div>
+  <div class="ocard c02" data-offer="lungvicks"><div class="oh"><span class="on">LungVicks</span><span class="ocat">肺部 COPD</span></div><div class="om">平台：JVZoo · 方法：<a href="#m02">M02 · Silva Torres</a></div><div class="sec">VSL</div><div class="tbl-wrap vtbl"><table><tbody><tr><td class="mono vid">374</td><td class="mono">Facebook-LV-JV-LungVicks-VickTrick(ML03)</td></tr><tr><td class="mono vid">375</td><td class="mono">Facebook-LV-JV-LungVicks-VickTrick(ML06)</td></tr></tbody></table></div><div class="sec">素材位置 <span class="st ok">已在云盘</span></div><div class="ftree"><div class="row l1"><span class="fi"></span>团队文件-素材盘-请分类</div><div class="row l2"><span class="fi"></span>COPD</div><div class="row l3 target"><span class="fi"></span><span class="nm">LungsVicks</span></div></div><div class="onote">优先素材 10 条：AD061、AD178、AD099、AD185、AD123、AD397、AD694、AD022、AD113、AD035。</div><a class="totop" href="#offers">↑ 回到总表</a></div>
+  <div class="ocard c03" data-offer="vapobrain"><div class="oh"><span class="on">VapoBrain</span> <span class="new-mini">NEW</span><span class="ocat">记忆</span></div><div class="om">平台：BuyGoods · 方法：<a href="#m03">M03 · Vince</a></div><div class="sec">VSL</div><div class="tbl-wrap vtbl"><table><tbody><tr><td class="mono vid">—</td><td class="mono">FB-BH-BuyGoods-VapoBrain-VicksTrick(MOD01-240)</td></tr></tbody></table></div><div class="sec">素材位置 <span class="st ok">已在云盘</span></div><div class="ftree"><div class="row l1"><span class="fi"></span>团队文件-素材盘-请分类</div><div class="row l2"><span class="fi"></span>记忆类</div><div class="row l3 target"><span class="fi"></span><span class="nm">VapoBrain-Ads</span></div></div><a class="totop" href="#offers">↑ 回到总表</a></div>
+  <div class="ocard c03" data-offer="yoburn"><div class="oh"><span class="on">YOBURN</span> <span class="new-mini">NEW</span><span class="ocat">减肥</span></div><div class="om">平台：BuyGoods · 方法：<a href="#m03">M03 · Vince</a></div><div class="sec">VSL</div><div class="cat">待补充</div><div class="sec">素材位置 <span class="st ok">已在云盘</span></div><div class="ftree"><div class="row l1"><span class="fi"></span>团队文件-素材盘-请分类</div><div class="row l2"><span class="fi"></span>减肥类</div><div class="row l3 target"><span class="fi"></span><span class="nm">YoBurn02-Ads</span></div></div><a class="totop" href="#offers">↑ 回到总表</a></div>
+  <div class="ocard cnt" data-offer="neurotamine"><div class="oh"><span class="on">NeuroTamine</span> <span class="new-mini">NEW</span><span class="ocat">记忆</span><span class="obadge">Newsbreak 跑量好</span></div><div class="om">平台：Digistore24 · 方法：不限（任何方式）</div><div class="sec">VSL</div><div class="tbl-wrap vtbl"><table><tbody><tr><td class="mono vid">360</td><td class="mono">FB-ShippingCap-Digistore24-NeuroTamine(MOD01)</td></tr><tr><td class="mono vid">363</td><td class="mono">FB-ShippingCap-Digistore24-NeuroTamine(MOD1036)</td></tr></tbody></table></div><div class="sec">素材位置 <span class="st ok">已发企业微信群</span></div><div class="om" style="margin:0">压缩包 <span class="mono">NeuroTamine_Ads.zip</span>（约 293 MB），在企业微信群文件中下载。</div><div class="onote">在 Newsbreak 上跑得好；投放到 Meta 时不限定方法，可以用任何方式投放（M01、M02、M03 或其他做法均可）。</div><a class="totop" href="#offers">↑ 回到总表</a></div>
   </div>
-
-  <div class="hot">
-    <span class="badge">NEW · 记忆</span>
-    <h3>NeuroTamine：Newsbreak 上表现好的记忆 offer</h3>
-    <ul class="clean">
-      <li>在 <b>Newsbreak</b> 上跑得好；投放到 Meta 时<b>不限定方法</b>，可以用任何方式投放（M01、M02、M03 或其他做法均可）。</li>
-      <li>平台：Digistore24。</li>
-      <li>素材：<span class="st ok">已发企业微信群</span> 压缩包 <span class="mono">NeuroTamine_Ads.zip</span>（约 293 MB），在群文件中下载。</li>
-    </ul>
-    <div class="tbl-wrap">
-      <table>
-        <thead><tr><th>编号</th><th>VSL</th></tr></thead>
-        <tbody>
-          <tr><td class="mono">360</td><td class="mono">FB-ShippingCap-Digistore24-NeuroTamine(MOD01)</td></tr>
-          <tr><td class="mono">363</td><td class="mono">FB-ShippingCap-Digistore24-NeuroTamine(MOD1036)</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <div class="note">“平台”一栏按已提供的信息和 VSL 名称填写；SlimZol 的平台、VSL 和 payout，YOBURN 的 VSL 尚未提供，补充后再更新。VapoBrain 的 VSL 与素材位置见 <a href="#m03">M03</a>。</div>
+  <div class="note">“平台”按已提供的信息和 VSL 名称填写。各方法页中的 VSL 与素材信息同步保留。</div>
 </section>
 
 <!-- ======================= M01 ======================= -->
@@ -773,42 +782,26 @@
 <!-- ======================= Offer list (EN) ======================= -->
 <section class="view" data-view="offers">
   <h2>Offer List</h2>
-  <p style="color:var(--ink2)">Offers currently running or about to be tested, with their matching method and creative status. <span class="cat">Last synced: 2026-11-09</span></p>
-
-  <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Offer</th><th>Category</th><th>Platform</th><th>Method</th><th>Creatives</th></tr></thead>
-      <tbody>
-        <tr><td><b>VisiVra</b></td><td>Vision</td><td>JVZoo + BuyGoods</td><td><a href="#m01" class="hl" style="color:var(--m01)">M01 · Arthur</a></td><td><span class="st ok">On cloud drive</span> <span class="cat">眼睛 / VisiVra</span></td></tr>
-        <tr><td><b>SlimZol</b> <span class="new-mini">NEW</span></td><td>Weight loss</td><td class="cat">TBC</td><td><a href="#m01" class="hl" style="color:var(--m01)">M01 · Arthur</a></td><td><span class="st ok">On cloud drive</span> <span class="cat">减肥类 / SLIMZOL (WHITE = regular people, BLACK = with celebrities)</span></td></tr>
-        <tr><td><b>LungVicks</b></td><td>Lung / COPD</td><td>JVZoo</td><td><a href="#m02" class="hl" style="color:var(--m02)">M02 · Silva Torres</a></td><td><span class="st ok">On cloud drive</span> <span class="cat">COPD / LungsVicks</span></td></tr>
-        <tr><td><b>VapoBrain</b> <span class="new-mini">NEW</span></td><td>Memory</td><td>BuyGoods</td><td><a href="#m03" class="hl" style="color:var(--m03)">M03 · Vince</a></td><td><span class="st ok">On cloud drive</span> <span class="cat">记忆类 / VapoBrain-Ads</span></td></tr>
-        <tr><td><b>YOBURN</b> <span class="new-mini">NEW</span></td><td>Weight loss</td><td>BuyGoods</td><td><a href="#m03" class="hl" style="color:var(--m03)">M03 · Vince</a></td><td><span class="st ok">On cloud drive</span> <span class="cat">减肥类 / YoBurn02-Ads</span></td></tr>
-        <tr><td><b>NeuroTamine</b> <span class="new-mini">NEW</span></td><td>Memory</td><td>Digistore24</td><td><b>Any</b> <span class="cat">any method can be used</span></td><td><span class="st ok">Sent to WeCom group</span> <span class="cat">NeuroTamine_Ads.zip</span></td></tr>
-      </tbody>
-    </table>
+  <p style="color:var(--ink2)">Offers currently running or about to be tested, with their method, VSLs and creative location. Click an offer name or VSL count to jump to its details below. <span class="cat">Last synced: 2026-11-09</span></p>
+  <div class="tbl-wrap"><table>
+  <thead><tr><th>Offer</th><th>Category</th><th>Platform</th><th>Method</th><th>VSL</th><th>Creatives</th></tr></thead><tbody>
+  <tr><td><a class="olink" href="#offer-visivra">VisiVra</a></td><td>Vision</td><td>JVZoo + BuyGoods</td><td><a href="#m01" class="hl mlink c01">M01 · Arthur</a></td><td><a class="vcount" href="#offer-visivra">2 ↓</a></td><td><span class="st ok">On cloud drive</span> <span class="cat">眼睛 / VisiVra</span></td></tr>
+  <tr><td><a class="olink" href="#offer-slimzol">SlimZol</a> <span class="new-mini">NEW</span></td><td>Weight loss</td><td><span class="cat">TBC</span></td><td><a href="#m01" class="hl mlink c01">M01 · Arthur</a></td><td><span class="cat">TBC</span></td><td><span class="st ok">On cloud drive</span> <span class="cat">减肥类 / SLIMZOL</span></td></tr>
+  <tr><td><a class="olink" href="#offer-lungvicks">LungVicks</a></td><td>Lung / COPD</td><td>JVZoo</td><td><a href="#m02" class="hl mlink c02">M02 · Silva Torres</a></td><td><a class="vcount" href="#offer-lungvicks">2 ↓</a></td><td><span class="st ok">On cloud drive</span> <span class="cat">COPD / LungsVicks</span></td></tr>
+  <tr><td><a class="olink" href="#offer-vapobrain">VapoBrain</a> <span class="new-mini">NEW</span></td><td>Memory</td><td>BuyGoods</td><td><a href="#m03" class="hl mlink c03">M03 · Vince</a></td><td><a class="vcount" href="#offer-vapobrain">1 ↓</a></td><td><span class="st ok">On cloud drive</span> <span class="cat">记忆类 / VapoBrain-Ads</span></td></tr>
+  <tr><td><a class="olink" href="#offer-yoburn">YOBURN</a> <span class="new-mini">NEW</span></td><td>Weight loss</td><td>BuyGoods</td><td><a href="#m03" class="hl mlink c03">M03 · Vince</a></td><td><span class="cat">TBC</span></td><td><span class="st ok">On cloud drive</span> <span class="cat">减肥类 / YoBurn02-Ads</span></td></tr>
+  <tr><td><a class="olink" href="#offer-neurotamine">NeuroTamine</a> <span class="new-mini">NEW</span></td><td>Memory</td><td>Digistore24</td><td><b>Any</b> <span class="cat">any method</span></td><td><a class="vcount" href="#offer-neurotamine">2 ↓</a></td><td><span class="st ok">Sent to WeCom group</span> <span class="cat">NeuroTamine_Ads.zip</span></td></tr>
+  </tbody></table></div>
+  <h3>Offer details</h3>
+  <div class="ocards">
+  <div class="ocard c01" data-offer="visivra"><div class="oh"><span class="on">VisiVra</span><span class="ocat">Vision</span></div><div class="om">Platform: JVZoo + BuyGoods · Method: <a href="#m01">M01 · Arthur</a> · payout $240 / sale</div><div class="sec">VSL</div><div class="tbl-wrap vtbl"><table><tbody><tr><td class="mono vid">376</td><td class="mono"><span class="lvl-tag">BuyGoods</span> FB-Elevate-BuyGoods-VisiVra(MOD01-240)</td></tr><tr><td class="mono vid">378</td><td class="mono"><span class="lvl-tag">JVZoo</span> FB-Elevate-JVzoo-VisiVra(MOD01-240)</td></tr></tbody></table></div><div class="sec">Creative location <span class="st ok">On cloud drive</span></div><div class="ftree"><div class="row l1"><span class="fi"></span>团队文件-素材盘-请分类 <span class="cat">(team creative drive)</span></div><div class="row l2"><span class="fi"></span>眼睛 <span class="cat">(eyes / vision)</span></div><div class="row l3 target"><span class="fi"></span><span class="nm">VisiVra</span></div></div><div class="onote">Creative groups: w1 and w2 are fresh creatives; BEST holds proven performers.</div><a class="totop" href="#offers">↑ Back to table</a></div>
+  <div class="ocard c01" data-offer="slimzol"><div class="oh"><span class="on">SlimZol</span> <span class="new-mini">NEW</span><span class="ocat">Weight loss</span></div><div class="om">Platform: TBC · Method: <a href="#m01">M01 · Arthur</a></div><div class="sec">VSL</div><div class="cat">TBC</div><div class="sec">Creative location <span class="st ok">On cloud drive</span></div><div class="ftree"><div class="row l1"><span class="fi"></span>团队文件-素材盘-请分类 <span class="cat">(team creative drive)</span></div><div class="row l2"><span class="fi"></span>减肥类 <span class="cat">(weight loss)</span></div><div class="row l3"><span class="fi"></span>SLIMZOL</div><div class="row l4 target"><span class="fi"></span><span class="nm">W1 - WHITE</span><span class="desc">regular people</span></div><div class="row l4 target"><span class="fi"></span><span class="nm">W1 - BLACK</span><span class="desc">with celebrities</span></div></div><div class="onote">Platform, VSL and payout TBC; follows the M01 method structure.</div><a class="totop" href="#offers">↑ Back to table</a></div>
+  <div class="ocard c02" data-offer="lungvicks"><div class="oh"><span class="on">LungVicks</span><span class="ocat">Lung / COPD</span></div><div class="om">Platform: JVZoo · Method: <a href="#m02">M02 · Silva Torres</a></div><div class="sec">VSL</div><div class="tbl-wrap vtbl"><table><tbody><tr><td class="mono vid">374</td><td class="mono">Facebook-LV-JV-LungVicks-VickTrick(ML03)</td></tr><tr><td class="mono vid">375</td><td class="mono">Facebook-LV-JV-LungVicks-VickTrick(ML06)</td></tr></tbody></table></div><div class="sec">Creative location <span class="st ok">On cloud drive</span></div><div class="ftree"><div class="row l1"><span class="fi"></span>团队文件-素材盘-请分类 <span class="cat">(team creative drive)</span></div><div class="row l2"><span class="fi"></span>COPD</div><div class="row l3 target"><span class="fi"></span><span class="nm">LungsVicks</span></div></div><div class="onote">10 priority creatives: AD061, AD178, AD099, AD185, AD123, AD397, AD694, AD022, AD113, AD035.</div><a class="totop" href="#offers">↑ Back to table</a></div>
+  <div class="ocard c03" data-offer="vapobrain"><div class="oh"><span class="on">VapoBrain</span> <span class="new-mini">NEW</span><span class="ocat">Memory</span></div><div class="om">Platform: BuyGoods · Method: <a href="#m03">M03 · Vince</a></div><div class="sec">VSL</div><div class="tbl-wrap vtbl"><table><tbody><tr><td class="mono vid">—</td><td class="mono">FB-BH-BuyGoods-VapoBrain-VicksTrick(MOD01-240)</td></tr></tbody></table></div><div class="sec">Creative location <span class="st ok">On cloud drive</span></div><div class="ftree"><div class="row l1"><span class="fi"></span>团队文件-素材盘-请分类 <span class="cat">(team creative drive)</span></div><div class="row l2"><span class="fi"></span>记忆类 <span class="cat">(memory)</span></div><div class="row l3 target"><span class="fi"></span><span class="nm">VapoBrain-Ads</span></div></div><a class="totop" href="#offers">↑ Back to table</a></div>
+  <div class="ocard c03" data-offer="yoburn"><div class="oh"><span class="on">YOBURN</span> <span class="new-mini">NEW</span><span class="ocat">Weight loss</span></div><div class="om">Platform: BuyGoods · Method: <a href="#m03">M03 · Vince</a></div><div class="sec">VSL</div><div class="cat">TBC</div><div class="sec">Creative location <span class="st ok">On cloud drive</span></div><div class="ftree"><div class="row l1"><span class="fi"></span>团队文件-素材盘-请分类 <span class="cat">(team creative drive)</span></div><div class="row l2"><span class="fi"></span>减肥类 <span class="cat">(weight loss)</span></div><div class="row l3 target"><span class="fi"></span><span class="nm">YoBurn02-Ads</span></div></div><a class="totop" href="#offers">↑ Back to table</a></div>
+  <div class="ocard cnt" data-offer="neurotamine"><div class="oh"><span class="on">NeuroTamine</span> <span class="new-mini">NEW</span><span class="ocat">Memory</span><span class="obadge">Strong on Newsbreak</span></div><div class="om">Platform: Digistore24 · Method: Any (any method)</div><div class="sec">VSL</div><div class="tbl-wrap vtbl"><table><tbody><tr><td class="mono vid">360</td><td class="mono">FB-ShippingCap-Digistore24-NeuroTamine(MOD01)</td></tr><tr><td class="mono vid">363</td><td class="mono">FB-ShippingCap-Digistore24-NeuroTamine(MOD1036)</td></tr></tbody></table></div><div class="sec">Creative location <span class="st ok">Sent to WeCom group</span></div><div class="om" style="margin:0">Zip file <span class="mono">NeuroTamine_Ads.zip</span> (about 293 MB) — download it from the WeCom group files.</div><div class="onote">Performs well on Newsbreak. On Meta there is no required method — any approach can be used (M01, M02, M03 or others).</div><a class="totop" href="#offers">↑ Back to table</a></div>
   </div>
-
-  <div class="hot">
-    <span class="badge">NEW · Memory</span>
-    <h3>NeuroTamine: memory offer performing well on Newsbreak</h3>
-    <ul class="clean">
-      <li>Performs well on <b>Newsbreak</b>. On Meta there is <b>no required method</b> — any approach can be used (M01, M02, M03 or others).</li>
-      <li>Platform: Digistore24.</li>
-      <li>Creatives: <span class="st ok">Sent to WeCom group</span> as <span class="mono">NeuroTamine_Ads.zip</span> (about 293 MB); download it from the group files.</li>
-    </ul>
-    <div class="tbl-wrap">
-      <table>
-        <thead><tr><th>ID</th><th>VSL</th></tr></thead>
-        <tbody>
-          <tr><td class="mono">360</td><td class="mono">FB-ShippingCap-Digistore24-NeuroTamine(MOD01)</td></tr>
-          <tr><td class="mono">363</td><td class="mono">FB-ShippingCap-Digistore24-NeuroTamine(MOD1036)</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <div class="note">The Platform column is based on information provided and the VSL names. SlimZol's platform, VSL and payout, and YOBURN's VSL, have not been provided yet and will be added later. For VapoBrain's VSL and creative location, see <a href="#m03">M03</a>. Folder names on the cloud drive are kept in their original Chinese.</div>
+  <div class="note">Platform is based on information provided and the VSL names. VSL and creative details also remain on each method page. Cloud drive folder names are kept in their original Chinese.</div>
 </section>
 
 <!-- ======================= M01 (EN) ======================= -->
@@ -1207,6 +1200,8 @@
   }
   function show(){
     var h=(location.hash||"").replace("#","");
+    var target=null;
+    if(h.indexOf("offer-")===0){target=h.slice(6);h="offers";}
     if(views.indexOf(h)<0) h="overview";
     document.querySelectorAll("section.view").forEach(function(sec){
       sec.classList.toggle("active",sec.getAttribute("data-view")===h);
@@ -1215,7 +1210,21 @@
       a.classList.toggle("active",a.getAttribute("data-view")===h);
     });
     window.scrollTo(0,0);
+    if(target){
+      var el=null;
+      document.querySelectorAll('[data-offer="'+target+'"]').forEach(function(c){if(c.offsetParent)el=c;});
+      if(el){
+        setTimeout(function(){
+          el.scrollIntoView({behavior:"smooth",block:"start"});
+          el.classList.remove("flash");void el.offsetWidth;el.classList.add("flash");
+        },30);
+      }
+    }
   }
+  document.addEventListener("click",function(e){
+    var a=e.target.closest&&e.target.closest('a[href^="#"]');
+    if(a&&a.getAttribute("href")===location.hash){e.preventDefault();show();}
+  });
   var init="zh";
   try{var q=new URLSearchParams(location.search).get("lang"); if(q) init=q; else init=localStorage.getItem("sync-lang")||"zh";}catch(e){}
   setLang(init,false);
