@@ -219,6 +219,62 @@
   .cpy.done{color:#13865f;border-color:#bfe5d3;background:#e6f6ee}
   .cpy.fail{color:#9a6b00;border-color:#f3e0b3;background:#fff4e0}
   @media print{.cpy{display:none}}
+  /* ---------- 手机适配 ---------- */
+  .otable .m-cat{display:none}
+  html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+  @media (pointer:coarse){
+    .cpy{min-width:34px;min-height:30px;justify-content:center}
+    nav.tabs a{padding-top:10px;padding-bottom:12px}
+  }
+  @media (max-width:640px){
+    body{font-size:14.5px}
+    .top-inner{padding:10px 14px 0}
+    .title-row{flex-wrap:nowrap;gap:8px}
+    .title-row h1{font-size:17px;gap:8px}
+    .title-row h1 .logo{width:24px;height:24px}
+    .title-row .meta{display:none}
+    .langsw button{padding:4px 10px;font-size:12.5px}
+    nav.tabs{margin-top:6px;gap:0}
+    nav.tabs a{padding:8px 11px 10px;font-size:13.5px}
+    nav.tabs a .num{margin-right:4px}
+    nav.tabs .tl{display:none}
+    main{padding:16px 12px 40px}
+    h2{font-size:19px}
+    h3{font-size:15px;margin:26px 0 10px}
+    .m-head{padding:16px 14px}
+    .m-head h2{font-size:19px}
+    .m-head .tags{display:none}
+    .kv{grid-template-columns:1fr;gap:8px}
+    .stats{grid-template-columns:1fr 1fr;gap:8px}
+    .stat{padding:10px 12px}
+    .stat .v{font-size:17px}
+    .lead{font-size:14px;padding:12px 14px}
+    .note{font-size:12.5px;padding:9px 12px}
+    th,td{padding:8px 10px}
+    .ftree{padding:8px 12px 10px;font-size:13px}
+    .ftree .row.l2{margin-left:18px} .ftree .row.l3{margin-left:36px} .ftree .row.l4{margin-left:54px}
+    .ftree .row.l2::before,.ftree .row.l3::before,.ftree .row.l4::before{left:-12px;width:8px}
+    .ocard{padding:14px 14px 10px;scroll-margin-top:96px}
+    .offer-box{padding:14px}
+    .grid2{grid-template-columns:1fr}
+    footer{padding:0 12px 32px}
+    /* Offer 总表 → 手机卡片列表 */
+    .otable-wrap{overflow:visible}
+    .otable thead{display:none}
+    .otable,.otable tbody{display:block}
+    .otable tr{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;padding:12px 14px;border-bottom:1px solid var(--line2)}
+    .otable tr:last-child{border-bottom:0}
+    .otable td{display:block;padding:0;border:0}
+    .otable td.c-name{order:1;flex:1 1 auto;font-size:15px}
+    .otable td.c-vsl{order:2;flex:0 0 auto;margin-left:auto}
+    .otable td.c-cat{display:none}
+    .otable td.c-plat{order:4;flex:0 0 100%;font-size:13px;color:var(--ink2)}
+    .otable .m-cat{display:inline}
+    .otable td.c-meth{order:5;flex:0 0 100%;font-size:13px}
+    .otable td.c-meth::before{content:attr(data-label) "：";color:var(--muted);font-size:12px}
+    html[data-lang="en"] .otable td.c-meth::before{content:attr(data-label) ": "}
+    .otable td.c-mat{order:6;flex:0 0 100%;font-size:13px;margin-top:2px}
+  }
 </style>
 </head>
 <body>
@@ -232,9 +288,9 @@
     </div>
     <nav class="tabs" id="tabs">
       <a href="#offers" data-view="offers"><span class="t-zh">Offer 清单</span><span class="t-en">Offer List</span></a>
-      <a href="#m01" data-view="m01" data-c="m01"><span class="num">M01</span><span class="t-zh">Arthur · 视力 / 减肥</span><span class="t-en">Arthur · Vision / Weight loss</span></a>
-      <a href="#m02" data-view="m02" data-c="m02"><span class="num">M02</span><span class="t-zh">Silva · LungVicks 肺部</span><span class="t-en">Silva · LungVicks Lung</span></a>
-      <a href="#m03" data-view="m03" data-c="m03"><span class="num">M03</span><span class="t-zh">Vince · 记忆 / 减肥</span><span class="t-en">Vince · Memory / Weight loss</span></a>
+      <a href="#m01" data-view="m01" data-c="m01"><span class="num">M01</span><span class="t-zh">Arthur<span class="tl"> · 视力 / 减肥</span></span><span class="t-en">Arthur<span class="tl"> · Vision / Weight loss</span></span></a>
+      <a href="#m02" data-view="m02" data-c="m02"><span class="num">M02</span><span class="t-zh">Silva<span class="tl"> · LungVicks 肺部</span></span><span class="t-en">Silva<span class="tl"> · LungVicks Lung</span></span></a>
+      <a href="#m03" data-view="m03" data-c="m03"><span class="num">M03</span><span class="t-zh">Vince<span class="tl"> · 记忆 / 减肥</span></span><span class="t-en">Vince<span class="tl"> · Memory / Weight loss</span></span></a>
     </nav>
   </div>
 </header>
@@ -246,14 +302,14 @@
 <section class="view" data-view="offers">
   <h2>Offer 清单</h2>
   <p style="color:var(--ink2)">当前在跑或准备测试的 offer，以及各自对应的投放方法、VSL 和素材位置。点 offer 名称或 VSL 可跳到下方详情。<span class="cat">同步更新：2026-11-09</span></p>
-  <div class="tbl-wrap"><table>
+  <div class="tbl-wrap otable-wrap"><table class="otable">
   <thead><tr><th>Offer</th><th>品类</th><th>平台</th><th>对应方法</th><th>VSL</th><th>素材</th></tr></thead><tbody>
-  <tr><td><a class="olink" href="#offer-visivra">VisiVra</a></td><td>视力</td><td>JVZoo + BuyGoods</td><td><a href="#m01" class="hl mlink c01">M01 · Arthur</a></td><td><a class="vcount" href="#offer-visivra">2 条 ↓</a></td><td><span class="st ok">已在云盘</span> <span class="cat">眼睛 / VisiVra</span></td></tr>
-  <tr><td><a class="olink" href="#offer-slimzol">SlimZol</a> <span class="new-mini">NEW</span></td><td>减肥</td><td>BuyGoods</td><td><a href="#m01" class="hl mlink c01">M01 · Arthur</a></td><td><a class="vcount" href="#offer-slimzol">4 条 ↓</a></td><td><span class="st ok">已在云盘</span> <span class="cat">减肥类 / SLIMZOL</span></td></tr>
-  <tr><td><a class="olink" href="#offer-lungvicks">LungVicks</a></td><td>肺部 COPD</td><td>JVZoo</td><td><a href="#m02" class="hl mlink c02">M02 · Silva Torres</a></td><td><a class="vcount" href="#offer-lungvicks">2 条 ↓</a></td><td><span class="st ok">已在云盘</span> <span class="cat">COPD / LungsVicks</span></td></tr>
-  <tr><td><a class="olink" href="#offer-vapobrain">VapoBrain</a> <span class="new-mini">NEW</span></td><td>记忆</td><td>BuyGoods</td><td><a href="#m03" class="hl mlink c03">M03 · Vince</a></td><td><a class="vcount" href="#offer-vapobrain">1 条 ↓</a></td><td><span class="st ok">已在云盘</span> <span class="cat">记忆类 / VapoBrain-Ads</span></td></tr>
-  <tr><td><a class="olink" href="#offer-yoburn">YOBURN</a> <span class="new-mini">NEW</span></td><td>减肥</td><td>BuyGoods</td><td><a href="#m03" class="hl mlink c03">M03 · Vince</a></td><td><a class="vcount" href="#offer-yoburn">4 条 ↓</a></td><td><span class="st ok">已在云盘</span> <span class="cat">减肥类 / YoBurn02-Ads</span></td></tr>
-  <tr><td><a class="olink" href="#offer-neurotamine">NeuroTamine</a> <span class="new-mini">NEW</span></td><td>记忆</td><td>Digistore24</td><td><b>不限</b> <span class="cat">任何方式</span></td><td><a class="vcount" href="#offer-neurotamine">2 条 ↓</a></td><td><span class="st ok">已发企业微信群</span> <span class="cat">NeuroTamine_Ads.zip</span></td></tr>
+  <tr><td class="c-name"><a class="olink" href="#offer-visivra">VisiVra</a></td><td class="c-cat">视力</td><td class="c-plat"><span class="m-cat">视力 · </span>JVZoo + BuyGoods</td><td class="c-meth" data-label="方法"><a href="#m01" class="hl mlink c01">M01 · Arthur</a></td><td class="c-vsl"><a class="vcount" href="#offer-visivra">2 条 ↓</a></td><td class="c-mat"><span class="st ok">已在云盘</span> <span class="cat">眼睛 / VisiVra</span></td></tr>
+  <tr><td class="c-name"><a class="olink" href="#offer-slimzol">SlimZol</a> <span class="new-mini">NEW</span></td><td class="c-cat">减肥</td><td class="c-plat"><span class="m-cat">减肥 · </span>BuyGoods</td><td class="c-meth" data-label="方法"><a href="#m01" class="hl mlink c01">M01 · Arthur</a></td><td class="c-vsl"><a class="vcount" href="#offer-slimzol">4 条 ↓</a></td><td class="c-mat"><span class="st ok">已在云盘</span> <span class="cat">减肥类 / SLIMZOL</span></td></tr>
+  <tr><td class="c-name"><a class="olink" href="#offer-lungvicks">LungVicks</a></td><td class="c-cat">肺部 COPD</td><td class="c-plat"><span class="m-cat">肺部 COPD · </span>JVZoo</td><td class="c-meth" data-label="方法"><a href="#m02" class="hl mlink c02">M02 · Silva Torres</a></td><td class="c-vsl"><a class="vcount" href="#offer-lungvicks">2 条 ↓</a></td><td class="c-mat"><span class="st ok">已在云盘</span> <span class="cat">COPD / LungsVicks</span></td></tr>
+  <tr><td class="c-name"><a class="olink" href="#offer-vapobrain">VapoBrain</a> <span class="new-mini">NEW</span></td><td class="c-cat">记忆</td><td class="c-plat"><span class="m-cat">记忆 · </span>BuyGoods</td><td class="c-meth" data-label="方法"><a href="#m03" class="hl mlink c03">M03 · Vince</a></td><td class="c-vsl"><a class="vcount" href="#offer-vapobrain">1 条 ↓</a></td><td class="c-mat"><span class="st ok">已在云盘</span> <span class="cat">记忆类 / VapoBrain-Ads</span></td></tr>
+  <tr><td class="c-name"><a class="olink" href="#offer-yoburn">YOBURN</a> <span class="new-mini">NEW</span></td><td class="c-cat">减肥</td><td class="c-plat"><span class="m-cat">减肥 · </span>BuyGoods</td><td class="c-meth" data-label="方法"><a href="#m03" class="hl mlink c03">M03 · Vince</a></td><td class="c-vsl"><a class="vcount" href="#offer-yoburn">4 条 ↓</a></td><td class="c-mat"><span class="st ok">已在云盘</span> <span class="cat">减肥类 / YoBurn02-Ads</span></td></tr>
+  <tr><td class="c-name"><a class="olink" href="#offer-neurotamine">NeuroTamine</a> <span class="new-mini">NEW</span></td><td class="c-cat">记忆</td><td class="c-plat"><span class="m-cat">记忆 · </span>Digistore24</td><td class="c-meth" data-label="方法"><b>不限</b> <span class="cat">任何方式</span></td><td class="c-vsl"><a class="vcount" href="#offer-neurotamine">2 条 ↓</a></td><td class="c-mat"><span class="st ok">已发企业微信群</span> <span class="cat">NeuroTamine_Ads.zip</span></td></tr>
   </tbody></table></div>
   <h3>详情卡片</h3>
   <div class="ocards">
@@ -654,14 +710,14 @@
 <section class="view" data-view="offers">
   <h2>Offer List</h2>
   <p style="color:var(--ink2)">Offers currently running or about to be tested, with their method, VSLs and creative location. Click an offer name or VSL count to jump to its details below. <span class="cat">Last synced: 2026-11-09</span></p>
-  <div class="tbl-wrap"><table>
+  <div class="tbl-wrap otable-wrap"><table class="otable">
   <thead><tr><th>Offer</th><th>Category</th><th>Platform</th><th>Method</th><th>VSL</th><th>Creatives</th></tr></thead><tbody>
-  <tr><td><a class="olink" href="#offer-visivra">VisiVra</a></td><td>Vision</td><td>JVZoo + BuyGoods</td><td><a href="#m01" class="hl mlink c01">M01 · Arthur</a></td><td><a class="vcount" href="#offer-visivra">2 ↓</a></td><td><span class="st ok">On cloud drive</span> <span class="cat">眼睛 / VisiVra</span></td></tr>
-  <tr><td><a class="olink" href="#offer-slimzol">SlimZol</a> <span class="new-mini">NEW</span></td><td>Weight loss</td><td>BuyGoods</td><td><a href="#m01" class="hl mlink c01">M01 · Arthur</a></td><td><a class="vcount" href="#offer-slimzol">4 ↓</a></td><td><span class="st ok">On cloud drive</span> <span class="cat">减肥类 / SLIMZOL</span></td></tr>
-  <tr><td><a class="olink" href="#offer-lungvicks">LungVicks</a></td><td>Lung / COPD</td><td>JVZoo</td><td><a href="#m02" class="hl mlink c02">M02 · Silva Torres</a></td><td><a class="vcount" href="#offer-lungvicks">2 ↓</a></td><td><span class="st ok">On cloud drive</span> <span class="cat">COPD / LungsVicks</span></td></tr>
-  <tr><td><a class="olink" href="#offer-vapobrain">VapoBrain</a> <span class="new-mini">NEW</span></td><td>Memory</td><td>BuyGoods</td><td><a href="#m03" class="hl mlink c03">M03 · Vince</a></td><td><a class="vcount" href="#offer-vapobrain">1 ↓</a></td><td><span class="st ok">On cloud drive</span> <span class="cat">记忆类 / VapoBrain-Ads</span></td></tr>
-  <tr><td><a class="olink" href="#offer-yoburn">YOBURN</a> <span class="new-mini">NEW</span></td><td>Weight loss</td><td>BuyGoods</td><td><a href="#m03" class="hl mlink c03">M03 · Vince</a></td><td><a class="vcount" href="#offer-yoburn">4 ↓</a></td><td><span class="st ok">On cloud drive</span> <span class="cat">减肥类 / YoBurn02-Ads</span></td></tr>
-  <tr><td><a class="olink" href="#offer-neurotamine">NeuroTamine</a> <span class="new-mini">NEW</span></td><td>Memory</td><td>Digistore24</td><td><b>Any</b> <span class="cat">any method</span></td><td><a class="vcount" href="#offer-neurotamine">2 ↓</a></td><td><span class="st ok">Sent to WeCom group</span> <span class="cat">NeuroTamine_Ads.zip</span></td></tr>
+  <tr><td class="c-name"><a class="olink" href="#offer-visivra">VisiVra</a></td><td class="c-cat">Vision</td><td class="c-plat"><span class="m-cat">Vision · </span>JVZoo + BuyGoods</td><td class="c-meth" data-label="Method"><a href="#m01" class="hl mlink c01">M01 · Arthur</a></td><td class="c-vsl"><a class="vcount" href="#offer-visivra">2 VSLs ↓</a></td><td class="c-mat"><span class="st ok">On cloud drive</span> <span class="cat">眼睛 / VisiVra</span></td></tr>
+  <tr><td class="c-name"><a class="olink" href="#offer-slimzol">SlimZol</a> <span class="new-mini">NEW</span></td><td class="c-cat">Weight loss</td><td class="c-plat"><span class="m-cat">Weight loss · </span>BuyGoods</td><td class="c-meth" data-label="Method"><a href="#m01" class="hl mlink c01">M01 · Arthur</a></td><td class="c-vsl"><a class="vcount" href="#offer-slimzol">4 VSLs ↓</a></td><td class="c-mat"><span class="st ok">On cloud drive</span> <span class="cat">减肥类 / SLIMZOL</span></td></tr>
+  <tr><td class="c-name"><a class="olink" href="#offer-lungvicks">LungVicks</a></td><td class="c-cat">Lung / COPD</td><td class="c-plat"><span class="m-cat">Lung / COPD · </span>JVZoo</td><td class="c-meth" data-label="Method"><a href="#m02" class="hl mlink c02">M02 · Silva Torres</a></td><td class="c-vsl"><a class="vcount" href="#offer-lungvicks">2 VSLs ↓</a></td><td class="c-mat"><span class="st ok">On cloud drive</span> <span class="cat">COPD / LungsVicks</span></td></tr>
+  <tr><td class="c-name"><a class="olink" href="#offer-vapobrain">VapoBrain</a> <span class="new-mini">NEW</span></td><td class="c-cat">Memory</td><td class="c-plat"><span class="m-cat">Memory · </span>BuyGoods</td><td class="c-meth" data-label="Method"><a href="#m03" class="hl mlink c03">M03 · Vince</a></td><td class="c-vsl"><a class="vcount" href="#offer-vapobrain">1 VSL ↓</a></td><td class="c-mat"><span class="st ok">On cloud drive</span> <span class="cat">记忆类 / VapoBrain-Ads</span></td></tr>
+  <tr><td class="c-name"><a class="olink" href="#offer-yoburn">YOBURN</a> <span class="new-mini">NEW</span></td><td class="c-cat">Weight loss</td><td class="c-plat"><span class="m-cat">Weight loss · </span>BuyGoods</td><td class="c-meth" data-label="Method"><a href="#m03" class="hl mlink c03">M03 · Vince</a></td><td class="c-vsl"><a class="vcount" href="#offer-yoburn">4 VSLs ↓</a></td><td class="c-mat"><span class="st ok">On cloud drive</span> <span class="cat">减肥类 / YoBurn02-Ads</span></td></tr>
+  <tr><td class="c-name"><a class="olink" href="#offer-neurotamine">NeuroTamine</a> <span class="new-mini">NEW</span></td><td class="c-cat">Memory</td><td class="c-plat"><span class="m-cat">Memory · </span>Digistore24</td><td class="c-meth" data-label="Method"><b>Any</b> <span class="cat">any method</span></td><td class="c-vsl"><a class="vcount" href="#offer-neurotamine">2 VSLs ↓</a></td><td class="c-mat"><span class="st ok">Sent to WeCom group</span> <span class="cat">NeuroTamine_Ads.zip</span></td></tr>
   </tbody></table></div>
   <h3>Offer details</h3>
   <div class="ocards">
@@ -1080,8 +1136,11 @@
     document.querySelectorAll("section.view").forEach(function(sec){
       sec.classList.toggle("active",sec.getAttribute("data-view")===h);
     });
+    var nav=document.getElementById("tabs");
     document.querySelectorAll("#tabs a").forEach(function(a){
-      a.classList.toggle("active",a.getAttribute("data-view")===h);
+      var on=a.getAttribute("data-view")===h;
+      a.classList.toggle("active",on);
+      if(on&&nav.scrollWidth>nav.clientWidth){nav.scrollLeft=a.offsetLeft-(nav.clientWidth-a.offsetWidth)/2;}
     });
     window.scrollTo(0,0);
     if(target){
