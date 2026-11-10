@@ -219,6 +219,38 @@
   .cpy.done{color:#13865f;border-color:#bfe5d3;background:#e6f6ee}
   .cpy.fail{color:#9a6b00;border-color:#f3e0b3;background:#fff4e0}
   @media print{.cpy{display:none}}
+  /* ---------- Running ---------- */
+  .day{margin-top:22px}
+  .day-h{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+  .day-h .dd{font-size:18px;font-weight:700}
+  .day-h .dw{font-size:13px;color:var(--muted)}
+  .dk{font-size:11.5px;font-weight:700;padding:1px 8px;border-radius:999px;align-self:center}
+  .dk.plan{background:#eef3fd;color:#2f6fe4}
+  .dk.result{background:#e6f6ee;color:#13865f}
+  .dk.latest{background:var(--ink);color:#fff}
+  .dsum{margin-left:auto;font-size:13px;color:var(--ink2);font-weight:600}
+  .day:not(.first) .mcard{background:#fcfcfd}
+  .mgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+  .mcard{background:#fff;border:1px solid var(--line);border-top:3px solid var(--mc);border-radius:var(--radius);padding:12px 14px 14px;display:flex;flex-direction:column;gap:10px}
+  .mcard .mh{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .mcard .av{display:inline-block;font-size:13px;font-weight:800;letter-spacing:.5px;color:#fff;background:var(--mc);padding:3px 10px;border-radius:999px}
+  .mcard .mc-n{font-size:12px;color:var(--muted)}
+  .mcard.empty{border-top-color:var(--line);opacity:.75}
+  .mcard.empty .av{background:#c3c8d2}
+  .mcard .none{font-size:13px;color:var(--faint)}
+  .ent{border:1px solid var(--line2);border-radius:10px;padding:9px 11px;background:#fff}
+  .ochip{display:inline-block;font-weight:700;font-size:14.5px;text-decoration:none;color:var(--ink);border-bottom:1.5px dashed var(--faint)}
+  .ochip:hover{border-bottom-color:var(--ink)}
+  .emeta{font-size:12.5px;color:var(--ink2);margin-top:5px}
+  .emeta>span{color:var(--muted);margin-right:6px}
+  .emeta a{color:var(--m03);font-weight:600}
+  .eres{display:flex;gap:16px;margin-top:7px;font-size:12px}
+  .eres .rv span{color:var(--muted);margin-right:5px}
+  .eres .rv b{font-size:14px}
+  .eres b.good{color:#13865f} .eres b.zero{color:#c0392b}
+  .eres.pend{color:var(--faint)}
+  @media (max-width:900px){.mgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
   /* ---------- 手机适配 ---------- */
   .otable .m-cat{display:none}
   html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
@@ -257,6 +289,9 @@
     .ocard{padding:14px 14px 10px;scroll-margin-top:96px}
     .offer-box{padding:14px}
     .grid2{grid-template-columns:1fr}
+    .mgrid{grid-template-columns:1fr;gap:10px}
+    .day-h .dd{font-size:16px}
+    .dsum{margin-left:0;flex-basis:100%}
     footer{padding:0 12px 32px}
     /* Offer 总表 → 手机卡片列表 */
     .otable-wrap{overflow:visible}
@@ -283,10 +318,11 @@
   <div class="top-inner">
     <div class="title-row">
       <h1><img class="logo" alt="" src="data:image/png;base64,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"><span class="t-zh">信息同步</span><span class="t-en">Info Sync</span></h1>
-      <span class="meta"><span class="t-zh">v1.4 · 更新 2026-11-09 · 6 个 offer · 3 套方法</span><span class="t-en">v1.4 · Updated 2026-11-09 · 6 offers · 3 methods</span></span>
+      <span class="meta"><span class="t-zh">v1.5 · 更新 2026-11-10 · 6 个 offer · 3 套方法</span><span class="t-en">v1.5 · Updated 2026-11-10 · 6 offers · 3 methods</span></span>
       <div class="langsw" role="group" aria-label="Language"><button type="button" data-lang="zh">中文</button><button type="button" data-lang="en">EN</button></div>
     </div>
     <nav class="tabs" id="tabs">
+      <a href="#running" data-view="running"><span class="t-zh">Running 安排</span><span class="t-en">Running</span></a>
       <a href="#offers" data-view="offers"><span class="t-zh">Offer 清单</span><span class="t-en">Offer List</span></a>
       <a href="#m01" data-view="m01" data-c="m01"><span class="num">M01</span><span class="t-zh">Arthur<span class="tl"> · 视力 / 减肥</span></span><span class="t-en">Arthur<span class="tl"> · Vision / Weight loss</span></span></a>
       <a href="#m02" data-view="m02" data-c="m02"><span class="num">M02</span><span class="t-zh">Silva<span class="tl"> · LungVicks 肺部</span></span><span class="t-en">Silva<span class="tl"> · LungVicks Lung</span></span></a>
@@ -297,6 +333,29 @@
 
 <main>
 <div class="lang lang-zh" lang="zh-CN">
+
+<!-- ======================= Running ======================= -->
+<section class="view" data-view="running">
+  <h2>Running 安排</h2>
+  <p style="color:var(--ink2)">团队每日投放安排与结果，最新一天在最上面。点 offer 可跳到 Offer 清单查看 VSL 和素材。 <span class="cat">更新：2026-11-10</span></p>
+  <div class="day first">
+  <div class="day-h"><span class="dd">11月10日</span><span class="dw">周二</span><span class="dk plan">安排</span><span class="dk latest">最新</span></div>
+  <div class="mgrid">
+  <div class="mcard" style="--mc:#7c3aed"><div class="mh"><span class="av">GZ</span><span class="mc-n">2 个 offer</span></div><div class="ent"><a class="ochip" href="#offer-lungvicks">LungVicks</a><div class="eres pend">结果待更新</div></div><div class="ent"><a class="ochip" href="#offer-vapobrain">VapoBrain</a><div class="eres pend">结果待更新</div></div></div>
+  <div class="mcard" style="--mc:#0f9a7a"><div class="mh"><span class="av">MJ</span><span class="mc-n">1 个 offer</span></div><div class="ent"><a class="ochip" href="#offer-visivra">VisiVra</a><div class="emeta"><span>方法</span>自己的方法 + 广告主方法，各一半</div><div class="eres pend">结果待更新</div></div></div>
+  <div class="mcard" style="--mc:#2f6fe4"><div class="mh"><span class="av">ZAY</span><span class="mc-n">2 个 offer</span></div><div class="ent"><a class="ochip" href="#offer-neurotamine">NeuroTamine</a><div class="eres pend">结果待更新</div></div><div class="ent"><a class="ochip" href="#offer-slimzol">SlimZol</a><div class="eres pend">结果待更新</div></div></div>
+  <div class="mcard" style="--mc:#d63384"><div class="mh"><span class="av">ZXQY</span><span class="mc-n">2 个 offer</span></div><div class="ent"><a class="ochip" href="#offer-neurotamine">NeuroTamine</a><div class="eres pend">结果待更新</div></div><div class="ent"><a class="ochip" href="#offer-yoburn">YOBURN</a><div class="eres pend">结果待更新</div></div></div>
+  </div></div>
+  <div class="day">
+  <div class="day-h"><span class="dd">11月9日</span><span class="dw">周一</span><span class="dk result">结果</span><span class="dsum">合计花费 $500+ · 出单 1</span></div>
+  <div class="mgrid">
+  <div class="mcard" style="--mc:#7c3aed"><div class="mh"><span class="av">GZ</span><span class="mc-n">1 个 offer</span></div><div class="ent"><a class="ochip" href="#offer-lungvicks">LungVicks</a><div class="emeta"><span>方法</span>自己的方式</div><div class="eres"><span class="rv"><span>花费</span><b>$240+</b></span><span class="rv"><span>出单</span><b class="zero">0</b></span></div></div></div>
+  <div class="mcard empty" style="--mc:#0f9a7a"><div class="mh"><span class="av">MJ</span></div><div class="none">当日无记录</div></div>
+  <div class="mcard" style="--mc:#2f6fe4"><div class="mh"><span class="av">ZAY</span><span class="mc-n">1 个 offer</span></div><div class="ent"><a class="ochip" href="#offer-neurotamine">NeuroTamine</a><div class="emeta"><span>方法</span><a href="#m03">Vince 的 1-10-1 方式</a></div><div class="eres"><span class="rv"><span>花费</span><b>$260</b></span><span class="rv"><span>出单</span><b class="good">1</b></span></div></div></div>
+  <div class="mcard empty" style="--mc:#d63384"><div class="mh"><span class="av">ZXQY</span></div><div class="none">当日无记录</div></div>
+  </div></div>
+</section>
+
 
 <!-- ======================= Offer 清单 ======================= -->
 <section class="view" data-view="offers">
@@ -706,6 +765,29 @@
 
 <div class="lang lang-en" lang="en">
 
+<!-- ======================= Running ======================= -->
+<section class="view" data-view="running">
+  <h2>Running</h2>
+  <p style="color:var(--ink2)">Daily team schedule and results, newest day first. Click an offer to see its VSLs and creatives in the Offer List. <span class="cat">Updated: 2026-11-10</span></p>
+  <div class="day first">
+  <div class="day-h"><span class="dd">Nov 10</span><span class="dw">Tue</span><span class="dk plan">Plan</span><span class="dk latest">Latest</span></div>
+  <div class="mgrid">
+  <div class="mcard" style="--mc:#7c3aed"><div class="mh"><span class="av">GZ</span><span class="mc-n">2 offers</span></div><div class="ent"><a class="ochip" href="#offer-lungvicks">LungVicks</a><div class="eres pend">Results pending</div></div><div class="ent"><a class="ochip" href="#offer-vapobrain">VapoBrain</a><div class="eres pend">Results pending</div></div></div>
+  <div class="mcard" style="--mc:#0f9a7a"><div class="mh"><span class="av">MJ</span><span class="mc-n">1 offer</span></div><div class="ent"><a class="ochip" href="#offer-visivra">VisiVra</a><div class="emeta"><span>Method</span>Own method + advertiser's method, 50/50</div><div class="eres pend">Results pending</div></div></div>
+  <div class="mcard" style="--mc:#2f6fe4"><div class="mh"><span class="av">ZAY</span><span class="mc-n">2 offers</span></div><div class="ent"><a class="ochip" href="#offer-neurotamine">NeuroTamine</a><div class="eres pend">Results pending</div></div><div class="ent"><a class="ochip" href="#offer-slimzol">SlimZol</a><div class="eres pend">Results pending</div></div></div>
+  <div class="mcard" style="--mc:#d63384"><div class="mh"><span class="av">ZXQY</span><span class="mc-n">2 offers</span></div><div class="ent"><a class="ochip" href="#offer-neurotamine">NeuroTamine</a><div class="eres pend">Results pending</div></div><div class="ent"><a class="ochip" href="#offer-yoburn">YOBURN</a><div class="eres pend">Results pending</div></div></div>
+  </div></div>
+  <div class="day">
+  <div class="day-h"><span class="dd">Nov 9</span><span class="dw">Mon</span><span class="dk result">Results</span><span class="dsum">Total spend $500+ · 1 sale</span></div>
+  <div class="mgrid">
+  <div class="mcard" style="--mc:#7c3aed"><div class="mh"><span class="av">GZ</span><span class="mc-n">1 offer</span></div><div class="ent"><a class="ochip" href="#offer-lungvicks">LungVicks</a><div class="emeta"><span>Method</span>Own method</div><div class="eres"><span class="rv"><span>Spend</span><b>$240+</b></span><span class="rv"><span>Sales</span><b class="zero">0</b></span></div></div></div>
+  <div class="mcard empty" style="--mc:#0f9a7a"><div class="mh"><span class="av">MJ</span></div><div class="none">No record</div></div>
+  <div class="mcard" style="--mc:#2f6fe4"><div class="mh"><span class="av">ZAY</span><span class="mc-n">1 offer</span></div><div class="ent"><a class="ochip" href="#offer-neurotamine">NeuroTamine</a><div class="emeta"><span>Method</span><a href="#m03">Vince's 1-10-1 setup</a></div><div class="eres"><span class="rv"><span>Spend</span><b>$260</b></span><span class="rv"><span>Sales</span><b class="good">1</b></span></div></div></div>
+  <div class="mcard empty" style="--mc:#d63384"><div class="mh"><span class="av">ZXQY</span></div><div class="none">No record</div></div>
+  </div></div>
+</section>
+
+
 <!-- ======================= Offer list (EN) ======================= -->
 <section class="view" data-view="offers">
   <h2>Offer List</h2>
@@ -1114,11 +1196,11 @@
 
 </main>
 
-<footer><span class="t-zh">信息同步 · v1.4 · 2026-11-09</span><span class="t-en">Info Sync · v1.4 · 2026-11-09</span></footer>
+<footer><span class="t-zh">信息同步 · v1.5 · 2026-11-10</span><span class="t-en">Info Sync · v1.5 · 2026-11-10</span></footer>
 
 <script>
 (function(){
-  var views=["offers","m01","m02","m03"];
+  var views=["running","offers","m01","m02","m03"];
   var root=document.documentElement;
   function setLang(l,save){
     l=(l==="en")?"en":"zh";
@@ -1132,7 +1214,7 @@
     var h=(location.hash||"").replace("#","");
     var target=null;
     if(h.indexOf("offer-")===0){target=h.slice(6);h="offers";}
-    if(views.indexOf(h)<0) h="offers";
+    if(views.indexOf(h)<0) h="running";
     document.querySelectorAll("section.view").forEach(function(sec){
       sec.classList.toggle("active",sec.getAttribute("data-view")===h);
     });
