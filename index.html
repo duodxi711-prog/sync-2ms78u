@@ -400,6 +400,7 @@
     </div>
     <nav class="tabs" id="tabs">
       <a href="#running" data-view="running"><span class="t-zh">Running 安排</span><span class="t-en">Running</span></a>
+      <a href="#claim" data-view="claim"><span class="t-zh">广告认领</span><span class="t-en">Ad Claims</span></a>
       <a href="#results" data-view="results"><span class="t-zh">测试结果</span><span class="t-en">Test Results</span></a>
       <a href="#offers" data-view="offers"><span class="t-zh">Offer 清单</span><span class="t-en">Offer List</span></a>
       <a href="#m01" data-view="m01" data-c="m01"><span class="num">M01</span><span class="t-zh">Arthur<span class="tl"> · 视力 / 减肥</span></span><span class="t-en">Arthur<span class="tl"> · Vision / Weight loss</span></span></a>
@@ -1450,13 +1451,270 @@
 
 </div>
 
+
+<!-- ======================= 广告认领（共用，中英文由脚本切换） ======================= -->
+<section class="view" data-view="claim" id="claim-app">
+  <h2 data-i="title"></h2>
+  <p style="color:var(--ink2)" data-i="intro"></p>
+  <div id="cl-root"></div>
+</section>
+<style>
+  .cl-box{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;margin-top:14px}
+  .cl-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .cl-lbl{font-size:13px;color:var(--muted)}
+  .cl-me button,.cl-seg button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:4px 12px;font:inherit;font-size:13px;font-weight:700;color:var(--ink2);cursor:pointer}
+  .cl-me button.on{color:#fff;border-color:transparent;background:var(--mc)}
+  .cl-seg{display:inline-flex;gap:6px;flex-wrap:wrap}
+  .cl-seg button{font-weight:600;border-radius:8px;padding:4px 10px}
+  .cl-seg button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .cl-input{border:1px solid var(--line);border-radius:8px;padding:7px 10px;font:inherit;font-size:14px;min-width:0;background:#fff}
+  .cl-btn{border:0;background:var(--ink);color:#fff;border-radius:8px;padding:7px 14px;font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}
+  .cl-btn.sec{background:#fff;color:var(--ink2);border:1px solid var(--line)}
+  .cl-btn:disabled{opacity:.5;cursor:default}
+  .cl-msg{font-size:13px;margin-top:8px}
+  .cl-msg.err{color:#c0392b} .cl-msg.ok{color:#13865f}
+  .cl-stats{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 4px}
+  .cl-stat{background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 14px;font-size:12.5px;color:var(--muted)}
+  .cl-stat b{display:block;font-size:19px;color:var(--ink)}
+  .cl-tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:14px 0 8px}
+  .cl-tools .sp{flex:1}
+  .cl-upd{font-size:12px;color:var(--faint)}
+  .cl-grp{margin-top:14px}
+  .cl-grp-h{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;margin-bottom:6px}
+  .cl-grp-h .cat{font-weight:500}
+  .cl-tbl td{vertical-align:middle}
+  .cl-tbl tr.mine td{background:#f6f9ff}
+  .cl-tbl tr.done td{background:#f2fbf6}
+  .cl-tbl td.cr{font-family:"SF Mono",Menlo,Consolas,monospace;font-weight:600;font-size:13px;white-space:nowrap}
+  .cl-tbl td.vs{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:12.5px;color:var(--ink2);white-space:nowrap}
+  .cl-tbl td.nt{font-size:12.5px;color:var(--ink2)}
+  .cl-who{display:inline-flex;align-items:center;gap:6px}
+  .cl-chip{display:inline-block;font-size:11.5px;font-weight:800;color:#fff;background:var(--mc);padding:2px 9px;border-radius:999px}
+  .cl-sel{border:1px solid var(--line);border-radius:6px;padding:3px 4px;font:inherit;font-size:12.5px;background:#fff;color:var(--ink2)}
+  .cl-claim{border:1px dashed #9db5e8;background:#f4f8ff;color:#2f6fe4;border-radius:6px;padding:3px 10px;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}
+  .cl-claim{white-space:nowrap}
+  .cl-who{white-space:nowrap}
+  .cl-chk{width:18px;height:18px;accent-color:#13865f;cursor:pointer}
+  .cl-res{border:1px solid transparent;border-radius:6px;padding:4px 6px;font:inherit;font-size:12.5px;width:100%;min-width:120px;background:transparent}
+  .cl-res:hover,.cl-res:focus{border-color:var(--line);background:#fff;outline:none}
+  .cl-del{border:0;background:transparent;color:var(--faint);cursor:pointer;font-size:15px;padding:2px 6px;border-radius:6px}
+  .cl-del:hover{color:#c0392b}
+  .cl-del.arm{background:#fde8e8;color:#c0392b;font-size:12px;font-weight:700}
+  .cl-add textarea{width:100%;min-height:110px;resize:vertical;font-family:"SF Mono",Menlo,Consolas,monospace;font-size:13px}
+  .cl-add summary{cursor:pointer;font-weight:700;font-size:14px}
+  .cl-empty{color:var(--faint);font-size:13.5px;padding:18px 4px}
+  .cl-busy{opacity:.55;pointer-events:none}
+  @media (max-width:640px){
+    .cl-tbl th.h-nt,.cl-tbl td.nt{display:none}
+    .cl-tbl th,.cl-tbl td{padding:7px 8px}
+    .cl-res{min-width:90px}
+    .cl-who .cl-sel{width:30px;padding:3px 0}
+    .cl-me .sp{display:none}
+  }
+</style>
+<script>
+(function(){
+  // ====== 连接设置：建好 Supabase 后填这两项（anon key 本来就是公开的，可以放在网页里） ======
+  var SB_URL = "";
+  var SB_KEY = "";
+  // ====================================================================================
+  var MEMBERS = [["GZ","#7c3aed"],["MJ","#0f9a7a"],["ZAY","#2f6fe4"],["ZXQY","#d63384"]];
+  var OFFERS = ["VisiVra","SlimZol","LungVicks","VapoBrain","YOBURN","NeuroTamine"];
+  var COLOR = {}; MEMBERS.forEach(function(m){COLOR[m[0]]=m[1];});
+  var L = {
+    zh:{title:"广告认领",intro:"待测广告清单。选好“我是谁”后，点“认领”把广告领到自己名下，测完打勾并写上结果。所有人看到的是同一份数据。",
+        notset:"认领表还没有连接云数据库。连接后这里会显示待测广告清单。",
+        code:"团队口令",enter:"进入",codeHint:"第一次使用需要输入团队口令，浏览器会记住。",badCode:"口令不对，请重新输入。",
+        me:"我是",pickMe:"先选“我是谁”，再认领。",all:"全部",open:"未认领",mine:"我的",done:"已完成",offerAll:"全部 offer",
+        refresh:"刷新",updated:"更新于",total:"总数",claimed:"已认领",finished:"已完成",
+        cr:"素材",vsl:"VSL",note:"备注",who:"认领人",fin:"完成",res:"结果",claim:"认领",none:"—",
+        resPh:"写结果，回车保存",empty:"没有符合条件的广告。",
+        add:"添加待测广告",addOffer:"Offer",addHelp:"每行一条：素材编号, VSL, 备注（后两项可省略，用逗号分隔）",addBtn:"添加",
+        added:function(n){return "已添加 "+n+" 条。";},addNone:"没有可添加的内容。",
+        delConfirm:"确认删除",logout:"退出口令",netErr:"连接失败，请检查网络后重试。",saved:"已保存"},
+    en:{title:"Ad Claims",intro:"Ads waiting to be tested. Pick who you are, click Claim to take an ad, then tick it and add a result when done. Everyone sees the same data.",
+        notset:"The claim board isn't connected to the cloud database yet. Once connected, the ad list will appear here.",
+        code:"Team code",enter:"Enter",codeHint:"Enter the team code once — your browser will remember it.",badCode:"Wrong code, please try again.",
+        me:"I am",pickMe:"Pick who you are first, then claim.",all:"All",open:"Unclaimed",mine:"Mine",done:"Done",offerAll:"All offers",
+        refresh:"Refresh",updated:"Updated",total:"Total",claimed:"Claimed",finished:"Done",
+        cr:"Creative",vsl:"VSL",note:"Note",who:"Owner",fin:"Done",res:"Result",claim:"Claim",none:"—",
+        resPh:"Type a result, Enter to save",empty:"No ads match.",
+        add:"Add ads to test",addOffer:"Offer",addHelp:"One per line: creative, VSL, note (last two optional, comma-separated)",addBtn:"Add",
+        added:function(n){return n+" added.";},addNone:"Nothing to add.",
+        delConfirm:"Confirm",logout:"Forget code",netErr:"Connection failed, please check your network and retry.",saved:"Saved"}
+  };
+  var st = {tasks:[], filter:"all", offer:"", msg:"", msgCls:"", busy:false, updated:null};
+  function lang(){return document.documentElement.getAttribute("data-lang")==="en"?"en":"zh";}
+  function t(k){return L[lang()][k];}
+  function get(k){try{return localStorage.getItem(k)||"";}catch(e){return "";}}
+  function set(k,v){try{ if(v) localStorage.setItem(k,v); else localStorage.removeItem(k);}catch(e){}}
+  function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+  function rpc(fn,args){
+    return fetch(SB_URL.replace(/\/$/,"")+"/rest/v1/rpc/"+fn,{method:"POST",
+      headers:{"apikey":SB_KEY,"Authorization":"Bearer "+SB_KEY,"Content-Type":"application/json"},
+      body:JSON.stringify(args)}).then(function(r){
+        return r.text().then(function(txt){
+          var j=null; try{j=txt?JSON.parse(txt):null;}catch(e){}
+          if(!r.ok){var err=new Error((j&&j.message)||("HTTP "+r.status)); err.code=j&&j.code; throw err;}
+          return j;
+        });
+      });
+  }
+  function fail(e){
+    if(e&&(e.code==="28000"||/invalid team code/i.test(e.message))){set("cl-code","");st.msg=t("badCode");st.msgCls="err";st.tasks=[];}
+    else{st.msg=t("netErr");st.msgCls="err";}
+    st.busy=false; render();
+  }
+  function load(quiet){
+    var code=get("cl-code"); if(!code||!SB_URL) return render();
+    if(!quiet){st.busy=true; render();}
+    return rpc("list_tasks",{p_code:code}).then(function(rows){
+      st.tasks=rows||[]; st.busy=false; st.updated=new Date(); if(st.msgCls==="err") st.msg=""; render();
+    }).catch(fail);
+  }
+  function upsert(row){ if(!row) return; for(var i=0;i<st.tasks.length;i++){ if(st.tasks[i].id===row.id){st.tasks[i]=row; return;} } st.tasks.push(row); }
+  function act(fn,args,after){
+    st.busy=true; render();
+    return rpc(fn,Object.assign({p_code:get("cl-code")},args)).then(function(res){
+      st.busy=false; if(after) after(res); render();
+    }).catch(fail);
+  }
+  function filtered(){
+    var me=get("cl-me");
+    return st.tasks.filter(function(x){
+      if(st.offer && x.offer!==st.offer) return false;
+      if(st.filter==="open") return !x.claimed_by;
+      if(st.filter==="mine") return me && x.claimed_by===me;
+      if(st.filter==="done") return x.done;
+      return true;
+    });
+  }
+  function hhmm(d){return ("0"+d.getHours()).slice(-2)+":"+("0"+d.getMinutes()).slice(-2)+":"+("0"+d.getSeconds()).slice(-2);}
+  function render(){
+    document.querySelectorAll("#claim-app [data-i]").forEach(function(el){el.textContent=t(el.getAttribute("data-i"));});
+    var root=document.getElementById("cl-root"); if(!root) return;
+    if(!SB_URL||!SB_KEY){ root.innerHTML='<div class="cl-box"><div class="cl-empty">'+t("notset")+'</div></div>'; return; }
+    var code=get("cl-code"), me=get("cl-me"), h="";
+    if(!code){
+      h+='<div class="cl-box"><div class="cl-row"><span class="cl-lbl">'+t("code")+'</span>'+
+         '<input class="cl-input" id="cl-code-in" type="password" autocomplete="off" style="flex:1;max-width:260px">'+
+         '<button class="cl-btn" id="cl-code-go">'+t("enter")+'</button></div>'+
+         '<div class="cl-msg '+(st.msgCls||"")+'">'+(st.msg||t("codeHint"))+'</div></div>';
+      root.innerHTML=h;
+      var go=function(){var v=document.getElementById("cl-code-in").value.trim(); if(!v) return; set("cl-code",v); st.msg=""; load();};
+      document.getElementById("cl-code-go").onclick=go;
+      document.getElementById("cl-code-in").onkeydown=function(e){if(e.key==="Enter") go();};
+      return;
+    }
+    // 身份
+    h+='<div class="cl-box"><div class="cl-row cl-me"><span class="cl-lbl">'+t("me")+'</span>';
+    MEMBERS.forEach(function(m){h+='<button data-me="'+m[0]+'" class="'+(me===m[0]?"on":"")+'" style="--mc:'+m[1]+'">'+m[0]+'</button>';});
+    h+='<span class="sp" style="flex:1"></span><button class="cl-btn sec" id="cl-logout">'+t("logout")+'</button></div>';
+    if(!me) h+='<div class="cl-msg">'+t("pickMe")+'</div>';
+    h+='</div>';
+    // 统计
+    var n=st.tasks.length, c=st.tasks.filter(function(x){return x.claimed_by;}).length, d=st.tasks.filter(function(x){return x.done;}).length;
+    h+='<div class="cl-stats"><div class="cl-stat">'+t("total")+'<b>'+n+'</b></div><div class="cl-stat">'+t("open")+'<b>'+(n-c)+'</b></div>'+
+       '<div class="cl-stat">'+t("claimed")+'<b>'+c+'</b></div><div class="cl-stat">'+t("finished")+'<b>'+d+'</b></div></div>';
+    // 工具栏
+    h+='<div class="cl-tools"><div class="cl-seg">';
+    [["all","all"],["open","open"],["mine","mine"],["done","done"]].forEach(function(f){h+='<button data-f="'+f[0]+'" class="'+(st.filter===f[0]?"on":"")+'">'+t(f[1])+'</button>';});
+    h+='</div><select class="cl-sel" id="cl-offer"><option value="">'+t("offerAll")+'</option>';
+    var offs=OFFERS.slice(); st.tasks.forEach(function(x){if(offs.indexOf(x.offer)<0) offs.push(x.offer);});
+    offs.forEach(function(o){h+='<option'+(st.offer===o?" selected":"")+'>'+esc(o)+'</option>';});
+    h+='</select><span class="sp"></span>'+(st.updated?'<span class="cl-upd">'+t("updated")+' '+hhmm(st.updated)+'</span>':'')+
+       '<button class="cl-btn sec" id="cl-refresh">'+t("refresh")+'</button></div>';
+    if(st.msg) h+='<div class="cl-msg '+st.msgCls+'">'+esc(st.msg)+'</div>';
+    // 表格（按 offer 分组）
+    var rows=filtered(), groups={};
+    rows.forEach(function(x){(groups[x.offer]=groups[x.offer]||[]).push(x);});
+    var keys=Object.keys(groups).sort(function(a,b){var ia=OFFERS.indexOf(a),ib=OFFERS.indexOf(b);return (ia<0?99:ia)-(ib<0?99:ib)||a.localeCompare(b);});
+    h+='<div class="'+(st.busy?"cl-busy":"")+'">';
+    if(!keys.length) h+='<div class="cl-box"><div class="cl-empty">'+t("empty")+'</div></div>';
+    keys.forEach(function(k){
+      var g=groups[k], gd=g.filter(function(x){return x.done;}).length;
+      h+='<div class="cl-grp"><div class="cl-grp-h">'+esc(k)+'<span class="cat">'+gd+' / '+g.length+'</span></div>'+
+         '<div class="tbl-wrap cl-tbl"><table><thead><tr><th>'+t("cr")+'</th><th>'+t("vsl")+'</th><th class="h-nt">'+t("note")+'</th><th>'+t("who")+'</th><th>'+t("fin")+'</th><th>'+t("res")+'</th><th></th></tr></thead><tbody>';
+      g.forEach(function(x){
+        var cls=(x.done?"done":(me&&x.claimed_by===me?"mine":""));
+        var who;
+        if(x.claimed_by){
+          who='<span class="cl-who"><span class="cl-chip" style="--mc:'+(COLOR[x.claimed_by]||"#888")+'">'+esc(x.claimed_by)+'</span>'+
+              '<select class="cl-sel" data-assign="'+x.id+'" aria-label="owner"><option value="'+esc(x.claimed_by)+'">⋯</option><option value="">'+t("none")+'</option>'+
+              MEMBERS.filter(function(m){return m[0]!==x.claimed_by;}).map(function(m){return '<option value="'+m[0]+'">'+m[0]+'</option>';}).join("")+'</select></span>';
+        } else {
+          who='<button class="cl-claim" data-claim="'+x.id+'">'+t("claim")+'</button>';
+        }
+        h+='<tr class="'+cls+'"><td class="cr">'+esc(x.creative)+'</td><td class="vs">'+esc(x.vsl||"")+'</td><td class="nt">'+esc(x.note||"")+'</td>'+
+           '<td>'+who+'</td><td><input type="checkbox" class="cl-chk" data-done="'+x.id+'"'+(x.done?" checked":"")+'></td>'+
+           '<td><input class="cl-res" data-res="'+x.id+'" value="'+esc(x.result||"")+'" placeholder="'+t("resPh")+'"></td>'+
+           '<td><button class="cl-del" data-del="'+x.id+'" title="delete">×</button></td></tr>';
+      });
+      h+='</tbody></table></div></div>';
+    });
+    h+='</div>';
+    // 添加
+    h+='<div class="cl-box cl-add"><details><summary>'+t("add")+'</summary><div style="margin-top:12px" class="cl-row"><span class="cl-lbl">'+t("addOffer")+'</span>'+
+       '<input class="cl-input" id="cl-add-offer" list="cl-offers" value="'+esc(st.offer||"")+'" style="max-width:200px"><datalist id="cl-offers">'+
+       OFFERS.map(function(o){return '<option value="'+o+'">';}).join("")+'</datalist></div>'+
+       '<div class="cl-lbl" style="margin:10px 0 6px">'+t("addHelp")+'</div><textarea class="cl-input" id="cl-add-text" placeholder="AD123, 376, 新素材"></textarea>'+
+       '<div style="margin-top:10px"><button class="cl-btn" id="cl-add-go">'+t("addBtn")+'</button></div></details></div>';
+    root.innerHTML=h;
+    // 事件
+    root.querySelectorAll("[data-me]").forEach(function(b){b.onclick=function(){set("cl-me",b.getAttribute("data-me"));render();};});
+    root.querySelectorAll("[data-f]").forEach(function(b){b.onclick=function(){st.filter=b.getAttribute("data-f");render();};});
+    document.getElementById("cl-offer").onchange=function(){st.offer=this.value;render();};
+    document.getElementById("cl-refresh").onclick=function(){st.msg="";load();};
+    document.getElementById("cl-logout").onclick=function(){set("cl-code","");st.tasks=[];st.msg="";render();};
+    root.querySelectorAll("[data-claim]").forEach(function(b){b.onclick=function(){
+      var me=get("cl-me"); if(!me){st.msg=t("pickMe");st.msgCls="err";render();return;}
+      act("claim_task",{p_id:+b.getAttribute("data-claim"),p_member:me},upsert);};});
+    root.querySelectorAll("[data-assign]").forEach(function(s){s.onchange=function(){
+      act("claim_task",{p_id:+s.getAttribute("data-assign"),p_member:s.value},upsert);};});
+    root.querySelectorAll("[data-done]").forEach(function(c){c.onchange=function(){
+      var id=+c.getAttribute("data-done"), r=root.querySelector('[data-res="'+id+'"]');
+      act("set_done",{p_id:id,p_done:c.checked,p_result:r?r.value:null},upsert);};});
+    root.querySelectorAll("[data-res]").forEach(function(inp){
+      var save=function(){var id=+inp.getAttribute("data-res"), x=st.tasks.filter(function(z){return z.id===id;})[0];
+        if(!x||(x.result||"")===inp.value) return;
+        act("set_done",{p_id:id,p_done:x.done,p_result:inp.value},function(r){upsert(r);st.msg=t("saved");st.msgCls="ok";});};
+      inp.onkeydown=function(e){if(e.key==="Enter"){inp.blur();}};
+      inp.onblur=save;});
+    root.querySelectorAll("[data-del]").forEach(function(b){b.onclick=function(){
+      if(!b.classList.contains("arm")){b.classList.add("arm");b.textContent=t("delConfirm");setTimeout(function(){if(b.isConnected){b.classList.remove("arm");b.textContent="×";}},3000);return;}
+      var id=+b.getAttribute("data-del");
+      act("delete_task",{p_id:id},function(){st.tasks=st.tasks.filter(function(z){return z.id!==id;});});};});
+    var addGo=document.getElementById("cl-add-go");
+    if(addGo) addGo.onclick=function(){
+      var off=document.getElementById("cl-add-offer").value.trim();
+      var lines=document.getElementById("cl-add-text").value.split(/\n+/).map(function(s){return s.trim();}).filter(Boolean);
+      var rowsIn=lines.map(function(l){var p=l.split(/[,，\t]/).map(function(s){return s.trim();});return {offer:off,creative:p[0]||"",vsl:p[1]||"",note:p.slice(2).join(", ")};})
+        .filter(function(r){return r.offer&&r.creative;});
+      if(!rowsIn.length){st.msg=t("addNone");st.msgCls="err";render();return;}
+      act("add_tasks",{p_rows:rowsIn},function(n){st.msg=t("added")(n);st.msgCls="ok";}).then(function(){load(true);});
+    };
+  }
+  // 语言切换时重绘
+  document.querySelectorAll(".langsw button").forEach(function(b){b.addEventListener("click",function(){setTimeout(render,0);});});
+  // 打开认领页时加载；停留在认领页时每 20 秒自动刷新
+  function onView(){ if(location.hash==="#claim") load(); }
+  window.addEventListener("hashchange",onView);
+  setInterval(function(){
+    var a=document.activeElement;
+    var editing=a&&a.classList&&(a.classList.contains("cl-res")||a.id==="cl-add-text"||a.id==="cl-add-offer"||a.id==="cl-code-in");
+    if(location.hash==="#claim"&&!st.busy&&!editing&&!document.hidden) load(true);
+  },20000);
+  render(); onView();
+})();
+</script>
+
 </main>
 
 <footer><span class="t-zh">信息同步 · v1.5 · 2026-11-10</span><span class="t-en">Info Sync · v1.5 · 2026-11-10</span></footer>
 
 <script>
 (function(){
-  var views=["running","results","offers","m01","m02","m03"];
+  var views=["running","claim","results","offers","m01","m02","m03"];
   var root=document.documentElement;
   function setLang(l,save){
     l=(l==="en")?"en":"zh";
