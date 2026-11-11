@@ -1520,6 +1520,15 @@
   .cl-add summary{cursor:pointer;font-weight:700;font-size:14px}
   .cl-empty{color:var(--faint);font-size:13.5px;padding:18px 4px}
   .cl-mini{padding:3px 10px;font-size:12px}
+  svg.lc{width:16px;height:16px;flex:0 0 auto;display:block}
+  .cl-ibtn{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border:1px solid var(--line);background:#fff;color:var(--ink2);border-radius:8px;cursor:pointer;padding:0}
+  .cl-ibtn:hover{color:var(--ink);border-color:#c9cfd8;background:#fafbfc}
+  .cl-grp-h .cl-ibtn{width:28px;height:28px}
+  .cl-grp-h .cl-ibtn+.cl-ibtn{margin-left:6px}
+  .cl-claim,.cl-wi{display:inline-flex;align-items:center;gap:5px}
+  .cl-claim svg.lc,.cl-wi svg.lc{width:14px;height:14px}
+  .cl-del svg.lc{width:15px;height:15px}
+  .cl-del{display:inline-flex;align-items:center;justify-content:center}
   .cl-fold{border:1px solid var(--line);border-radius:10px;background:#fff;margin-top:8px;overflow:hidden}
   .cl-fold-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 14px;cursor:pointer;user-select:none}
   .cl-fold-h:hover{background:#fafbfc}
@@ -1546,6 +1555,20 @@
   var MEMBERS = [["GZ","#7c3aed"],["MJ","#0f9a7a"],["ZAY","#2f6fe4"],["ZXQY","#d63384"]];
   var OFFERS = ["VisiVra","SlimZol","LungVicks","VapoBrain","YOBURN","NeuroTamine"];
   var COLOR = {}; MEMBERS.forEach(function(m){COLOR[m[0]]=m[1];});
+  // Lucide 图标（MIT），内嵌以避免依赖外部 CDN
+  var ICONS = {
+    refresh:'<path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/>',
+    expand:'<path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/>',
+    collapse:'<path d="m7 20 5-5 5 5"/><path d="m7 4 5 5 5-5"/>',
+    logout:'<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/>',
+    trash:'<path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/>',
+    folderPlus:'<path d="M12 10v6"/><path d="M9 13h6"/><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>',
+    folderMinus:'<path d="M9 13h6"/><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>',
+    userPlus:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/>',
+    plus:'<path d="M5 12h14"/><path d="M12 5v14"/>'
+  };
+  function ic(n){return '<svg class="lc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+ICONS[n]+'</svg>';}
+  function ibtn(n,label,attrs){return '<button class="cl-ibtn" title="'+label+'" aria-label="'+label+'" '+(attrs||"")+'>'+ic(n)+'</button>';}
   var L = {
     zh:{title:"广告认领",intro:"待测广告清单。选好“我是谁”后，点“认领”把广告领到自己名下，测完打勾并写上结果。所有人看到的是同一份数据。",
         notset:"认领表还没有连接云数据库。连接后这里会显示待测广告清单。",
@@ -1559,7 +1582,8 @@
         delConfirm:"确认删除",logout:"退出口令",netErr:"连接失败，请检查网络后重试。",saved:"已保存",
         nofolder:"未分组",tested:"已测过",claimAll:function(n){return "认领整个文件夹（"+n+" 条）";},release:function(n){return "释放我的（"+n+" 条）";},
         fstat:function(c,d,n){return "已认领 "+c+" / "+n+" · 已完成 "+d;},addFolder:"文件夹",addTested:"已测过",
-        claimedN:function(n){return "已认领 "+n+" 条。";},releasedN:function(n){return "已释放 "+n+" 条。";},expandAll:"全部展开",collapseAll:"全部收起"},
+        claimedN:function(n){return "已认领 "+n+" 条。";},releasedN:function(n){return "已释放 "+n+" 条。";},expandAll:"全部展开",collapseAll:"全部收起",del:"删除",
+        claimAllShort:function(n){return "全部认领 "+n;},releaseShort:function(n){return "释放 "+n;}},
     en:{title:"Ad Claims",intro:"Ads waiting to be tested. Pick who you are, click Claim to take an ad, then tick it and add a result when done. Everyone sees the same data.",
         notset:"The claim board isn't connected to the cloud database yet. Once connected, the ad list will appear here.",
         code:"Team code",enter:"Enter",codeHint:"Enter the team code once — your browser will remember it.",badCode:"Wrong code, please try again.",
@@ -1572,7 +1596,8 @@
         delConfirm:"Confirm",logout:"Forget code",netErr:"Connection failed, please check your network and retry.",saved:"Saved",
         nofolder:"No folder",tested:"Tested before",claimAll:function(n){return "Claim whole folder ("+n+")";},release:function(n){return "Release mine ("+n+")";},
         fstat:function(c,d,n){return c+" / "+n+" claimed · "+d+" done";},addFolder:"Folder",addTested:"Tested before",
-        claimedN:function(n){return n+" claimed.";},releasedN:function(n){return n+" released.";},expandAll:"Expand all",collapseAll:"Collapse all"}
+        claimedN:function(n){return n+" claimed.";},releasedN:function(n){return n+" released.";},expandAll:"Expand all",collapseAll:"Collapse all",del:"Delete",
+        claimAllShort:function(n){return "Claim all "+n;},releaseShort:function(n){return "Release "+n;}}
   };
   var st = {tasks:[], filter:"all", offer:"", msg:"", msgCls:"", busy:false, updated:null, open:{}};
   function lang(){return document.documentElement.getAttribute("data-lang")==="en"?"en":"zh";}
@@ -1640,7 +1665,7 @@
     // 身份
     h+='<div class="cl-box"><div class="cl-row cl-me"><span class="cl-lbl">'+t("me")+'</span>';
     MEMBERS.forEach(function(m){h+='<button data-me="'+m[0]+'" class="'+(me===m[0]?"on":"")+'" style="--mc:'+m[1]+'">'+m[0]+'</button>';});
-    h+='<span class="sp" style="flex:1"></span><button class="cl-btn sec" id="cl-logout">'+t("logout")+'</button></div>';
+    h+='<span class="sp" style="flex:1"></span>'+ibtn("logout",t("logout"),'id="cl-logout"')+'</div>';
     if(!me) h+='<div class="cl-msg">'+t("pickMe")+'</div>';
     h+='</div>';
     // 统计
@@ -1654,7 +1679,7 @@
     var offs=OFFERS.slice(); st.tasks.forEach(function(x){if(offs.indexOf(x.offer)<0) offs.push(x.offer);});
     offs.forEach(function(o){h+='<option'+(st.offer===o?" selected":"")+'>'+esc(o)+'</option>';});
     h+='</select><span class="sp"></span>'+(st.updated?'<span class="cl-upd">'+t("updated")+' '+hhmm(st.updated)+'</span>':'')+
-       '<button class="cl-btn sec" id="cl-refresh">'+t("refresh")+'</button></div>';
+       ''+ibtn("refresh",t("refresh"),'id="cl-refresh"')+'</div>';
     if(st.msg) h+='<div class="cl-msg '+st.msgCls+'">'+esc(st.msg)+'</div>';
     // 表格（按 offer → 文件夹 分组）
     var rows=filtered(), groups={}, forder={};
@@ -1669,7 +1694,7 @@
       var fkeys=Object.keys(groups[k]).sort(function(a,b){return forder[k+"|"+a]-forder[k+"|"+b];});
       var multi=fkeys.length>1||fkeys[0]!=="";
       h+='<div class="cl-grp"><div class="cl-grp-h">'+esc(k)+'<span class="cat">'+ad+' / '+all.length+'</span>';
-      if(multi) h+='<span class="sp" style="flex:1"></span><button class="cl-btn sec cl-mini" data-openall="'+esc(k)+'">'+t("expandAll")+'</button><button class="cl-btn sec cl-mini" data-closeall="'+esc(k)+'">'+t("collapseAll")+'</button>';
+      if(multi) h+='<span class="sp" style="flex:1"></span>'+ibtn("expand",t("expandAll"),'data-openall="'+esc(k)+'"')+ibtn("collapse",t("collapseAll"),'data-closeall="'+esc(k)+'"')+'';
       h+='</div>';
       fkeys.forEach(function(f){
         var g=groups[k][f], fall=all.filter(function(x){return (x.folder||"")===f;});
@@ -1681,8 +1706,8 @@
           h+='<div class="cl-fold'+(open?" open":"")+'"><div class="cl-fold-h" data-fold="'+esc(key)+'"><span class="cl-chev"></span>'+
              '<span class="cl-fname">'+esc(f||t("nofolder"))+'</span>'+(tested?'<span class="cl-tested">'+t("tested")+'</span>':'')+
              '<span class="cl-fstat">'+t("fstat")(fc,fd,fall.length)+'</span><span class="sp" style="flex:1"></span>';
-          if(funcl&&me) h+='<button class="cl-claim" data-claimfolder="'+esc(key)+'">'+t("claimAll")(funcl)+'</button>';
-          if(fmine) h+='<button class="cl-btn sec cl-mini" data-releasefolder="'+esc(key)+'">'+t("release")(fmine)+'</button>';
+          if(funcl&&me) h+='<button class="cl-claim" data-claimfolder="'+esc(key)+'" title="'+t("claimAll")(funcl)+'">'+ic("folderPlus")+'<span>'+t("claimAllShort")(funcl)+'</span></button>';
+          if(fmine) h+='<button class="cl-btn sec cl-mini cl-wi" data-releasefolder="'+esc(key)+'" title="'+t("release")(fmine)+'">'+ic("folderMinus")+'<span>'+t("releaseShort")(fmine)+'</span></button>';
           h+='</div>';
         }
         if(open){
@@ -1695,13 +1720,13 @@
                   '<select class="cl-sel" data-assign="'+x.id+'" aria-label="owner"><option value="'+esc(x.claimed_by)+'">⋯</option><option value="">'+t("none")+'</option>'+
                   MEMBERS.filter(function(m){return m[0]!==x.claimed_by;}).map(function(m){return '<option value="'+m[0]+'">'+m[0]+'</option>';}).join("")+'</select></span>';
             } else {
-              who='<button class="cl-claim" data-claim="'+x.id+'">'+t("claim")+'</button>';
+              who='<button class="cl-claim" data-claim="'+x.id+'">'+ic("userPlus")+'<span>'+t("claim")+'</span></button>';
             }
             var nt=[x.vsl?("VSL "+x.vsl):"",x.note||""].filter(Boolean).join(" · ");
             h+='<tr class="'+cls+'"><td class="cr">'+esc(x.creative)+'</td><td class="nt">'+esc(nt)+'</td>'+
                '<td>'+who+'</td><td><input type="checkbox" class="cl-chk" data-done="'+x.id+'"'+(x.done?" checked":"")+'></td>'+
                '<td><input class="cl-res" data-res="'+x.id+'" value="'+esc(x.result||"")+'" placeholder="'+t("resPh")+'"></td>'+
-               '<td><button class="cl-del" data-del="'+x.id+'" title="delete">×</button></td></tr>';
+               '<td><button class="cl-del" data-del="'+x.id+'" title="'+t("del")+'" aria-label="'+t("del")+'">'+ic("trash")+'</button></td></tr>';
           });
           h+='</tbody></table></div>';
         }
@@ -1717,7 +1742,7 @@
        '<span class="cl-lbl">'+t("addFolder")+'</span><input class="cl-input" id="cl-add-folder" style="max-width:180px">'+
        '<label class="cl-lbl" style="display:inline-flex;align-items:center;gap:5px"><input type="checkbox" id="cl-add-tested">'+t("addTested")+'</label></div>'+
        '<div class="cl-lbl" style="margin:10px 0 6px">'+t("addHelp")+'</div><textarea class="cl-input" id="cl-add-text" placeholder="AD123, 376, 新素材"></textarea>'+
-       '<div style="margin-top:10px"><button class="cl-btn" id="cl-add-go">'+t("addBtn")+'</button></div></details></div>';
+       '<div style="margin-top:10px"><button class="cl-btn cl-wi" id="cl-add-go">'+ic("plus")+'<span>'+t("addBtn")+'</span></button></div></details></div>';
     root.innerHTML=h;
     // 事件
     root.querySelectorAll("[data-me]").forEach(function(b){b.onclick=function(){set("cl-me",b.getAttribute("data-me"));render();};});
@@ -1754,7 +1779,7 @@
     root.querySelectorAll("[data-claimfolder]").forEach(function(b){b.onclick=function(){folderAct(b,"data-claimfolder",false);};});
     root.querySelectorAll("[data-releasefolder]").forEach(function(b){b.onclick=function(){folderAct(b,"data-releasefolder",true);};});
     root.querySelectorAll("[data-del]").forEach(function(b){b.onclick=function(){
-      if(!b.classList.contains("arm")){b.classList.add("arm");b.textContent=t("delConfirm");setTimeout(function(){if(b.isConnected){b.classList.remove("arm");b.textContent="×";}},3000);return;}
+      if(!b.classList.contains("arm")){b.classList.add("arm");b.textContent=t("delConfirm");setTimeout(function(){if(b.isConnected){b.classList.remove("arm");b.innerHTML=ic("trash");}},3000);return;}
       var id=+b.getAttribute("data-del");
       act("delete_task",{p_id:id},function(){st.tasks=st.tasks.filter(function(z){return z.id!==id;});});};});
     var addGo=document.getElementById("cl-add-go");
