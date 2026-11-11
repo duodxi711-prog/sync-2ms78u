@@ -1510,8 +1510,6 @@
   .cl-chip{display:inline-block;font-size:11.5px;font-weight:800;color:#fff;background:var(--mc);padding:2px 9px;border-radius:999px}
   .cl-sel{border:1px solid var(--line);border-radius:6px;padding:3px 4px;font:inherit;font-size:12.5px;background:#fff;color:var(--ink2)}
   .cl-claim{border:1px dashed #9db5e8;background:#f4f8ff;color:#2f6fe4;border-radius:6px;padding:3px 10px;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}
-  .cl-claim{white-space:nowrap}
-  .cl-who{white-space:nowrap}
   .cl-chk{width:18px;height:18px;accent-color:#13865f;cursor:pointer}
   .cl-res{border:1px solid transparent;border-radius:6px;padding:4px 6px;font:inherit;font-size:12.5px;width:100%;min-width:120px;background:transparent}
   .cl-res:hover,.cl-res:focus{border-color:var(--line);background:#fff;outline:none}
@@ -1521,13 +1519,22 @@
   .cl-add textarea{width:100%;min-height:110px;resize:vertical;font-family:"SF Mono",Menlo,Consolas,monospace;font-size:13px}
   .cl-add summary{cursor:pointer;font-weight:700;font-size:14px}
   .cl-empty{color:var(--faint);font-size:13.5px;padding:18px 4px}
+  .cl-mini{padding:3px 10px;font-size:12px}
+  .cl-fold{border:1px solid var(--line);border-radius:10px;background:#fff;margin-top:8px;overflow:hidden}
+  .cl-fold-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 14px;cursor:pointer;user-select:none}
+  .cl-fold-h:hover{background:#fafbfc}
+  .cl-chev{width:8px;height:8px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-45deg);transition:transform .15s;flex:0 0 auto}
+  .cl-fold.open .cl-chev{transform:rotate(45deg)}
+  .cl-fname{font-weight:700;font-size:14px}
+  .cl-tested{font-size:11px;font-weight:700;color:#fff;background:#6b7280;padding:1px 8px;border-radius:999px}
+  .cl-fstat{font-size:12.5px;color:var(--muted)}
+  .cl-fold .cl-tbl{margin:0;border:0;border-top:1px solid var(--line2);border-radius:0}
+  .cl-tbl td.cr{white-space:normal;word-break:break-word;min-width:160px}
   .cl-busy{opacity:.55;pointer-events:none}
   @media (max-width:640px){
     .cl-tbl th.h-nt,.cl-tbl td.nt{display:none}
     .cl-tbl th,.cl-tbl td{padding:7px 8px}
     .cl-res{min-width:90px}
-    .cl-who .cl-sel{width:30px;padding:3px 0}
-    .cl-me .sp{display:none}
   }
 </style>
 <script>
@@ -1549,7 +1556,10 @@
         resPh:"写结果，回车保存",empty:"没有符合条件的广告。",
         add:"添加待测广告",addOffer:"Offer",addHelp:"每行一条：素材编号, VSL, 备注（后两项可省略，用逗号分隔）",addBtn:"添加",
         added:function(n){return "已添加 "+n+" 条。";},addNone:"没有可添加的内容。",
-        delConfirm:"确认删除",logout:"退出口令",netErr:"连接失败，请检查网络后重试。",saved:"已保存"},
+        delConfirm:"确认删除",logout:"退出口令",netErr:"连接失败，请检查网络后重试。",saved:"已保存",
+        nofolder:"未分组",tested:"已测过",claimAll:function(n){return "认领整个文件夹（"+n+" 条）";},release:function(n){return "释放我的（"+n+" 条）";},
+        fstat:function(c,d,n){return "已认领 "+c+" / "+n+" · 已完成 "+d;},addFolder:"文件夹",addTested:"已测过",
+        claimedN:function(n){return "已认领 "+n+" 条。";},releasedN:function(n){return "已释放 "+n+" 条。";},expandAll:"全部展开",collapseAll:"全部收起"},
     en:{title:"Ad Claims",intro:"Ads waiting to be tested. Pick who you are, click Claim to take an ad, then tick it and add a result when done. Everyone sees the same data.",
         notset:"The claim board isn't connected to the cloud database yet. Once connected, the ad list will appear here.",
         code:"Team code",enter:"Enter",codeHint:"Enter the team code once — your browser will remember it.",badCode:"Wrong code, please try again.",
@@ -1559,9 +1569,12 @@
         resPh:"Type a result, Enter to save",empty:"No ads match.",
         add:"Add ads to test",addOffer:"Offer",addHelp:"One per line: creative, VSL, note (last two optional, comma-separated)",addBtn:"Add",
         added:function(n){return n+" added.";},addNone:"Nothing to add.",
-        delConfirm:"Confirm",logout:"Forget code",netErr:"Connection failed, please check your network and retry.",saved:"Saved"}
+        delConfirm:"Confirm",logout:"Forget code",netErr:"Connection failed, please check your network and retry.",saved:"Saved",
+        nofolder:"No folder",tested:"Tested before",claimAll:function(n){return "Claim whole folder ("+n+")";},release:function(n){return "Release mine ("+n+")";},
+        fstat:function(c,d,n){return c+" / "+n+" claimed · "+d+" done";},addFolder:"Folder",addTested:"Tested before",
+        claimedN:function(n){return n+" claimed.";},releasedN:function(n){return n+" released.";},expandAll:"Expand all",collapseAll:"Collapse all"}
   };
-  var st = {tasks:[], filter:"all", offer:"", msg:"", msgCls:"", busy:false, updated:null};
+  var st = {tasks:[], filter:"all", offer:"", msg:"", msgCls:"", busy:false, updated:null, open:{}};
   function lang(){return document.documentElement.getAttribute("data-lang")==="en"?"en":"zh";}
   function t(k){return L[lang()][k];}
   function get(k){try{return localStorage.getItem(k)||"";}catch(e){return "";}}
@@ -1643,38 +1656,66 @@
     h+='</select><span class="sp"></span>'+(st.updated?'<span class="cl-upd">'+t("updated")+' '+hhmm(st.updated)+'</span>':'')+
        '<button class="cl-btn sec" id="cl-refresh">'+t("refresh")+'</button></div>';
     if(st.msg) h+='<div class="cl-msg '+st.msgCls+'">'+esc(st.msg)+'</div>';
-    // 表格（按 offer 分组）
-    var rows=filtered(), groups={};
-    rows.forEach(function(x){(groups[x.offer]=groups[x.offer]||[]).push(x);});
+    // 表格（按 offer → 文件夹 分组）
+    var rows=filtered(), groups={}, forder={};
+    rows.forEach(function(x){var f=x.folder||""; (groups[x.offer]=groups[x.offer]||{}); (groups[x.offer][f]=groups[x.offer][f]||[]).push(x);
+      var k=x.offer+"|"+f; if(!(k in forder)||x.id<forder[k]) forder[k]=x.id;});
     var keys=Object.keys(groups).sort(function(a,b){var ia=OFFERS.indexOf(a),ib=OFFERS.indexOf(b);return (ia<0?99:ia)-(ib<0?99:ib)||a.localeCompare(b);});
+    var autoOpen=st.filter!=="all";
     h+='<div class="'+(st.busy?"cl-busy":"")+'">';
     if(!keys.length) h+='<div class="cl-box"><div class="cl-empty">'+t("empty")+'</div></div>';
     keys.forEach(function(k){
-      var g=groups[k], gd=g.filter(function(x){return x.done;}).length;
-      h+='<div class="cl-grp"><div class="cl-grp-h">'+esc(k)+'<span class="cat">'+gd+' / '+g.length+'</span></div>'+
-         '<div class="tbl-wrap cl-tbl"><table><thead><tr><th>'+t("cr")+'</th><th>'+t("vsl")+'</th><th class="h-nt">'+t("note")+'</th><th>'+t("who")+'</th><th>'+t("fin")+'</th><th>'+t("res")+'</th><th></th></tr></thead><tbody>';
-      g.forEach(function(x){
-        var cls=(x.done?"done":(me&&x.claimed_by===me?"mine":""));
-        var who;
-        if(x.claimed_by){
-          who='<span class="cl-who"><span class="cl-chip" style="--mc:'+(COLOR[x.claimed_by]||"#888")+'">'+esc(x.claimed_by)+'</span>'+
-              '<select class="cl-sel" data-assign="'+x.id+'" aria-label="owner"><option value="'+esc(x.claimed_by)+'">⋯</option><option value="">'+t("none")+'</option>'+
-              MEMBERS.filter(function(m){return m[0]!==x.claimed_by;}).map(function(m){return '<option value="'+m[0]+'">'+m[0]+'</option>';}).join("")+'</select></span>';
-        } else {
-          who='<button class="cl-claim" data-claim="'+x.id+'">'+t("claim")+'</button>';
+      var all=st.tasks.filter(function(x){return x.offer===k;}), ad=all.filter(function(x){return x.done;}).length;
+      var fkeys=Object.keys(groups[k]).sort(function(a,b){return forder[k+"|"+a]-forder[k+"|"+b];});
+      var multi=fkeys.length>1||fkeys[0]!=="";
+      h+='<div class="cl-grp"><div class="cl-grp-h">'+esc(k)+'<span class="cat">'+ad+' / '+all.length+'</span>';
+      if(multi) h+='<span class="sp" style="flex:1"></span><button class="cl-btn sec cl-mini" data-openall="'+esc(k)+'">'+t("expandAll")+'</button><button class="cl-btn sec cl-mini" data-closeall="'+esc(k)+'">'+t("collapseAll")+'</button>';
+      h+='</div>';
+      fkeys.forEach(function(f){
+        var g=groups[k][f], fall=all.filter(function(x){return (x.folder||"")===f;});
+        var fc=fall.filter(function(x){return x.claimed_by;}).length, fd=fall.filter(function(x){return x.done;}).length;
+        var funcl=fall.filter(function(x){return !x.claimed_by;}).length, fmine=me?fall.filter(function(x){return x.claimed_by===me&&!x.done;}).length:0;
+        var tested=fall.some(function(x){return x.tested_before;});
+        var key=k+"|"+f, open=multi?(autoOpen||!!st.open[key]):true;
+        if(multi){
+          h+='<div class="cl-fold'+(open?" open":"")+'"><div class="cl-fold-h" data-fold="'+esc(key)+'"><span class="cl-chev"></span>'+
+             '<span class="cl-fname">'+esc(f||t("nofolder"))+'</span>'+(tested?'<span class="cl-tested">'+t("tested")+'</span>':'')+
+             '<span class="cl-fstat">'+t("fstat")(fc,fd,fall.length)+'</span><span class="sp" style="flex:1"></span>';
+          if(funcl&&me) h+='<button class="cl-claim" data-claimfolder="'+esc(key)+'">'+t("claimAll")(funcl)+'</button>';
+          if(fmine) h+='<button class="cl-btn sec cl-mini" data-releasefolder="'+esc(key)+'">'+t("release")(fmine)+'</button>';
+          h+='</div>';
         }
-        h+='<tr class="'+cls+'"><td class="cr">'+esc(x.creative)+'</td><td class="vs">'+esc(x.vsl||"")+'</td><td class="nt">'+esc(x.note||"")+'</td>'+
-           '<td>'+who+'</td><td><input type="checkbox" class="cl-chk" data-done="'+x.id+'"'+(x.done?" checked":"")+'></td>'+
-           '<td><input class="cl-res" data-res="'+x.id+'" value="'+esc(x.result||"")+'" placeholder="'+t("resPh")+'"></td>'+
-           '<td><button class="cl-del" data-del="'+x.id+'" title="delete">×</button></td></tr>';
+        if(open){
+          h+='<div class="tbl-wrap cl-tbl"><table><thead><tr><th>'+t("cr")+'</th><th class="h-nt">'+t("note")+'</th><th>'+t("who")+'</th><th>'+t("fin")+'</th><th>'+t("res")+'</th><th></th></tr></thead><tbody>';
+          g.forEach(function(x){
+            var cls=(x.done?"done":(me&&x.claimed_by===me?"mine":""));
+            var who;
+            if(x.claimed_by){
+              who='<span class="cl-who"><span class="cl-chip" style="--mc:'+(COLOR[x.claimed_by]||"#888")+'">'+esc(x.claimed_by)+'</span>'+
+                  '<select class="cl-sel" data-assign="'+x.id+'" aria-label="owner"><option value="'+esc(x.claimed_by)+'">⋯</option><option value="">'+t("none")+'</option>'+
+                  MEMBERS.filter(function(m){return m[0]!==x.claimed_by;}).map(function(m){return '<option value="'+m[0]+'">'+m[0]+'</option>';}).join("")+'</select></span>';
+            } else {
+              who='<button class="cl-claim" data-claim="'+x.id+'">'+t("claim")+'</button>';
+            }
+            var nt=[x.vsl?("VSL "+x.vsl):"",x.note||""].filter(Boolean).join(" · ");
+            h+='<tr class="'+cls+'"><td class="cr">'+esc(x.creative)+'</td><td class="nt">'+esc(nt)+'</td>'+
+               '<td>'+who+'</td><td><input type="checkbox" class="cl-chk" data-done="'+x.id+'"'+(x.done?" checked":"")+'></td>'+
+               '<td><input class="cl-res" data-res="'+x.id+'" value="'+esc(x.result||"")+'" placeholder="'+t("resPh")+'"></td>'+
+               '<td><button class="cl-del" data-del="'+x.id+'" title="delete">×</button></td></tr>';
+          });
+          h+='</tbody></table></div>';
+        }
+        if(multi) h+='</div>';
       });
-      h+='</tbody></table></div></div>';
+      h+='</div>';
     });
     h+='</div>';
     // 添加
     h+='<div class="cl-box cl-add"><details><summary>'+t("add")+'</summary><div style="margin-top:12px" class="cl-row"><span class="cl-lbl">'+t("addOffer")+'</span>'+
        '<input class="cl-input" id="cl-add-offer" list="cl-offers" value="'+esc(st.offer||"")+'" style="max-width:200px"><datalist id="cl-offers">'+
-       OFFERS.map(function(o){return '<option value="'+o+'">';}).join("")+'</datalist></div>'+
+       OFFERS.map(function(o){return '<option value="'+o+'">';}).join("")+'</datalist>'+
+       '<span class="cl-lbl">'+t("addFolder")+'</span><input class="cl-input" id="cl-add-folder" style="max-width:180px">'+
+       '<label class="cl-lbl" style="display:inline-flex;align-items:center;gap:5px"><input type="checkbox" id="cl-add-tested">'+t("addTested")+'</label></div>'+
        '<div class="cl-lbl" style="margin:10px 0 6px">'+t("addHelp")+'</div><textarea class="cl-input" id="cl-add-text" placeholder="AD123, 376, 新素材"></textarea>'+
        '<div style="margin-top:10px"><button class="cl-btn" id="cl-add-go">'+t("addBtn")+'</button></div></details></div>';
     root.innerHTML=h;
@@ -1698,6 +1739,20 @@
         act("set_done",{p_id:id,p_done:x.done,p_result:inp.value},function(r){upsert(r);st.msg=t("saved");st.msgCls="ok";});};
       inp.onkeydown=function(e){if(e.key==="Enter"){inp.blur();}};
       inp.onblur=save;});
+    root.querySelectorAll("[data-fold]").forEach(function(el){el.onclick=function(e){
+      if(e.target.closest("button")) return; var k=el.getAttribute("data-fold"); st.open[k]=!st.open[k]; render();};});
+    root.querySelectorAll("[data-openall]").forEach(function(b){b.onclick=function(){var o=b.getAttribute("data-openall");
+      st.tasks.forEach(function(x){if(x.offer===o) st.open[o+"|"+(x.folder||"")]=true;}); render();};});
+    root.querySelectorAll("[data-closeall]").forEach(function(b){b.onclick=function(){var o=b.getAttribute("data-closeall");
+      Object.keys(st.open).forEach(function(k){if(k.indexOf(o+"|")===0) delete st.open[k];}); render();};});
+    function folderAct(b,attr,release){
+      var me=get("cl-me"); if(!me){st.msg=t("pickMe");st.msgCls="err";render();return;}
+      var k=b.getAttribute(attr), i=k.indexOf("|"), off=k.slice(0,i), fol=k.slice(i+1);
+      act("claim_folder",{p_offer:off,p_folder:fol||null,p_member:me,p_release:release},function(n){
+        st.msg=release?t("releasedN")(n):t("claimedN")(n); st.msgCls="ok";}).then(function(){load(true);});
+    }
+    root.querySelectorAll("[data-claimfolder]").forEach(function(b){b.onclick=function(){folderAct(b,"data-claimfolder",false);};});
+    root.querySelectorAll("[data-releasefolder]").forEach(function(b){b.onclick=function(){folderAct(b,"data-releasefolder",true);};});
     root.querySelectorAll("[data-del]").forEach(function(b){b.onclick=function(){
       if(!b.classList.contains("arm")){b.classList.add("arm");b.textContent=t("delConfirm");setTimeout(function(){if(b.isConnected){b.classList.remove("arm");b.textContent="×";}},3000);return;}
       var id=+b.getAttribute("data-del");
@@ -1706,7 +1761,8 @@
     if(addGo) addGo.onclick=function(){
       var off=document.getElementById("cl-add-offer").value.trim();
       var lines=document.getElementById("cl-add-text").value.split(/\n+/).map(function(s){return s.trim();}).filter(Boolean);
-      var rowsIn=lines.map(function(l){var p=l.split(/[,，\t]/).map(function(s){return s.trim();});return {offer:off,creative:p[0]||"",vsl:p[1]||"",note:p.slice(2).join(", ")};})
+      var fol=document.getElementById("cl-add-folder").value.trim(), tb=document.getElementById("cl-add-tested").checked;
+      var rowsIn=lines.map(function(l){var p=l.split(/[,，\t]/).map(function(s){return s.trim();});return {offer:off,folder:fol,tested_before:tb,creative:p[0]||"",vsl:p[1]||"",note:p.slice(2).join(", ")};})
         .filter(function(r){return r.offer&&r.creative;});
       if(!rowsIn.length){st.msg=t("addNone");st.msgCls="err";render();return;}
       act("add_tasks",{p_rows:rowsIn},function(n){st.msg=t("added")(n);st.msgCls="ok";}).then(function(){load(true);});
