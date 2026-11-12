@@ -1627,10 +1627,24 @@
   .tk-seg button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:4px 12px;font:inherit;font-size:13px;font-weight:600;color:var(--ink2);cursor:pointer}
   .tk-seg button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
   .tk-grp{margin-top:16px}
-  .tk-grp-h{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;margin-bottom:6px}
+  .tk-grp-h{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;margin-bottom:4px}
   .tk-grp-h .cat{font-weight:500}
-  .tk-fold{margin-top:10px}
-  .tk-fold-h{font-size:12.5px;font-weight:700;color:var(--muted);margin:0 0 4px 2px}
+  .tk-root-path{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);margin:2px 0 6px 2px}
+  .tk-root-path svg{width:14px;height:14px;color:#4aa3e8}
+  .tk-fold{border:1px solid var(--line);border-radius:10px;background:#fff;margin-top:8px;overflow:hidden}
+  .tk-fold-h{display:flex;align-items:center;gap:9px;padding:10px 12px;cursor:pointer;user-select:none;flex-wrap:wrap}
+  .tk-fold-h:hover{background:#fafbfc}
+  .tk-chev{width:8px;height:8px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-45deg);transition:transform .15s;flex:0 0 auto;margin-right:2px}
+  .tk-fold.open .tk-chev{transform:rotate(45deg)}
+  .tk-fic svg{width:18px;height:18px;display:block;color:#4aa3e8;fill:#cfe6fa}
+  .tk-path{display:flex;align-items:center;gap:5px;flex-wrap:wrap;font-size:13.5px;color:var(--ink2);min-width:0}
+  .tk-path span.last{font-weight:700;color:var(--ink)}
+  .tk-path i.sep{font-style:normal;color:var(--faint)}
+  .tk-fstat{margin-left:auto;font-size:12px;color:var(--muted);white-space:nowrap}
+  .tk-fstat.all{color:#13865f;font-weight:600}
+  .tk-sm{height:28px;width:28px;padding:0}
+  .tk-sm svg{width:14px;height:14px}
+  .tk-fold .tk-tbl{margin:0;border:0;border-top:1px solid var(--line2);border-radius:0}
   .tk-tbl td{vertical-align:middle}
   .tk-tbl tr.done td{background:#f2fbf6}
   .tk-tbl td.cr{font-family:"SF Mono",Menlo,Consolas,monospace;font-weight:600;font-size:13px;word-break:break-word;min-width:170px}
@@ -1658,8 +1672,17 @@
   var OFFERS = ["VisiVra","SlimZol","LungVicks","VapoBrain","YOBURN","NeuroTamine"];
   var OCI = {VisiVra:"eye",SlimZol:"weight",LungVicks:"lungs",VapoBrain:"brain",YOBURN:"weight",NeuroTamine:"brain"};
   var COLOR = {}; MEMBERS.forEach(function(m){COLOR[m[0]]=m[1];});
+  // 云盘路径：offer 根目录 + 文件夹在云盘里的子路径
+  var DRIVE_ROOT = "团队文件-素材盘-请分类";
+  var OFFER_DIR = {VisiVra:["眼睛","VisiVra"],SlimZol:["减肥类","SLIMZOL"],LungVicks:["COPD","LungsVicks"],VapoBrain:["记忆类","VapoBrain-Ads"],YOBURN:["减肥类","YoBurn02-Ads"],NeuroTamine:["记忆类","NeuroTamine_Ads"]};
+  var FOLDER_PATH = {VisiVra:{"BESTS": ["BESTS"], "US · 0001-0005": ["US", "VIDEO", "VIS_US_VID_0001-0005"], "US · 0006-0010": ["US", "VIDEO", "VIS_US_VID_0006-0010"], "US · 0011-0015": ["US", "VIDEO", "VIS_US_VID_0011-0015"], "US · 0016-0020": ["US", "VIDEO", "VIS_US_VID_0016-0020"], "US · 0021-0025": ["US", "VIDEO", "VIS_US_VID_0021-0025"], "US · 0026-0030": ["US", "VIDEO", "VIS_US_VID_0026-0030"], "US · 0031-0035": ["US", "VIDEO", "VIS_US_VID_0031-0035"], "US · 0036-0040": ["US", "VIDEO", "VIS_US_VID_0036-0040"], "US · 0041-0045": ["US", "VIDEO", "VIS_US_VID_0041-0045"], "W1": ["W1"], "W2": ["W2"], "W3": ["W3"], "W4": ["W4"], "W5": ["W5"], "W6": ["W6"]}};
+  function drivePath(offer,folder){var p=(OFFER_DIR[offer]||[offer]).slice(); var sub=(FOLDER_PATH[offer]||{})[folder]; if(sub) p=p.concat(sub); else if(folder) p.push(folder); return p;}
   var IC = {
     refresh:'<path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/>',
+    folder:'<path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>',
+    copy:'<rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>',
+    expand:'<path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/>',
+    collapse:'<path d="m7 20 5-5 5 5"/><path d="m7 4 5 5 5-5"/>',
     swap:'<path d="M16 3h5v5"/><path d="M4 20 21 3"/><path d="M21 16v5h-5"/><path d="m15 15 6 6"/><path d="M4 4l5 5"/>'
   };
   function ic(n){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+IC[n]+'</svg>';}
@@ -1669,15 +1692,15 @@
         total:"我的任务",launched:"已上线",pending:"未上线",team:"全队进度",
         all:"全部",todo:"未上线",done:"已上线",cr:"素材",note:"备注",st:"已上线",res:"结果",resPh:"写结果，回车保存",
         empty:"目前没有分给你的任务。",emptyF:"没有符合条件的任务。",nofolder:"未分组",
-        netErr:"连接失败，请检查网络后重试。",saved:"已保存"},
+        netErr:"连接失败，请检查网络后重试。",saved:"已保存",copyPath:"复制云盘路径",copied:"已复制路径",expandAll:"全部展开",collapseAll:"全部收起",fprog:function(d,n){return "已上线 "+d+" / "+n;}},
     en:{title:"My Tasks",ask:"Who are you?",askHint:"Enter the initials of your name",enter:"Enter",unknown:"No such member — check your initials.",ph:"Initials",
         tasks:function(m){return m+"'s tasks";},switchMe:"Switch",refresh:"Refresh",updated:"Updated",
         total:"My tasks",launched:"Launched",pending:"Not launched",team:"Team progress",
         all:"All",todo:"Not launched",done:"Launched",cr:"Creative",note:"Note",st:"Launched",res:"Result",resPh:"Type a result, Enter to save",
         empty:"No tasks assigned to you yet.",emptyF:"No tasks match.",nofolder:"No folder",
-        netErr:"Connection failed, please check your network and retry.",saved:"Saved"}
+        netErr:"Connection failed, please check your network and retry.",saved:"Saved",copyPath:"Copy drive path",copied:"Path copied",expandAll:"Expand all",collapseAll:"Collapse all",fprog:function(d,n){return d+" / "+n+" launched";}}
   };
-  var st={tasks:[],filter:"all",msg:"",msgCls:"",busy:false,updated:null};
+  var st={tasks:[],filter:"all",msg:"",msgCls:"",busy:false,updated:null,open:{}};
   function lang(){return document.documentElement.getAttribute("data-lang")==="en"?"en":"zh";}
   function t(k){return L[lang()][k];}
   function get(k){try{return localStorage.getItem(k)||"";}catch(e){return "";}}
@@ -1736,22 +1759,31 @@
     h+='<div class="'+(st.busy?"tk-busy":"")+'">';
     if(!mine.length) h+='<div class="tk-box"><div class="tk-empty">'+t("empty")+'</div></div>';
     else if(!rows.length) h+='<div class="tk-box"><div class="tk-empty">'+t("emptyF")+'</div></div>';
-    var groups={}, order={};
+    var groups={}, order={}, auto=st.filter!=="all";
     rows.forEach(function(x){(groups[x.offer]=groups[x.offer]||{});var f=x.folder||"";(groups[x.offer][f]=groups[x.offer][f]||[]).push(x);var k=x.offer+"|"+f;if(!(k in order)||x.id<order[k])order[k]=x.id;});
     Object.keys(groups).sort(function(a,b){var ia=OFFERS.indexOf(a),ib=OFFERS.indexOf(b);return (ia<0?99:ia)-(ib<0?99:ib)||a.localeCompare(b);}).forEach(function(o){
       var all=mine.filter(function(x){return x.offer===o;});
-      h+='<div class="tk-grp"><div class="tk-grp-h">'+(OCI[o]?'<i class="ci" data-ci="'+OCI[o]+'"></i>':'')+esc(o)+'<span class="cat">'+all.filter(function(x){return x.done;}).length+' / '+all.length+'</span></div>';
+      h+='<div class="tk-grp"><div class="tk-grp-h">'+(OCI[o]?'<i class="ci" data-ci="'+OCI[o]+'"></i>':'')+esc(o)+'<span class="cat">'+all.filter(function(x){return x.done;}).length+' / '+all.length+'</span>'+
+         '<span style="flex:1"></span><button class="tk-ib tk-sm" data-openall="'+esc(o)+'" title="'+t("expandAll")+'">'+ic("expand")+'</button><button class="tk-ib tk-sm" data-closeall="'+esc(o)+'" title="'+t("collapseAll")+'">'+ic("collapse")+'</button></div>'+
+         '<div class="tk-root-path">'+ic("folder")+'<span>'+esc(DRIVE_ROOT)+'</span></div>';
       Object.keys(groups[o]).sort(function(a,b){return order[o+"|"+a]-order[o+"|"+b];}).forEach(function(f){
-        var g=groups[o][f];
-        h+='<div class="tk-fold">'+(f?'<div class="tk-fold-h">'+esc(f)+' · '+g.length+'</div>':'')+
-           '<div class="tbl-wrap tk-tbl"><table><thead><tr><th>'+t("cr")+'</th><th class="h-nt">'+t("note")+'</th><th>'+t("st")+'</th><th>'+t("res")+'</th></tr></thead><tbody>';
-        g.forEach(function(x){
-          var nt=[x.vsl?("VSL "+x.vsl):"",x.note||""].filter(Boolean).join(" · ");
-          h+='<tr class="'+(x.done?"done":"")+'"><td class="cr">'+esc(x.creative)+'</td><td class="nt">'+esc(nt)+'</td>'+
-             '<td class="ck"><label class="tk-chk"><input type="checkbox" data-done="'+x.id+'"'+(x.done?" checked":"")+'><span>'+t("st")+'</span></label></td>'+
-             '<td><input class="tk-res" data-res="'+x.id+'" value="'+esc(x.result||"")+'" placeholder="'+t("resPh")+'"></td></tr>';
-        });
-        h+='</tbody></table></div></div>';
+        var g=groups[o][f], fall=all.filter(function(x){return (x.folder||"")===f;}), fd=fall.filter(function(x){return x.done;}).length;
+        var key=o+"|"+f, open=auto||!!st.open[key], path=drivePath(o,f);
+        var crumbs=path.map(function(seg,i){return '<span class="'+(i===path.length-1?"last":"")+'">'+esc(seg)+'</span>';}).join('<i class="sep">/</i>');
+        h+='<div class="tk-fold'+(open?" open":"")+'"><div class="tk-fold-h" data-fold="'+esc(key)+'"><span class="tk-chev"></span><span class="tk-fic">'+ic("folder")+'</span>'+
+           '<span class="tk-path">'+crumbs+'</span><span class="tk-fstat'+(fd===fall.length?" all":"")+'">'+t("fprog")(fd,fall.length)+'</span>'+
+           '<button class="tk-ib tk-sm" data-copypath="'+esc(DRIVE_ROOT+" / "+path.join(" / "))+'" title="'+t("copyPath")+'">'+ic("copy")+'</button></div>';
+        if(open){
+          h+='<div class="tbl-wrap tk-tbl"><table><thead><tr><th>'+t("cr")+'</th><th class="h-nt">'+t("note")+'</th><th>'+t("st")+'</th><th>'+t("res")+'</th></tr></thead><tbody>';
+          g.forEach(function(x){
+            var nt=[x.vsl?("VSL "+x.vsl):"",x.note||""].filter(Boolean).join(" · ");
+            h+='<tr class="'+(x.done?"done":"")+'"><td class="cr">'+esc(x.creative)+'</td><td class="nt">'+esc(nt)+'</td>'+
+               '<td class="ck"><label class="tk-chk"><input type="checkbox" data-done="'+x.id+'"'+(x.done?" checked":"")+'><span>'+t("st")+'</span></label></td>'+
+               '<td><input class="tk-res" data-res="'+x.id+'" value="'+esc(x.result||"")+'" placeholder="'+t("resPh")+'"></td></tr>';
+          });
+          h+='</tbody></table></div>';
+        }
+        h+='</div>';
       });
       h+='</div>';
     });
@@ -1761,6 +1793,13 @@
     document.getElementById("tk-refresh").onclick=function(){st.msg="";load();};
     document.getElementById("tk-switch").onclick=function(){set("tk-me","");st.tasks=[];st.msg="";render();};
     root.querySelectorAll("[data-f]").forEach(function(b){b.onclick=function(){st.filter=b.getAttribute("data-f");render();};});
+    root.querySelectorAll("[data-fold]").forEach(function(el){el.onclick=function(e){if(e.target.closest("button"))return;var k=el.getAttribute("data-fold");st.open[k]=!st.open[k];render();};});
+    root.querySelectorAll("[data-openall]").forEach(function(b){b.onclick=function(){var o=b.getAttribute("data-openall");st.tasks.forEach(function(x){if(x.offer===o)st.open[o+"|"+(x.folder||"")]=true;});render();};});
+    root.querySelectorAll("[data-closeall]").forEach(function(b){b.onclick=function(){var o=b.getAttribute("data-closeall");Object.keys(st.open).forEach(function(k){if(k.indexOf(o+"|")===0)delete st.open[k];});render();};});
+    root.querySelectorAll("[data-copypath]").forEach(function(b){b.onclick=function(){var txt=b.getAttribute("data-copypath");
+      var ok=function(){st.msg=t("copied")+"："+txt;st.msgCls="ok";render();};
+      try{navigator.clipboard.writeText(txt).then(ok,function(){fallback(txt);ok();});}catch(e){fallback(txt);ok();}};});
+    function fallback(txt){try{var ta=document.createElement("textarea");ta.value=txt;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();document.execCommand("copy");document.body.removeChild(ta);}catch(e){}}
     root.querySelectorAll("[data-done]").forEach(function(c){c.onchange=function(){
       var id=+c.getAttribute("data-done"), r=root.querySelector('[data-res="'+id+'"]');
       st.busy=true; render();
