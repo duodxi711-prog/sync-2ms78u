@@ -1664,13 +1664,13 @@
   };
   function ic(n){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+IC[n]+'</svg>';}
   var L = {
-    zh:{title:"我的任务",ask:"你是谁？",askHint:"输入你的名字缩写，例如 ZXQY",enter:"进入",unknown:"没有这个成员，请检查缩写。",
+    zh:{title:"我的任务",ask:"你是谁？",askHint:"输入你的名字首字母",enter:"进入",unknown:"没有这个成员，请检查名字首字母。",ph:"名字首字母",
         tasks:function(m){return m+" 的任务";},switchMe:"切换",refresh:"刷新",updated:"更新于",
         total:"我的任务",launched:"已上线",pending:"未上线",team:"全队进度",
         all:"全部",todo:"未上线",done:"已上线",cr:"素材",note:"备注",st:"已上线",res:"结果",resPh:"写结果，回车保存",
         empty:"目前没有分给你的任务。",emptyF:"没有符合条件的任务。",nofolder:"未分组",
         netErr:"连接失败，请检查网络后重试。",saved:"已保存"},
-    en:{title:"My Tasks",ask:"Who are you?",askHint:"Enter your initials, e.g. ZXQY",enter:"Enter",unknown:"No such member — check your initials.",
+    en:{title:"My Tasks",ask:"Who are you?",askHint:"Enter the initials of your name",enter:"Enter",unknown:"No such member — check your initials.",ph:"Initials",
         tasks:function(m){return m+"'s tasks";},switchMe:"Switch",refresh:"Refresh",updated:"Updated",
         total:"My tasks",launched:"Launched",pending:"Not launched",team:"Team progress",
         all:"All",todo:"Not launched",done:"Launched",cr:"Creative",note:"Note",st:"Launched",res:"Result",resPh:"Type a result, Enter to save",
@@ -1708,7 +1708,7 @@
     var m=me(), h="";
     if(!m){
       h='<div class="tk-box tk-ask"><h3>'+t("ask")+'</h3><p>'+t("askHint")+'</p><div class="tk-row">'+
-        '<input class="tk-input" id="tk-in" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ZXQY">'+
+        '<input class="tk-input" id="tk-in" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="'+t("ph")+'">'+
         '<button class="tk-btn" id="tk-go">'+t("enter")+'</button></div>'+(st.msg?'<div class="tk-msg '+st.msgCls+'">'+esc(st.msg)+'</div>':'')+'</div>';
       root.innerHTML=h;
       var go=function(){var v=document.getElementById("tk-in").value.trim().toUpperCase(); if(!v) return;
