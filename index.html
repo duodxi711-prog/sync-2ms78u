@@ -496,54 +496,55 @@
 </style>
 <style>
   .birthday-dialog {
-    width: min(760px, calc(100vw - 28px));
+    width: min(600px, calc(100vw - 24px));
     max-width: none;
-    max-height: calc(100dvh - 28px);
+    max-height: calc(100dvh - 24px);
     padding: 0;
     border: 1px solid #efd5bf;
-    border-radius: 20px;
-    background: #fffaf3;
-    color: var(--ink);
+    border-radius: 16px;
+    background: #211716;
     box-shadow: 0 24px 80px #26120e55;
   }
   .birthday-dialog::backdrop { background: #211716b8; }
   html:has(.birthday-dialog[open]) { overflow: hidden; }
-  .birthday-dialog form { margin: 0; }
-  .birthday-heading { position: relative; padding: 16px 54px; text-align: center; }
-  .birthday-heading h2 { margin: 0; color: #8b2417; font-size: clamp(20px, 4vw, 32px); }
+  .birthday-dialog form { position: relative; margin: 0; }
+  .birthday-heading {
+    position: absolute;
+    top: clamp(9px, 2vw, 17px);
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    padding: 5px 9px;
+    border: 1px solid #f3d8a975;
+    border-radius: 6px;
+    background: #241812cc;
+    color: #fff6e2;
+    font-size: clamp(12px, 3.4vw, 22px);
+    line-height: 1.2;
+    letter-spacing: .045em;
+    white-space: nowrap;
+  }
   .birthday-close {
     position: absolute;
-    top: 8px;
-    right: 8px;
-    width: 40px;
-    height: 40px;
+    top: 6px;
+    right: 6px;
+    width: 34px;
+    height: 34px;
     border: 0;
     border-radius: 50%;
-    background: transparent;
-    color: #8b2417;
+    background: #241812cc;
+    color: #fff6e2;
     font: inherit;
-    font-size: 24px;
+    font-size: 23px;
     cursor: pointer;
   }
-  .birthday-close:hover { background: #f6e6d9; }
+  .birthday-close:hover { background: #241812; }
   .birthday-dialog img {
     display: block;
     width: 100%;
     height: auto;
-    max-height: 62dvh;
+    max-height: 76dvh;
     object-fit: contain;
-    background: #211716;
-  }
-  .birthday-actions { padding: 14px; text-align: center; }
-  .birthday-continue {
-    padding: 9px 20px;
-    border: 0;
-    border-radius: 8px;
-    background: #ad2d20;
-    color: #fff;
-    font: inherit;
-    font-weight: 600;
-    cursor: pointer;
   }
 </style>
 </head>
@@ -2069,27 +2070,21 @@
 </script>
 <dialog class="birthday-dialog" id="birthday-dialog" aria-labelledby="birthday-title">
   <form method="dialog">
-    <div class="birthday-heading">
-      <h2 id="birthday-title"><span class="t-zh">ZAY，生日快乐！</span><span class="t-en">Happy birthday, ZAY!</span></h2>
-      <button class="birthday-close" type="submit" autofocus aria-label="关闭生日贺图"><span aria-hidden="true">×</span></button>
-    </div>
-    <img src="assets/zay-birthday.webp" width="1600" height="1066" alt="ZAY 生日贺图" loading="lazy">
-    <div class="birthday-actions">
-      <button class="birthday-continue" type="submit"><span class="t-zh">进入 AdRelay</span><span class="t-en">Continue to AdRelay</span></button>
-    </div>
+    <img src="assets/zay-birthday.webp?v=2" width="960" height="640" alt="" loading="lazy">
+    <h2 class="birthday-heading" id="birthday-title">HAPPY ZHANG AOYI’s DAY!</h2>
+    <button class="birthday-close" type="submit" autofocus aria-label="关闭生日贺图"><span aria-hidden="true">×</span></button>
   </form>
 </dialog>
 <script>
 (function () {
   const dialog = document.getElementById('birthday-dialog');
-  const sessionKey = 'adrelay-zay-birthday-seen';
+  const sessionKey = 'adrelay-zay-birthday-v2-seen';
   if (typeof dialog.showModal !== 'function') return;
   try {
     if (sessionStorage.getItem(sessionKey)) return;
   } catch {}
   if (document.documentElement.lang === 'en') {
     dialog.querySelector('.birthday-close').setAttribute('aria-label', 'Close birthday greeting');
-    dialog.querySelector('img').alt = 'Birthday greeting for ZAY';
   }
   dialog.addEventListener('click', function (event) {
     if (event.target === dialog) dialog.close();
