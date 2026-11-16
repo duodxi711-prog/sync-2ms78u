@@ -293,6 +293,8 @@
   .rdetail-body>.rhero{margin-top:12px}
   .offer-test-report td.mono{overflow-wrap:anywhere}
   .offer-test-report td.num{white-space:nowrap}
+  .offer-test-report tfoot{background:#f8f9fb;font-weight:700}
+  [data-report-tabs]{margin-top:12px}
 
   /* ---------- 测试任务 vs 每日投放 ---------- */
   .rsec{display:flex;align-items:center;gap:8px;font-size:15px;margin:26px 0 4px;color:var(--ink)}
@@ -624,24 +626,66 @@
   <details class="rdetail" data-results="offer-tests-1114-1115" open>
     <summary>Offer 测试结果 · 11月10日、14日–15日</summary>
     <div class="rdetail-body">
-      <div class="sec">按 Offer 汇总（USD）</div>
+      <div class="tfolder" data-report-tabs>
+        <div class="ttabs" role="tablist" aria-label="按 Offer 查看测试结果">
+          <button type="button" class="ttab on" id="report-tab-zh-yoburn" role="tab" aria-controls="report-panel-zh-yoburn" aria-selected="true" style="--mc:#5652a3;--z:20"><span class="av">YOBURN</span></button>
+          <button type="button" class="ttab" id="report-tab-zh-glucobase" role="tab" aria-controls="report-panel-zh-glucobase" aria-selected="false" tabindex="-1" style="--mc:#a62941;--z:19"><span class="av">GlucoBase</span></button>
+        </div>
+        <div class="tbody">
+    <div class="tpanel" id="report-panel-zh-yoburn" role="tabpanel" aria-labelledby="report-tab-zh-yoburn">
+      <div class="sec">每日花费（USD）</div>
       <div class="tbl-wrap offer-test-report"><table>
-        <thead><tr><th scope="col">Offer</th><th scope="col">测试日期</th><th scope="col" class="num">总花费</th><th scope="col" class="num">CPC</th><th scope="col" class="num">出单</th><th scope="col" class="num">营业额</th></tr></thead>
+        <thead><tr><th scope="col">日期</th><th scope="col">平台</th><th scope="col" class="num">花费</th><th scope="col" class="num">CPC</th><th scope="col" class="num">出单</th><th scope="col" class="num">营业额</th></tr></thead>
         <tbody>
-          <tr><td><a class="ochip" href="#offer-yoburn"><span aria-hidden="true">⚖️</span> YOBURN</a></td><td>11月10日、15日</td><td class="num">$2,442.56</td><td class="num"><span title="按 549 次 RedTrack 点击估算">11月10日 · ≈ $3.65</span><br>11月15日 · ≈ $3</td><td class="num">3</td><td class="num">$750</td></tr>
-          <tr><td><a class="ochip" href="#offer-glucobase"><span aria-hidden="true">🩸</span> GlucoBase</a></td><td>11月14日–15日</td><td class="num">$1,199.46</td><td class="num">待补</td><td class="num">1</td><td class="num">$250</td></tr>
+          <tr><th scope="row">11月15日</th><td>Facebook</td><td class="num">$438.14</td><td class="num">≈ $3</td><td class="num">2</td><td class="num">$500</td></tr>
+          <tr><th scope="row">11月10日</th><td>Facebook</td><td class="num">$2,004.42</td><td class="num"><span title="按 549 次 RedTrack 点击估算">≈ $3.65</span></td><td class="num">1</td><td class="num">$250</td></tr>
+        </tbody>
+        <tfoot><tr><th scope="row" colspan="2">总计</th><td class="num">$2,442.56</td><td class="num">—</td><td class="num">3</td><td class="num">$750</td></tr></tfoot>
+      </table></div>
+      <div class="sec">出单 VSL</div>
+      <div class="tbl-wrap offer-test-report"><table>
+        <thead><tr><th scope="col">VSL</th><th scope="col" class="num">出单</th></tr></thead>
+        <tbody>
+          <tr><td class="mono"><span class="lvl-tag">390</span> FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD02-250)</td><td class="num">2</td></tr>
+          <tr><td class="mono"><span class="lvl-tag">391</span> FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD03-250)</td><td class="num">1</td></tr>
         </tbody>
       </table></div>
-      <div class="sec">出单广告与 VSL</div>
+      <div class="sec">出单 Ads</div>
       <div class="tbl-wrap offer-test-report"><table>
-        <thead><tr><th scope="col">日期</th><th scope="col">Offer</th><th scope="col">广告素材</th><th scope="col">出单 VSL</th><th scope="col" class="num">出单</th></tr></thead>
+        <thead><tr><th scope="col">广告素材</th><th scope="col" class="num">出单</th></tr></thead>
         <tbody>
-          <tr><td>11月15日</td><td><a class="ochip" href="#offer-yoburn"><span aria-hidden="true">⚖️</span> YOBURN</a></td><td class="mono">YBAD128_H1_C61_E12_868mue6az</td><td class="mono"><span class="lvl-tag">391</span> FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD03-250)</td><td class="num">1</td></tr>
-          <tr><td>11月15日</td><td><a class="ochip" href="#offer-yoburn"><span aria-hidden="true">⚖️</span> YOBURN</a></td><td class="mono">YBAD128_H1_C61_E12_868mue6az</td><td class="mono"><span class="lvl-tag">390</span> FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD02-250)</td><td class="num">1</td></tr>
-          <tr><td>11月15日</td><td><a class="ochip" href="#offer-glucobase"><span aria-hidden="true">🩸</span> GlucoBase</a></td><td class="mono">GSAD06_C41_E15_868mueajh</td><td class="mono"><span class="lvl-tag">403</span> FB-BH-BuyGoods-GlucoBase(MOD01-250)</td><td class="num">1</td></tr>
-          <tr><td>11月10日</td><td><a class="ochip" href="#offer-yoburn"><span aria-hidden="true">⚖️</span> YOBURN</a></td><td class="mono">YBAD91_H2_C45_E6_868mn4qcm</td><td class="mono"><span class="lvl-tag">390</span> FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD02-250)</td><td class="num">1</td></tr>
+          <tr><td class="mono">YBAD128_H1_C61_E12_868mue6az</td><td class="num">2</td></tr>
+          <tr><td class="mono">YBAD91_H2_C45_E6_868mn4qcm</td><td class="num">1</td></tr>
         </tbody>
       </table></div>
+    </div>
+    <div class="tpanel" id="report-panel-zh-glucobase" role="tabpanel" aria-labelledby="report-tab-zh-glucobase" hidden>
+      <div class="sec">每日花费（USD）</div>
+      <div class="tbl-wrap offer-test-report"><table>
+        <thead><tr><th scope="col">日期</th><th scope="col">平台</th><th scope="col" class="num">花费</th><th scope="col" class="num">CPC</th><th scope="col" class="num">出单</th><th scope="col" class="num">营业额</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">11月15日</th><td>NewsBreak</td><td class="num">$292.46</td><td class="num">$0.19</td><td class="num">1</td><td class="num">$250</td></tr>
+          <tr><th scope="row">11月14日</th><td>NewsBreak</td><td class="num">$907.00</td><td class="num">$0.58</td><td class="num">0</td><td class="num">$0</td></tr>
+        </tbody>
+        <tfoot><tr><th scope="row" colspan="2">总计</th><td class="num">$1,199.46</td><td class="num">—</td><td class="num">1</td><td class="num">$250</td></tr></tfoot>
+      </table></div>
+      <div class="sec">出单 VSL</div>
+      <div class="tbl-wrap offer-test-report"><table>
+        <thead><tr><th scope="col">VSL</th><th scope="col" class="num">出单</th></tr></thead>
+        <tbody>
+          <tr><td class="mono"><span class="lvl-tag">403</span> FB-BH-BuyGoods-GlucoBase(MOD01-250)</td><td class="num">1</td></tr>
+        </tbody>
+      </table></div>
+      <div class="sec">出单 Ads</div>
+      <div class="tbl-wrap offer-test-report"><table>
+        <thead><tr><th scope="col">广告素材</th><th scope="col" class="num">出单</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">GSAD06_C41_E15_868mueajh</td><td class="num">1</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+        </div>
+      </div>
     </div>
   </details>
   <details class="day first" data-date="2026-11-11" data-end="2026-11-11">
@@ -1310,24 +1354,66 @@
   <details class="rdetail" data-results="offer-tests-1114-1115" open>
     <summary>Offer test results · Nov 10, 14–15</summary>
     <div class="rdetail-body">
-      <div class="sec">Summary by offer (USD)</div>
+      <div class="tfolder" data-report-tabs>
+        <div class="ttabs" role="tablist" aria-label="Test results by offer">
+          <button type="button" class="ttab on" id="report-tab-en-yoburn" role="tab" aria-controls="report-panel-en-yoburn" aria-selected="true" style="--mc:#5652a3;--z:20"><span class="av">YOBURN</span></button>
+          <button type="button" class="ttab" id="report-tab-en-glucobase" role="tab" aria-controls="report-panel-en-glucobase" aria-selected="false" tabindex="-1" style="--mc:#a62941;--z:19"><span class="av">GlucoBase</span></button>
+        </div>
+        <div class="tbody">
+    <div class="tpanel" id="report-panel-en-yoburn" role="tabpanel" aria-labelledby="report-tab-en-yoburn">
+      <div class="sec">Daily spend (USD)</div>
       <div class="tbl-wrap offer-test-report"><table>
-        <thead><tr><th scope="col">Offer</th><th scope="col">Test dates</th><th scope="col" class="num">Total spend</th><th scope="col" class="num">CPC</th><th scope="col" class="num">Purchases</th><th scope="col" class="num">Revenue</th></tr></thead>
+        <thead><tr><th scope="col">Date</th><th scope="col">Platform</th><th scope="col" class="num">Spend</th><th scope="col" class="num">CPC</th><th scope="col" class="num">Purchases</th><th scope="col" class="num">Revenue</th></tr></thead>
         <tbody>
-          <tr><td><a class="ochip" href="#offer-yoburn"><span aria-hidden="true">⚖️</span> YOBURN</a></td><td>Nov 10, 15</td><td class="num">$2,442.56</td><td class="num"><span title="Estimated from 549 RedTrack clicks">Nov 10 · ≈ $3.65</span><br>Nov 15 · ≈ $3</td><td class="num">3</td><td class="num">$750</td></tr>
-          <tr><td><a class="ochip" href="#offer-glucobase"><span aria-hidden="true">🩸</span> GlucoBase</a></td><td>Nov 14–15</td><td class="num">$1,199.46</td><td class="num">Pending</td><td class="num">1</td><td class="num">$250</td></tr>
+          <tr><th scope="row">Nov 15</th><td>Facebook</td><td class="num">$438.14</td><td class="num">≈ $3</td><td class="num">2</td><td class="num">$500</td></tr>
+          <tr><th scope="row">Nov 10</th><td>Facebook</td><td class="num">$2,004.42</td><td class="num"><span title="Estimated from 549 RedTrack clicks">≈ $3.65</span></td><td class="num">1</td><td class="num">$250</td></tr>
+        </tbody>
+        <tfoot><tr><th scope="row" colspan="2">Total</th><td class="num">$2,442.56</td><td class="num">—</td><td class="num">3</td><td class="num">$750</td></tr></tfoot>
+      </table></div>
+      <div class="sec">VSL purchases</div>
+      <div class="tbl-wrap offer-test-report"><table>
+        <thead><tr><th scope="col">VSL</th><th scope="col" class="num">Purchases</th></tr></thead>
+        <tbody>
+          <tr><td class="mono"><span class="lvl-tag">390</span> FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD02-250)</td><td class="num">2</td></tr>
+          <tr><td class="mono"><span class="lvl-tag">391</span> FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD03-250)</td><td class="num">1</td></tr>
         </tbody>
       </table></div>
-      <div class="sec">Ads and VSLs with purchases</div>
+      <div class="sec">Ad purchases</div>
       <div class="tbl-wrap offer-test-report"><table>
-        <thead><tr><th scope="col">Date</th><th scope="col">Offer</th><th scope="col">Ad creative</th><th scope="col">VSL</th><th scope="col" class="num">Purchases</th></tr></thead>
+        <thead><tr><th scope="col">Ad creative</th><th scope="col" class="num">Purchases</th></tr></thead>
         <tbody>
-          <tr><td>Nov 15</td><td><a class="ochip" href="#offer-yoburn"><span aria-hidden="true">⚖️</span> YOBURN</a></td><td class="mono">YBAD128_H1_C61_E12_868mue6az</td><td class="mono"><span class="lvl-tag">391</span> FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD03-250)</td><td class="num">1</td></tr>
-          <tr><td>Nov 15</td><td><a class="ochip" href="#offer-yoburn"><span aria-hidden="true">⚖️</span> YOBURN</a></td><td class="mono">YBAD128_H1_C61_E12_868mue6az</td><td class="mono"><span class="lvl-tag">390</span> FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD02-250)</td><td class="num">1</td></tr>
-          <tr><td>Nov 15</td><td><a class="ochip" href="#offer-glucobase"><span aria-hidden="true">🩸</span> GlucoBase</a></td><td class="mono">GSAD06_C41_E15_868mueajh</td><td class="mono"><span class="lvl-tag">403</span> FB-BH-BuyGoods-GlucoBase(MOD01-250)</td><td class="num">1</td></tr>
-          <tr><td>Nov 10</td><td><a class="ochip" href="#offer-yoburn"><span aria-hidden="true">⚖️</span> YOBURN</a></td><td class="mono">YBAD91_H2_C45_E6_868mn4qcm</td><td class="mono"><span class="lvl-tag">390</span> FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD02-250)</td><td class="num">1</td></tr>
+          <tr><td class="mono">YBAD128_H1_C61_E12_868mue6az</td><td class="num">2</td></tr>
+          <tr><td class="mono">YBAD91_H2_C45_E6_868mn4qcm</td><td class="num">1</td></tr>
         </tbody>
       </table></div>
+    </div>
+    <div class="tpanel" id="report-panel-en-glucobase" role="tabpanel" aria-labelledby="report-tab-en-glucobase" hidden>
+      <div class="sec">Daily spend (USD)</div>
+      <div class="tbl-wrap offer-test-report"><table>
+        <thead><tr><th scope="col">Date</th><th scope="col">Platform</th><th scope="col" class="num">Spend</th><th scope="col" class="num">CPC</th><th scope="col" class="num">Purchases</th><th scope="col" class="num">Revenue</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Nov 15</th><td>NewsBreak</td><td class="num">$292.46</td><td class="num">$0.19</td><td class="num">1</td><td class="num">$250</td></tr>
+          <tr><th scope="row">Nov 14</th><td>NewsBreak</td><td class="num">$907.00</td><td class="num">$0.58</td><td class="num">0</td><td class="num">$0</td></tr>
+        </tbody>
+        <tfoot><tr><th scope="row" colspan="2">Total</th><td class="num">$1,199.46</td><td class="num">—</td><td class="num">1</td><td class="num">$250</td></tr></tfoot>
+      </table></div>
+      <div class="sec">VSL purchases</div>
+      <div class="tbl-wrap offer-test-report"><table>
+        <thead><tr><th scope="col">VSL</th><th scope="col" class="num">Purchases</th></tr></thead>
+        <tbody>
+          <tr><td class="mono"><span class="lvl-tag">403</span> FB-BH-BuyGoods-GlucoBase(MOD01-250)</td><td class="num">1</td></tr>
+        </tbody>
+      </table></div>
+      <div class="sec">Ad purchases</div>
+      <div class="tbl-wrap offer-test-report"><table>
+        <thead><tr><th scope="col">Ad creative</th><th scope="col" class="num">Purchases</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">GSAD06_C41_E15_868mueajh</td><td class="num">1</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+        </div>
+      </div>
     </div>
   </details>
   <details class="day first" data-date="2026-11-11" data-end="2026-11-11">
@@ -2266,12 +2352,35 @@
     var a=x.getAttribute("data-date"), b=x.getAttribute("data-end")||a;
     if(a<=td && td<=b) x.open=true;
   });
+  function activateFolderTab(tab){
+    var folder=tab.closest(".tfolder"), panelId=tab.getAttribute("aria-controls"), member=tab.getAttribute("data-m");
+    folder.querySelectorAll("button.ttab").forEach(function(button){
+      var active=button===tab;
+      button.classList.toggle("on",active);
+      if(panelId){
+        button.setAttribute("aria-selected",String(active));
+        button.tabIndex=active?0:-1;
+      }
+    });
+    folder.querySelectorAll(".tpanel").forEach(function(panel){
+      panel.hidden=panelId?panel.id!==panelId:panel.getAttribute("data-m")!==member;
+    });
+  }
+  document.addEventListener("keydown",function(e){
+    var tab=e.target.closest&&e.target.closest("[data-report-tabs] button.ttab");
+    if(!tab||!["ArrowLeft","ArrowRight","Home","End"].includes(e.key))return;
+    var tabs=Array.from(tab.closest(".ttabs").querySelectorAll("button.ttab")), index=tabs.indexOf(tab);
+    if(e.key==="Home")index=0;
+    else if(e.key==="End")index=tabs.length-1;
+    else index=(index+tabs.length+(e.key==="ArrowRight"?1:-1))%tabs.length;
+    e.preventDefault();
+    activateFolderTab(tabs[index]);
+    tabs[index].focus();
+  });
   document.addEventListener("click",function(e){
     var tb=e.target.closest&&e.target.closest("button.ttab");
     if(tb){
-      var box=tb.closest("details.task"), m=tb.getAttribute("data-m");
-      box.querySelectorAll("button.ttab").forEach(function(x){x.classList.toggle("on",x===tb);});
-      box.querySelectorAll(".tpanel").forEach(function(p){p.hidden=p.getAttribute("data-m")!==m;});
+      activateFolderTab(tb);
       return;
     }
     var a=e.target.closest&&e.target.closest("a.dbtn");
