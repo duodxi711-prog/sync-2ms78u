@@ -291,6 +291,7 @@
   details.rdetail>summary::before{content:"";width:8px;height:8px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-45deg);transition:transform .15s}
   details.rdetail[open]>summary::before{transform:rotate(45deg)}
   .rdetail-body>.rhero{margin-top:12px}
+  .rdetail-body [data-report-member] td{overflow-wrap:anywhere}
 
   /* ---------- 测试任务 vs 每日投放 ---------- */
   .rsec{display:flex;align-items:center;gap:8px;font-size:15px;margin:26px 0 4px;color:var(--ink)}
@@ -619,8 +620,44 @@
   </div></div>
   </details>
   <h3 class="rsec"><span class="rsec-dot daily"></span>每日投放</h3>
+  <details class="rdetail" data-results="glucobase-lbg" open>
+    <summary>GlucoBase 详细结果 · LBG</summary>
+    <div class="rdetail-body">
+      <div class="rhero">
+        <div class="rh-top"><a class="ochip" href="#offer-glucobase"><span aria-hidden="true">🩸</span> GlucoBase</a><span class="rh-s">11月14日–15日 · NewsBreak VSL</span></div>
+        <div class="rstats">
+      <div class="rstat"><div class="l">总花费</div><div class="v">$1,199.46</div></div>
+      <div class="rstat"><div class="l">出单</div><div class="v">1</div></div>
+      <div class="rstat"><div class="l">营业额</div><div class="v">$250</div></div>
+      <div class="rstat"><div class="l">ROAS</div><div class="v">0.21</div></div>
+        </div>
+      </div>
+    <details class="day" data-date="2026-11-15" data-report-member="LBG" open>
+      <summary class="day-h"><span class="dchev"></span><span class="dd">11月15日</span><span class="dsum">花费 $292.46 · 出单 1 · 营业额 $250 · ROAS 0.85</span></summary>
+      <div class="tbl-wrap vtbl"><table>
+        <thead><tr><th scope="col">项目</th><th scope="col">详情</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">CPC</th><td>待补</td></tr>
+          <tr><th scope="row">出单 VSL</th><td class="mono">FB-BH-BuyGoods-GlucoBase(MOD01-250)</td></tr>
+          <tr><th scope="row">产生转化的广告素材</th><td><span class="mono">GSAD06_C41_E15_868mueajh</span><br>素材花费 $200 · 6 IC · 转化 1</td></tr>
+        </tbody>
+      </table></div>
+      <p class="cat">素材花费为当日花费明细。</p>
+    </details>
+    <details class="day" data-date="2026-11-14" data-report-member="LBG">
+      <summary class="day-h"><span class="dchev"></span><span class="dd">11月14日</span><span class="dsum">花费 $907 · 出单 0 · 营业额 $0 · ROAS 0.00</span></summary>
+      <div class="tbl-wrap vtbl"><table>
+        <thead><tr><th scope="col">项目</th><th scope="col">详情</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">CPC</th><td>待补</td></tr>
+          <tr><th scope="row">出单</th><td>当天无出单。</td></tr>
+        </tbody>
+      </table></div>
+    </details>
+    </div>
+  </details>
   <details class="day first" data-date="2026-11-11" data-end="2026-11-11">
-  <summary class="day-h"><span class="dchev"></span><span class="dd">11月11日</span><span class="dw">周三</span><span class="dk plan">每日投放</span><span class="dk latest">最新</span></summary>
+  <summary class="day-h"><span class="dchev"></span><span class="dd">11月11日</span><span class="dw">周三</span><span class="dk plan">每日投放</span></summary>
   <div class="mgrid">
   <div class="mcard" style="--mc:#7c3aed"><div class="mh"><span class="av">GZ</span><span class="mc-n">1 个 offer</span></div><div class="ent"><a class="ochip" href="#offer-vapobrain"><i class="ci" data-ci="brain"></i>VapoBrain</a><div class="eres pend">结果待更新</div></div></div>
   <div class="mcard" style="--mc:#2f6fe4"><div class="mh"><span class="av">ZAY</span><span class="mc-n">2 个 offer</span></div><div class="ent"><a class="ochip" href="#offer-yoburn"><i class="ci" data-ci="weight"></i>YOBURN</a><div class="eres pend">结果待更新</div></div><div class="ent"><a class="ochip" href="#offer-neurotamine"><i class="ci" data-ci="brain"></i>NeuroTamine</a><div class="eres pend">结果待更新</div></div></div>
@@ -1282,8 +1319,44 @@
   </div></div>
   </details>
   <h3 class="rsec"><span class="rsec-dot daily"></span>Daily runs</h3>
+  <details class="rdetail" data-results="glucobase-lbg" open>
+    <summary>GlucoBase detailed results · LBG</summary>
+    <div class="rdetail-body">
+      <div class="rhero">
+        <div class="rh-top"><a class="ochip" href="#offer-glucobase"><span aria-hidden="true">🩸</span> GlucoBase</a><span class="rh-s">Nov 14–15 · NewsBreak VSL</span></div>
+        <div class="rstats">
+      <div class="rstat"><div class="l">Total spend</div><div class="v">$1,199.46</div></div>
+      <div class="rstat"><div class="l">Sales</div><div class="v">1</div></div>
+      <div class="rstat"><div class="l">Revenue</div><div class="v">$250</div></div>
+      <div class="rstat"><div class="l">ROAS</div><div class="v">0.21</div></div>
+        </div>
+      </div>
+    <details class="day" data-date="2026-11-15" data-report-member="LBG" open>
+      <summary class="day-h"><span class="dchev"></span><span class="dd">Nov 15</span><span class="dsum">Spend $292.46 · 1 sale · Revenue $250 · ROAS 0.85</span></summary>
+      <div class="tbl-wrap vtbl"><table>
+        <thead><tr><th scope="col">Item</th><th scope="col">Details</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">CPC</th><td>Pending</td></tr>
+          <tr><th scope="row">VSL with a sale</th><td class="mono">FB-BH-BuyGoods-GlucoBase(MOD01-250)</td></tr>
+          <tr><th scope="row">Creative with a conversion</th><td><span class="mono">GSAD06_C41_E15_868mueajh</span><br>Creative spend $200 · 6 IC · 1 conversion</td></tr>
+        </tbody>
+      </table></div>
+      <p class="cat">Creative spend is included in the daily spend.</p>
+    </details>
+    <details class="day" data-date="2026-11-14" data-report-member="LBG">
+      <summary class="day-h"><span class="dchev"></span><span class="dd">Nov 14</span><span class="dsum">Spend $907 · 0 sales · Revenue $0 · ROAS 0.00</span></summary>
+      <div class="tbl-wrap vtbl"><table>
+        <thead><tr><th scope="col">Item</th><th scope="col">Details</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">CPC</th><td>Pending</td></tr>
+          <tr><th scope="row">Sales</th><td>No sales recorded that day.</td></tr>
+        </tbody>
+      </table></div>
+    </details>
+    </div>
+  </details>
   <details class="day first" data-date="2026-11-11" data-end="2026-11-11">
-  <summary class="day-h"><span class="dchev"></span><span class="dd">Nov 11</span><span class="dw">Wed</span><span class="dk plan">Daily run</span><span class="dk latest">Latest</span></summary>
+  <summary class="day-h"><span class="dchev"></span><span class="dd">Nov 11</span><span class="dw">Wed</span><span class="dk plan">Daily run</span></summary>
   <div class="mgrid">
   <div class="mcard" style="--mc:#7c3aed"><div class="mh"><span class="av">GZ</span><span class="mc-n">1 offer</span></div><div class="ent"><a class="ochip" href="#offer-vapobrain"><i class="ci" data-ci="brain"></i>VapoBrain</a><div class="eres pend">Results pending</div></div></div>
   <div class="mcard" style="--mc:#2f6fe4"><div class="mh"><span class="av">ZAY</span><span class="mc-n">2 offers</span></div><div class="ent"><a class="ochip" href="#offer-yoburn"><i class="ci" data-ci="weight"></i>YOBURN</a><div class="eres pend">Results pending</div></div><div class="ent"><a class="ochip" href="#offer-neurotamine"><i class="ci" data-ci="brain"></i>NeuroTamine</a><div class="eres pend">Results pending</div></div></div>
