@@ -526,7 +526,7 @@
   <h3 class="rsec"><span class="rsec-dot task"></span>测试任务</h3>
   <details class="day task" data-date="2026-11-16" data-test="glucobase-yoburn-2026-11-16" open>
   <summary class="day-h"><span class="dchev"></span><span class="dk task">测试任务</span><span class="dd">GlucoBase / YOBURN 新素材测试</span><span class="dw">11月16日</span><span class="dsum">49 条视频 · 29 组素材</span></summary>
-  <div class="dnote">按文件夹分散测试。同一素材的 H1/H2 归同一人。上线后在「我的任务」勾选，结果出来后再补写。</div>
+  <div class="dnote">按文件夹分散测试。同一素材的 H1/H2 归同一人。</div>
   <div class="tfolder"><div class="ttabs" role="tablist">
     <button type="button" role="tab" class="ttab on" data-m="ZAY" style="--mc:#2f6fe4;--z:20"><span class="av">ZAY</span><small>13</small></button>
     <button type="button" role="tab" class="ttab" data-m="GZ" style="--mc:#7c3aed;--z:19"><span class="av">GZ</span><small>12</small></button>
@@ -1189,7 +1189,7 @@
   <h3 class="rsec"><span class="rsec-dot task"></span>Test tasks</h3>
   <details class="day task" data-date="2026-11-16" data-test="glucobase-yoburn-2026-11-16" open>
   <summary class="day-h"><span class="dchev"></span><span class="dk task">Test task</span><span class="dd">GlucoBase / YOBURN creative test</span><span class="dw">Nov 16</span><span class="dsum">49 videos · 29 creative groups</span></summary>
-  <div class="dnote">Assignments are spread across folders. H1/H2 versions of the same creative go to one person. Check off launched videos in My Tasks and add results when available.</div>
+  <div class="dnote">Assignments are spread across folders. H1/H2 versions of the same creative go to one person.</div>
   <div class="tfolder"><div class="ttabs" role="tablist">
     <button type="button" role="tab" class="ttab on" data-m="ZAY" style="--mc:#2f6fe4;--z:20"><span class="av">ZAY</span><small>13</small></button>
     <button type="button" role="tab" class="ttab" data-m="GZ" style="--mc:#7c3aed;--z:19"><span class="av">GZ</span><small>12</small></button>
@@ -1978,6 +1978,8 @@
   }
   function upsert(r){if(!r)return;for(var i=0;i<st.tasks.length;i++){if(st.tasks[i].id===r.id){st.tasks[i]=r;return;}}}
   function hhmm(d){return ("0"+d.getHours()).slice(-2)+":"+("0"+d.getMinutes()).slice(-2);}
+  var planningFolders=new Set(["GlucoBase|GLUCOBASE 01 - PACK - GSAD01 A GSAD03","GlucoBase|GLUCOBASE 01 - PACK - GSAD04 A GSAD06","GlucoBase|GLUCOBASE 01 - PACK - GSAD07 A GSAD11","GlucoBase|GLUCOBASE 01 - PACK - GSAD12 A GSAD16","YOBURN|YOBURN 02 - PACK - YBAD126 A YBAD128","YOBURN|YOBURN 02 - PACK - YBAD134 A YBAD138","YOBURN|YOBURN 02 - PACK - YBAD174 A YBAD178"]);
+  function tracksLaunch(task){return !planningFolders.has(task.offer+"|"+task.folder);}
   function render(){
     document.querySelectorAll("#tk-app [data-i]").forEach(function(el){el.textContent=t(el.getAttribute("data-i"));});
     var root=document.getElementById("tk-root"); if(!root) return;
@@ -1995,43 +1997,52 @@
       return;
     }
     var mine=st.tasks.filter(function(x){return x.claimed_by===m;});
-    var nd=mine.filter(function(x){return x.done;}).length, pct=mine.length?Math.round(nd/mine.length*100):0;
+    var tracked=mine.filter(tracksLaunch), nd=tracked.filter(function(x){return x.done;}).length;
+    var pct=tracked.length?Math.round(nd/tracked.length*100):0;
+    var filter=tracked.length?st.filter:"all";
     h+='<div class="tk-head"><span class="tk-av" style="--mc:'+(COLOR[m]||"#888")+'">'+m+'</span><span class="nm">'+t("tasks")(m)+'</span><span class="sp"></span>'+
        (st.updated?'<span class="tk-upd">'+t("updated")+' '+hhmm(st.updated)+'</span>':'')+
        '<button class="tk-ib" id="tk-refresh" title="'+t("refresh")+'" aria-label="'+t("refresh")+'">'+ic("refresh")+'</button>'+
        '<button class="tk-ib" id="tk-switch" title="'+t("switchMe")+'">'+ic("swap")+'<span>'+t("switchMe")+'</span></button></div>';
-    h+='<div class="tk-stats"><div class="tk-stat"><div class="l">'+t("total")+'</div><div class="v">'+mine.length+'</div></div>'+
-       '<div class="tk-stat"><div class="l">'+t("launched")+'</div><div class="v" style="color:#13865f">'+nd+'</div></div>'+
-       '<div class="tk-stat" style="flex:1;min-width:180px"><div class="l">'+t("pending")+' · '+pct+'%</div><div class="v">'+(mine.length-nd)+'</div><div class="tk-bar"><i style="width:'+pct+'%"></i></div></div></div>';
+    h+='<div class="tk-stats"><div class="tk-stat"><div class="l">'+t("total")+'</div><div class="v">'+mine.length+'</div></div>';
+    if(tracked.length){
+      h+='<div class="tk-stat"><div class="l">'+t("launched")+'</div><div class="v" style="color:#13865f">'+nd+'</div></div>'+
+         '<div class="tk-stat" style="flex:1;min-width:180px"><div class="l">'+t("pending")+' · '+pct+'%</div><div class="v">'+(tracked.length-nd)+'</div><div class="tk-bar"><i style="width:'+pct+'%"></i></div></div>';
+    }
+    h+='</div>';
     // 全队进度
-    var team=MEMBERS.map(function(x){var a=st.tasks.filter(function(y){return y.claimed_by===x[0];});return [x[0],x[1],a.filter(function(y){return y.done;}).length,a.length];}).filter(function(x){return x[3];});
+    var team=MEMBERS.map(function(x){var a=st.tasks.filter(function(y){return y.claimed_by===x[0]&&tracksLaunch(y);});return [x[0],x[1],a.filter(function(y){return y.done;}).length,a.length];}).filter(function(x){return x[3];});
     if(team.length) h+='<div class="tk-team">'+t("team")+'：'+team.map(function(x){return '<span class="c" style="--mc:'+x[1]+'"><b>'+x[0]+'</b>'+x[2]+' / '+x[3]+'</span>';}).join("")+'</div>';
     if(st.msg) h+='<div class="tk-msg '+st.msgCls+'">'+esc(st.msg)+'</div>';
-    h+='<div class="tk-seg">'+[["all","all"],["todo","todo"],["done","done"]].map(function(f){return '<button data-f="'+f[0]+'" class="'+(st.filter===f[0]?"on":"")+'">'+t(f[1])+'</button>';}).join("")+'</div>';
-    var rows=mine.filter(function(x){return st.filter==="all"||(st.filter==="done"?x.done:!x.done);});
+    if(tracked.length) h+='<div class="tk-seg">'+[["all","all"],["todo","todo"],["done","done"]].map(function(f){return '<button data-f="'+f[0]+'" class="'+(filter===f[0]?"on":"")+'">'+t(f[1])+'</button>';}).join("")+'</div>';
+    var rows=filter==="all"?mine:tracked.filter(function(x){return filter==="done"?x.done:!x.done;});
     h+='<div class="'+(st.busy?"tk-busy":"")+'">';
     if(!mine.length) h+='<div class="tk-box"><div class="tk-empty">'+t("empty")+'</div></div>';
     else if(!rows.length) h+='<div class="tk-box"><div class="tk-empty">'+t("emptyF")+'</div></div>';
-    var groups={}, order={}, auto=st.filter!=="all";
+    var groups={}, order={}, auto=filter!=="all";
     rows.forEach(function(x){(groups[x.offer]=groups[x.offer]||{});var f=x.folder||"";(groups[x.offer][f]=groups[x.offer][f]||[]).push(x);var k=x.offer+"|"+f;if(!(k in order)||x.id<order[k])order[k]=x.id;});
     Object.keys(groups).sort(function(a,b){var ia=OFFERS.indexOf(a),ib=OFFERS.indexOf(b);return (ia<0?99:ia)-(ib<0?99:ib)||a.localeCompare(b);}).forEach(function(o){
       var all=mine.filter(function(x){return x.offer===o;});
-      h+='<div class="tk-grp"><div class="tk-grp-h">'+(OCI[o]?'<i class="ci" data-ci="'+OCI[o]+'"></i>':'')+esc(o)+'<span class="cat">'+all.filter(function(x){return x.done;}).length+' / '+all.length+'</span>'+
+      var launchTasks=all.filter(tracksLaunch);
+      var progress=launchTasks.length?launchTasks.filter(function(x){return x.done;}).length+' / '+launchTasks.length:all.length;
+      h+='<div class="tk-grp"><div class="tk-grp-h">'+(OCI[o]?'<i class="ci" data-ci="'+OCI[o]+'"></i>':'')+esc(o)+'<span class="cat">'+progress+'</span>'+
          '<span style="flex:1"></span><button class="tk-ib tk-sm" data-openall="'+esc(o)+'" title="'+t("expandAll")+'">'+ic("expand")+'</button><button class="tk-ib tk-sm" data-closeall="'+esc(o)+'" title="'+t("collapseAll")+'">'+ic("collapse")+'</button></div>'+
          '<div class="tk-root-path">'+ic("folder")+'<span>'+esc(DRIVE_ROOT)+'</span></div>';
       Object.keys(groups[o]).sort(function(a,b){return order[o+"|"+a]-order[o+"|"+b];}).forEach(function(f){
-        var g=groups[o][f], fall=all.filter(function(x){return (x.folder||"")===f;}), fd=fall.filter(function(x){return x.done;}).length;
+        var g=groups[o][f], fall=all.filter(function(x){return (x.folder||"")===f;});
+        var trackFolder=tracksLaunch(g[0]), fd=fall.filter(function(x){return x.done;}).length;
+        var folderStatus=trackFolder?t("fprog")(fd,fall.length):fall.length;
         var key=o+"|"+f, open=auto||!!st.open[key], path=drivePath(o,f);
         var crumbs=path.map(function(seg,i){return '<span class="'+(i===path.length-1?"last":"")+'">'+esc(seg)+'</span>';}).join('<i class="sep">/</i>');
         h+='<div class="tk-fold'+(open?" open":"")+'"><div class="tk-fold-h" data-fold="'+esc(key)+'"><span class="tk-chev"></span><span class="tk-fic">'+ic("folder")+'</span>'+
-           '<span class="tk-path">'+crumbs+'</span><span class="tk-fstat'+(fd===fall.length?" all":"")+'">'+t("fprog")(fd,fall.length)+'</span>'+
+           '<span class="tk-path">'+crumbs+'</span><span class="tk-fstat'+(trackFolder&&fd===fall.length?" all":"")+'">'+folderStatus+'</span>'+
            '<button class="tk-ib tk-sm" data-copypath="'+esc(DRIVE_ROOT+" / "+path.join(" / "))+'" title="'+t("copyPath")+'">'+ic("copy")+'</button></div>';
         if(open){
-          h+='<div class="tbl-wrap tk-tbl"><table><thead><tr><th>'+t("cr")+'</th><th class="h-nt">'+t("note")+'</th><th>'+t("st")+'</th><th>'+t("res")+'</th></tr></thead><tbody>';
+          h+='<div class="tbl-wrap tk-tbl"><table><thead><tr><th>'+t("cr")+'</th><th class="h-nt">'+t("note")+'</th>'+(trackFolder?'<th>'+t("st")+'</th>':'')+'<th>'+t("res")+'</th></tr></thead><tbody>';
           g.forEach(function(x){
             var nt=[x.vsl?("VSL "+x.vsl):"",x.note||""].filter(Boolean).join(" · ");
-            h+='<tr class="'+(x.done?"done":"")+'"><td class="cr">'+esc(x.creative)+'</td><td class="nt">'+esc(nt)+'</td>'+
-               '<td class="ck"><label class="tk-chk"><input type="checkbox" data-done="'+x.id+'"'+(x.done?" checked":"")+'><span>'+t("st")+'</span></label></td>'+
+            h+='<tr class="'+(trackFolder&&x.done?"done":"")+'"><td class="cr">'+esc(x.creative)+'</td><td class="nt">'+esc(nt)+'</td>'+
+               (trackFolder?'<td class="ck"><label class="tk-chk"><input type="checkbox" data-done="'+x.id+'"'+(x.done?" checked":"")+'><span>'+t("st")+'</span></label></td>':'')+
                '<td><input class="tk-res" data-res="'+x.id+'" value="'+esc(x.result||"")+'" placeholder="'+t("resPh")+'"></td></tr>';
           });
           h+='</tbody></table></div>';
