@@ -1867,21 +1867,14 @@
   .tk-ib{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:32px;padding:0 10px;border:1px solid var(--line);background:#fff;color:var(--ink2);border-radius:8px;cursor:pointer;font:inherit;font-size:13px}
   .tk-ib:hover{color:var(--ink);border-color:#c9cfd8}
   .tk-ib svg{width:15px;height:15px}
-  .tk-stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-  .tk-stat{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 16px;min-width:110px}
-  .tk-stat .l{font-size:12px;color:var(--muted)}
-  .tk-stat .v{font-size:22px;font-weight:700;line-height:1.3}
-  .tk-bar{height:6px;border-radius:999px;background:var(--line2);overflow:hidden;margin-top:6px}
-  .tk-bar i{display:block;height:100%;background:var(--accent);border-radius:999px}
-  .tk-team{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;font-size:12.5px;color:var(--muted);align-items:center}
-  .tk-team span.c{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line2);border-radius:999px;padding:2px 10px 2px 3px}
-  .tk-team span.c b{font-size:11px;color:#fff;background:var(--mc);padding:1px 7px;border-radius:999px}
   .tk-seg{display:inline-flex;gap:6px;margin-top:16px}
   .tk-seg button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:4px 12px;font:inherit;font-size:13px;font-weight:600;color:var(--ink2);cursor:pointer}
   .tk-seg button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
   .tk-grp{margin-top:16px}
   .tk-grp-h{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;margin-bottom:4px}
   .tk-grp-h .cat{font-weight:500}
+  .tk-offer-toggle{min-width:0;flex:1;justify-content:flex-start;height:36px;padding:0 10px;font-size:15px;font-weight:700}
+  .tk-offer-toggle[aria-expanded="true"] .tk-chev{transform:rotate(45deg)}
   .tk-root-path{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);margin:2px 0 6px 2px}
   .tk-root-path svg{width:14px;height:14px;color:#4aa3e8}
   .tk-fold{border:1px solid var(--line);border-radius:10px;background:#fff;margin-top:8px;overflow:hidden}
@@ -1922,7 +1915,6 @@
   var SB_URL = "https://sovltgzuzgsijebbtyms.supabase.co";
   var SB_KEY = "sb_publishable_3pcN0anu9HAIL2DD0gIQSQ_N3-JOgpZ";
   var MEMBERS = [["GZ","#7c3aed"],["ZAY","#2f6fe4"],["ZXQY","#d63384"],["DZC","#0f9a7a"]];
-  var OFFERS = ["VisiVra","SlimZol","LungVicks","VapoBrain","YOBURN","NeuroTamine","GlucoBase"];
   var OCI = {VisiVra:"eye",SlimZol:"weight",LungVicks:"lungs",VapoBrain:"brain",YOBURN:"weight",NeuroTamine:"brain"};
   var COLOR = {}; MEMBERS.forEach(function(m){COLOR[m[0]]=m[1];});
   // 云盘路径：offer 根目录 + 文件夹在云盘里的子路径
@@ -1942,18 +1934,16 @@
   var L = {
     zh:{title:"我的任务",ask:"你是谁？",askHint:"输入你的名字首字母",enter:"进入",unknown:"没有这个成员，请检查名字首字母。",ph:"名字首字母",
         tasks:function(m){return m+" 的任务";},switchMe:"切换",refresh:"刷新",updated:"更新于",
-        total:"我的任务",launched:"已上线",pending:"未上线",team:"全队进度",
         all:"全部",todo:"未上线",done:"已上线",cr:"素材",note:"备注",st:"已上线",res:"结果",resPh:"写结果，回车保存",
-        empty:"目前没有分给你的任务。",emptyF:"没有符合条件的任务。",nofolder:"未分组",
+        expandOffer:"展开",collapseOffer:"收起",empty:"目前没有分给你的任务。",emptyF:"没有符合条件的任务。",nofolder:"未分组",
         netErr:"连接失败，请检查网络后重试。",saved:"已保存",copyPath:"复制云盘路径",copied:"已复制路径",expandAll:"全部展开",collapseAll:"全部收起",fprog:function(d,n){return "已上线 "+d+" / "+n;}},
     en:{title:"My Tasks",ask:"Who are you?",askHint:"Enter the initials of your name",enter:"Enter",unknown:"No such member — check your initials.",ph:"Initials",
         tasks:function(m){return m+"'s tasks";},switchMe:"Switch",refresh:"Refresh",updated:"Updated",
-        total:"My tasks",launched:"Launched",pending:"Not launched",team:"Team progress",
         all:"All",todo:"Not launched",done:"Launched",cr:"Creative",note:"Note",st:"Launched",res:"Result",resPh:"Type a result, Enter to save",
-        empty:"No tasks assigned to you yet.",emptyF:"No tasks match.",nofolder:"No folder",
+        expandOffer:"Expand",collapseOffer:"Collapse",empty:"No tasks assigned to you yet.",emptyF:"No tasks match.",nofolder:"No folder",
         netErr:"Connection failed, please check your network and retry.",saved:"Saved",copyPath:"Copy drive path",copied:"Path copied",expandAll:"Expand all",collapseAll:"Collapse all",fprog:function(d,n){return d+" / "+n+" launched";}}
   };
-  var st={tasks:[],filter:"all",msg:"",msgCls:"",busy:false,updated:null,open:{}};
+  var st={tasks:[],filter:"all",msg:"",msgCls:"",busy:false,updated:null,open:{},expandedOffers:new Map([["VisiVra",false]])};
   function lang(){return document.documentElement.getAttribute("data-lang")==="en"?"en":"zh";}
   function t(k){return L[lang()][k];}
   function get(k){try{return localStorage.getItem(k)||"";}catch(e){return "";}}
@@ -1980,6 +1970,7 @@
   function hhmm(d){return ("0"+d.getHours()).slice(-2)+":"+("0"+d.getMinutes()).slice(-2);}
   var planningFolders=new Set(["GlucoBase|GLUCOBASE 01 - PACK - GSAD01 A GSAD03","GlucoBase|GLUCOBASE 01 - PACK - GSAD04 A GSAD06","GlucoBase|GLUCOBASE 01 - PACK - GSAD07 A GSAD11","GlucoBase|GLUCOBASE 01 - PACK - GSAD12 A GSAD16","YOBURN|YOBURN 02 - PACK - YBAD126 A YBAD128","YOBURN|YOBURN 02 - PACK - YBAD134 A YBAD138","YOBURN|YOBURN 02 - PACK - YBAD174 A YBAD178"]);
   function tracksLaunch(task){return !planningFolders.has(task.offer+"|"+task.folder);}
+  function taskTime(task){return Math.max(Date.parse(task.created_at)||0,Date.parse(task.claimed_at)||0);}
   function render(){
     document.querySelectorAll("#tk-app [data-i]").forEach(function(el){el.textContent=t(el.getAttribute("data-i"));});
     var root=document.getElementById("tk-root"); if(!root) return;
@@ -1997,42 +1988,44 @@
       return;
     }
     var mine=st.tasks.filter(function(x){return x.claimed_by===m;});
-    var tracked=mine.filter(tracksLaunch), nd=tracked.filter(function(x){return x.done;}).length;
-    var pct=tracked.length?Math.round(nd/tracked.length*100):0;
+    var tracked=mine.filter(tracksLaunch);
     var filter=tracked.length?st.filter:"all";
     h+='<div class="tk-head"><span class="tk-av" style="--mc:'+(COLOR[m]||"#888")+'">'+m+'</span><span class="nm">'+t("tasks")(m)+'</span><span class="sp"></span>'+
        (st.updated?'<span class="tk-upd">'+t("updated")+' '+hhmm(st.updated)+'</span>':'')+
        '<button class="tk-ib" id="tk-refresh" title="'+t("refresh")+'" aria-label="'+t("refresh")+'">'+ic("refresh")+'</button>'+
        '<button class="tk-ib" id="tk-switch" title="'+t("switchMe")+'">'+ic("swap")+'<span>'+t("switchMe")+'</span></button></div>';
-    h+='<div class="tk-stats"><div class="tk-stat"><div class="l">'+t("total")+'</div><div class="v">'+mine.length+'</div></div>';
-    if(tracked.length){
-      h+='<div class="tk-stat"><div class="l">'+t("launched")+'</div><div class="v" style="color:#13865f">'+nd+'</div></div>'+
-         '<div class="tk-stat" style="flex:1;min-width:180px"><div class="l">'+t("pending")+' · '+pct+'%</div><div class="v">'+(tracked.length-nd)+'</div><div class="tk-bar"><i style="width:'+pct+'%"></i></div></div>';
-    }
-    h+='</div>';
-    // 全队进度
-    var team=MEMBERS.map(function(x){var a=st.tasks.filter(function(y){return y.claimed_by===x[0]&&tracksLaunch(y);});return [x[0],x[1],a.filter(function(y){return y.done;}).length,a.length];}).filter(function(x){return x[3];});
-    if(team.length) h+='<div class="tk-team">'+t("team")+'：'+team.map(function(x){return '<span class="c" style="--mc:'+x[1]+'"><b>'+x[0]+'</b>'+x[2]+' / '+x[3]+'</span>';}).join("")+'</div>';
     if(st.msg) h+='<div class="tk-msg '+st.msgCls+'">'+esc(st.msg)+'</div>';
     if(tracked.length) h+='<div class="tk-seg">'+[["all","all"],["todo","todo"],["done","done"]].map(function(f){return '<button data-f="'+f[0]+'" class="'+(filter===f[0]?"on":"")+'">'+t(f[1])+'</button>';}).join("")+'</div>';
     var rows=filter==="all"?mine:tracked.filter(function(x){return filter==="done"?x.done:!x.done;});
     h+='<div class="'+(st.busy?"tk-busy":"")+'">';
     if(!mine.length) h+='<div class="tk-box"><div class="tk-empty">'+t("empty")+'</div></div>';
     else if(!rows.length) h+='<div class="tk-box"><div class="tk-empty">'+t("emptyF")+'</div></div>';
-    var groups={}, order={}, auto=filter!=="all";
-    rows.forEach(function(x){(groups[x.offer]=groups[x.offer]||{});var f=x.folder||"";(groups[x.offer][f]=groups[x.offer][f]||[]).push(x);var k=x.offer+"|"+f;if(!(k in order)||x.id<order[k])order[k]=x.id;});
-    Object.keys(groups).sort(function(a,b){var ia=OFFERS.indexOf(a),ib=OFFERS.indexOf(b);return (ia<0?99:ia)-(ib<0?99:ib)||a.localeCompare(b);}).forEach(function(o){
+    var groups=new Map(), auto=filter!=="all";
+    rows.sort(function(a,b){return taskTime(b)-taskTime(a)||b.id-a.id;}).forEach(function(x){
+      if(!groups.has(x.offer)) groups.set(x.offer,new Map());
+      var folders=groups.get(x.offer), folder=x.folder||"";
+      if(!folders.has(folder)) folders.set(folder,[]);
+      folders.get(folder).push(x);
+    });
+    groups.forEach(function(folders,o){
       var all=mine.filter(function(x){return x.offer===o;});
       var launchTasks=all.filter(tracksLaunch);
       var progress=launchTasks.length?launchTasks.filter(function(x){return x.done;}).length+' / '+launchTasks.length:all.length;
-      h+='<div class="tk-grp"><div class="tk-grp-h">'+(OCI[o]?'<i class="ci" data-ci="'+OCI[o]+'"></i>':'')+esc(o)+'<span class="cat">'+progress+'</span>'+
-         '<span style="flex:1"></span><button class="tk-ib tk-sm" data-openall="'+esc(o)+'" title="'+t("expandAll")+'">'+ic("expand")+'</button><button class="tk-ib tk-sm" data-closeall="'+esc(o)+'" title="'+t("collapseAll")+'">'+ic("collapse")+'</button></div>'+
-         '<div class="tk-root-path">'+ic("folder")+'<span>'+esc(DRIVE_ROOT)+'</span></div>';
-      Object.keys(groups[o]).sort(function(a,b){return order[o+"|"+a]-order[o+"|"+b];}).forEach(function(f){
-        var g=groups[o][f], fall=all.filter(function(x){return (x.folder||"")===f;});
+      var expanded=st.expandedOffers.get(o)!==false, offerId=encodeURIComponent(o);
+      h+='<div class="tk-grp"><div class="tk-grp-h">'+
+         '<button type="button" class="tk-ib tk-offer-toggle" id="tk-toggle-'+offerId+'" data-offer-toggle="'+esc(o)+'" aria-expanded="'+expanded+'" aria-controls="tk-offer-'+offerId+'" title="'+t(expanded?"collapseOffer":"expandOffer")+'">'+
+         '<span class="tk-chev" aria-hidden="true"></span>'+(OCI[o]?'<i class="ci" data-ci="'+OCI[o]+'" aria-hidden="true"></i>':'')+esc(o)+'<span class="cat">'+progress+'</span></button>';
+      if(!expanded){
+        h+='</div><div id="tk-offer-'+offerId+'" hidden></div></div>';
+        return;
+      }
+      h+='<button class="tk-ib tk-sm" data-openall="'+esc(o)+'" title="'+t("expandAll")+'">'+ic("expand")+'</button><button class="tk-ib tk-sm" data-closeall="'+esc(o)+'" title="'+t("collapseAll")+'">'+ic("collapse")+'</button></div>'+
+         '<div id="tk-offer-'+offerId+'"><div class="tk-root-path">'+ic("folder")+'<span>'+esc(DRIVE_ROOT)+'</span></div>';
+      folders.forEach(function(g,f){
+        var fall=all.filter(function(x){return (x.folder||"")===f;});
         var trackFolder=tracksLaunch(g[0]), fd=fall.filter(function(x){return x.done;}).length;
         var folderStatus=trackFolder?t("fprog")(fd,fall.length):fall.length;
-        var key=o+"|"+f, open=auto||!!st.open[key], path=drivePath(o,f);
+        var key=o+"|"+f, open=st.open[key]??auto, path=drivePath(o,f);
         var crumbs=path.map(function(seg,i){return '<span class="'+(i===path.length-1?"last":"")+'">'+esc(seg)+'</span>';}).join('<i class="sep">/</i>');
         h+='<div class="tk-fold'+(open?" open":"")+'"><div class="tk-fold-h" data-fold="'+esc(key)+'"><span class="tk-chev"></span><span class="tk-fic">'+ic("folder")+'</span>'+
            '<span class="tk-path">'+crumbs+'</span><span class="tk-fstat'+(trackFolder&&fd===fall.length?" all":"")+'">'+folderStatus+'</span>'+
@@ -2049,7 +2042,7 @@
         }
         h+='</div>';
       });
-      h+='</div>';
+      h+='</div></div>';
     });
     h+='</div>';
     root.innerHTML=h;
@@ -2057,9 +2050,15 @@
     document.getElementById("tk-refresh").onclick=function(){st.msg="";load();};
     document.getElementById("tk-switch").onclick=function(){set("tk-me","");st.tasks=[];st.msg="";render();};
     root.querySelectorAll("[data-f]").forEach(function(b){b.onclick=function(){st.filter=b.getAttribute("data-f");render();};});
-    root.querySelectorAll("[data-fold]").forEach(function(el){el.onclick=function(e){if(e.target.closest("button"))return;var k=el.getAttribute("data-fold");st.open[k]=!st.open[k];render();};});
+    root.querySelectorAll("[data-offer-toggle]").forEach(function(b){b.onclick=function(){
+      var offer=b.getAttribute("data-offer-toggle");
+      st.expandedOffers.set(offer,b.getAttribute("aria-expanded")==="false");
+      render();
+      document.getElementById(b.id)?.focus();
+    };});
+    root.querySelectorAll("[data-fold]").forEach(function(el){el.onclick=function(e){if(e.target.closest("button"))return;var k=el.getAttribute("data-fold");st.open[k]=!(st.open[k]??auto);render();};});
     root.querySelectorAll("[data-openall]").forEach(function(b){b.onclick=function(){var o=b.getAttribute("data-openall");st.tasks.forEach(function(x){if(x.offer===o)st.open[o+"|"+(x.folder||"")]=true;});render();};});
-    root.querySelectorAll("[data-closeall]").forEach(function(b){b.onclick=function(){var o=b.getAttribute("data-closeall");Object.keys(st.open).forEach(function(k){if(k.indexOf(o+"|")===0)delete st.open[k];});render();};});
+    root.querySelectorAll("[data-closeall]").forEach(function(b){b.onclick=function(){var o=b.getAttribute("data-closeall");st.tasks.forEach(function(x){if(x.offer===o)st.open[o+"|"+(x.folder||"")]=false;});render();};});
     root.querySelectorAll("[data-copypath]").forEach(function(b){b.onclick=function(){var txt=b.getAttribute("data-copypath");
       var ok=function(){st.msg=t("copied")+"："+txt;st.msgCls="ok";render();};
       try{navigator.clipboard.writeText(txt).then(ok,function(){fallback(txt);ok();});}catch(e){fallback(txt);ok();}};});
