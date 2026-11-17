@@ -35,12 +35,33 @@
   .title-row .meta{margin-bottom:var(--meta-mb,11.75px);line-height:1.4}
   .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
   .title-row .meta{font-size:12px;color:var(--muted)}
-  nav.tabs{display:flex;gap:4px;margin-top:10px;overflow-x:auto;scrollbar-width:none}
+  nav.tabs{position:relative;display:flex;margin-top:10px;overflow-x:auto;scrollbar-width:none}
   nav.tabs::-webkit-scrollbar{display:none}
-  nav.tabs a{flex:0 0 auto;text-decoration:none;padding:9px 14px 11px;font-size:14px;color:var(--ink2);
-    border-bottom:2.5px solid transparent;white-space:nowrap;transition:color .15s,border-color .15s}
+  nav.tabs a{
+    display:flex;flex:1 0 120px;align-items:center;justify-content:center;gap:7px;
+    text-decoration:none;padding:9px 6px 11px;font-size:14px;color:var(--ink2);
+    border-bottom:2.5px solid transparent;white-space:nowrap;transition:color .15s,border-color .15s;
+  }
   nav.tabs a:hover{color:var(--ink)}
-  nav.tabs a .num{font-size:11px;font-weight:600;padding:1px 6px;border-radius:5px;margin-right:6px;background:var(--line2);color:var(--muted)}
+  nav.tabs a .num{font-size:11px;font-weight:600;line-height:1.25;padding:1px 6px;border-radius:5px;background:var(--line2);color:var(--muted)}
+  .nav-icon{position:relative;flex:0 0 15px;height:15px}
+  .nav-icon::before,.nav-icon::after{position:absolute;content:""}
+  nav.tabs a.active .nav-icon{color:var(--accent)}
+  .nav-icon-running::before{inset:0;border-radius:50%;background:currentColor}
+  .nav-icon-running::after{top:4.5px;left:6px;border-block:3px solid transparent;border-left:4.5px solid var(--card)}
+  .nav-icon-results::before{
+    inset:1px 0;background:linear-gradient(currentColor,currentColor) 1px bottom/3px 6px no-repeat,
+      linear-gradient(currentColor,currentColor) 6px bottom/3px 9px no-repeat,
+      linear-gradient(currentColor,currentColor) 11px bottom/3px 13px no-repeat;
+  }
+  .nav-icon-tasks::before{inset:0 1px;border-radius:3px;background:currentColor}
+  .nav-icon-tasks::after{
+    top:2.5px;left:5px;width:3.5px;height:6px;box-sizing:content-box;
+    border-right:1.5px solid var(--card);border-bottom:1.5px solid var(--card);transform:rotate(42deg);
+  }
+  .nav-icon-offers::before{inset:0;background:currentColor;clip-path:polygon(0 55%,55% 0,93% 0,100% 7%,100% 45%,45% 100%,36% 100%,0 64%)}
+  .nav-icon-offers::after{right:3px;top:3px;width:3px;height:3px;border-radius:50%;background:var(--card)}
+  @media (forced-colors:active){.nav-icon{display:none}}
   nav.tabs a.active{color:var(--ink);font-weight:600;border-color:var(--tab-c,var(--accent))}
   nav.tabs a[data-c="m01"]{--tab-c:var(--m01)} nav.tabs a[data-c="m02"]{--tab-c:var(--m02)} nav.tabs a[data-c="m03"]{--tab-c:var(--m03)}
   nav.tabs a.active .num{background:var(--tab-c,var(--accent));color:#fff}
@@ -486,9 +507,8 @@
     .title-row h1 .brand{height:34px}
     .title-row .meta{display:none}
     .langsw button{padding:4px 10px;font-size:12.5px}
-    nav.tabs{margin-top:6px;gap:0}
-    nav.tabs a{padding:8px 11px 10px;font-size:13.5px}
-    nav.tabs a .num{margin-right:4px}
+    nav.tabs{margin-top:6px}
+    nav.tabs a{flex-basis:116px;gap:6px;padding:8px 6px 10px;font-size:13.5px}
     main{padding:16px 12px 40px}
     h2{font-size:19px}
     h3{font-size:15px;margin:26px 0 10px}
@@ -578,10 +598,10 @@
       <div class="langsw" role="group" aria-label="Language"><button type="button" data-lang="zh">中文</button><button type="button" data-lang="en">EN</button></div>
     </div>
     <nav class="tabs" id="tabs">
-      <a href="#running" data-view="running"><span class="t-zh">Running 安排</span><span class="t-en">Running</span></a>
-      <a href="#results" data-view="results"><span class="t-zh">测试结果</span><span class="t-en">Test Results</span></a>
-      <a href="#tasks" data-view="tasks"><span class="t-zh">我的任务</span><span class="t-en">My Tasks</span></a>
-      <a href="#offers" data-view="offers"><span class="t-zh">Offer 清单</span><span class="t-en">Offer List</span></a>
+      <a href="#running" data-view="running"><span class="nav-icon nav-icon-running" aria-hidden="true"></span><span class="t-zh">Running 安排</span><span class="t-en">Running</span></a>
+      <a href="#results" data-view="results"><span class="nav-icon nav-icon-results" aria-hidden="true"></span><span class="t-zh">测试结果</span><span class="t-en">Test Results</span></a>
+      <a href="#tasks" data-view="tasks"><span class="nav-icon nav-icon-tasks" aria-hidden="true"></span><span class="t-zh">我的任务</span><span class="t-en">My Tasks</span></a>
+      <a href="#offers" data-view="offers"><span class="nav-icon nav-icon-offers" aria-hidden="true"></span><span class="t-zh">Offer 清单</span><span class="t-en">Offer List</span></a>
       <a href="#m01" data-view="m01" data-c="m01"><span class="num">M01</span><span>Arthur</span></a>
       <a href="#m02" data-view="m02" data-c="m02"><span class="num">M02</span><span>Silva</span></a>
       <a href="#m03" data-view="m03" data-c="m03"><span class="num">M03</span><span>Vince</span></a>
