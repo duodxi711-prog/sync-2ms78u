@@ -339,40 +339,71 @@
   }
 
   .report-link{display:inline-block;margin-top:4px;color:var(--accent);font-size:14px;font-weight:700;text-underline-offset:3px}
-  .report-filters{display:grid;grid-template-columns:minmax(0,400px) minmax(0,180px);gap:12px 16px;align-items:end;margin-bottom:14px}
-  .report-filter-label{display:block;margin-bottom:5px;color:var(--ink2);font-size:13px;font-weight:650}
-  .report-date select{
-    display:block;width:100%;min-height:44px;padding:8px 12px;border:1px solid #818c9e;border-radius:8px;
-    background:#fff;color:var(--ink);font:inherit;font-size:14px;cursor:pointer;
+  .report-filters{
+    --report-control-height:44px;--report-focus:#655a91;
+    display:flex;align-items:center;gap:16px;width:fit-content;max-width:100%;margin:0 0 16px;
+    padding:10px 14px;background:#fff;border:1px solid #e1e5ec;border-radius:14px;
+    box-shadow:0 2px 6px rgba(32,40,61,.04);
   }
-  .report-date select:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+  .report-offer,.report-date{display:flex;align-items:center;gap:10px;min-width:0}
+  .report-filter-label{color:var(--ink2);font-size:13px;font-weight:650;white-space:nowrap}
+  .report-date{padding-left:16px;border-left:1px solid #e4e8ef}
   .report-filters .ttabs{
-    display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;
-    height:auto;padding:0;margin:0;
+    display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;gap:3px;
+    width:236px;height:var(--report-control-height);margin:0;padding:3px;
+    background:#f2f4f8;border:1px solid #e6e9f0;border-radius:10px;
   }
   [data-report-tabs] .ttab{
-    justify-content:center;gap:8px;min-width:0;height:auto;min-height:44px;margin:0;padding:8px;
-    border:1px solid #818c9e;border-radius:8px;background:#fff;color:var(--ink);
-    font-size:14px;font-weight:750;line-height:1.25;text-align:center;
-    transition:background .15s,border-color .15s;
+    justify-content:center;gap:7px;min-width:0;height:auto;margin:0;padding:0 8px;
+    border:1px solid transparent;border-radius:7px;background:transparent;color:var(--ink2);
+    font-size:13px;font-weight:700;line-height:1.2;text-align:center;
+    transition:background-color .15s,color .15s;
   }
   [data-report-tabs] .ttab .av{padding:0;background:transparent;color:inherit;font:inherit}
   [data-report-tabs] .ttab::after{content:none}
-  [data-report-tabs] .ttab[aria-selected="false"]:hover{
-    background:#f0f3f8;border-color:#788397;filter:none;
-  }
+  [data-report-tabs] .ttab[aria-selected="false"]:hover{background:#e9edf4;color:var(--ink);filter:none}
   [data-report-tabs] .ttab[aria-selected="true"]{
-    border-color:var(--mc);background:var(--mc);color:#fff;
+    border-color:#e2e6ee;background:#fff;color:var(--mc);
+    box-shadow:0 1px 3px rgba(32,40,61,.11);
   }
   [data-report-tabs] .ttab[aria-selected="true"]::before{
-    content:"";width:6px;height:11px;box-sizing:border-box;
-    border:solid currentColor;border-width:0 2px 2px 0;transform:rotate(45deg) translateY(-1px);
+    content:"";flex:0 0 6px;height:6px;border-radius:50%;background:currentColor;
   }
-  [data-report-tabs] .ttab:focus-visible{outline:2px solid var(--ink);outline-offset:2px;z-index:31}
+  .report-date-control{position:relative;display:block;width:164px;min-width:0}
+  .report-date-control::before,.report-date-control::after{
+    content:"";position:absolute;top:50%;pointer-events:none;color:#68758a;
+  }
+  .report-date-control::before{
+    left:13px;width:13px;height:13px;border:1.5px solid currentColor;border-top-width:4px;
+    border-radius:3px;transform:translateY(-50%);
+  }
+  .report-date-control::after{
+    right:15px;width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;
+    transform:translateY(-68%) rotate(45deg);
+  }
+  .report-date select{
+    display:block;width:100%;height:var(--report-control-height);padding:0 32px 0 36px;
+    appearance:none;background:#f8f9fb;border:1px solid #e1e5ed;border-radius:10px;
+    color:var(--ink);font:inherit;font-size:13px;font-weight:650;font-variant-numeric:tabular-nums;cursor:pointer;
+  }
+  .report-date select:hover{background:#fff;border-color:#a6afbd}
+  .report-date select:focus-visible,[data-report-tabs] .ttab:focus-visible{
+    outline:2px solid var(--report-focus);outline-offset:2px;z-index:31;
+  }
+  @media (max-width:600px){
+    .report-filters{display:grid;width:100%;gap:10px;padding:10px 12px}
+    .report-offer,.report-date{display:grid;grid-template-columns:2.6rem minmax(0,1fr)}
+    .report-date{padding-left:0;border-left:0}
+    .report-filters .ttabs,.report-date-control{width:100%}
+  }
+  @media (forced-colors:active){
+    [data-report-tabs] .ttab[aria-selected="true"]{border-color:Highlight;color:Highlight}
+    .report-date select{appearance:auto;padding-left:12px;padding-right:12px}
+    .report-date-control::before,.report-date-control::after{display:none}
+  }
   [data-report-tabs]>.tbody{border-radius:12px}
   [data-report-tabs] [hidden]{display:none!important}
   [data-report-tabs] [data-report-empty] td{color:var(--ink2)}
-  @media (max-width:520px){.report-filters{grid-template-columns:minmax(0,1fr)}}
   .tpanel{padding:2px 2px 0}
   .tp-h{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px}
   .tp-n{font-size:13px;color:var(--muted)} .tp-n b{color:var(--ink)}
@@ -812,7 +843,7 @@
   <h2>Offer 测试结果</h2>
       <div class="tfolder" data-report-tabs>
         <div class="report-filters">
-          <div>
+          <div class="report-offer">
             <div class="report-filter-label">Offer</div>
             <div class="ttabs" role="tablist" aria-label="按 Offer 查看测试结果">
           <button type="button" class="ttab on" id="report-tab-zh-yoburn" data-report-offer="yoburn" role="tab" aria-controls="report-panel-zh-yoburn" aria-selected="true" style="--mc:#5652a3;--z:20"><span class="av">YOBURN</span></button>
@@ -821,7 +852,7 @@
           </div>
           <label class="report-date">
             <span class="report-filter-label">日期</span>
-            <select data-report-date-filter><option value="">全部日期</option></select>
+            <span class="report-date-control"><select data-report-date-filter><option value="">全部日期</option></select></span>
           </label>
         </div>
         <div class="tbody">
@@ -1602,7 +1633,7 @@
   <h2>Offer Test Results</h2>
       <div class="tfolder" data-report-tabs>
         <div class="report-filters">
-          <div>
+          <div class="report-offer">
             <div class="report-filter-label">Offer</div>
             <div class="ttabs" role="tablist" aria-label="Test results by offer">
           <button type="button" class="ttab on" id="report-tab-en-yoburn" data-report-offer="yoburn" role="tab" aria-controls="report-panel-en-yoburn" aria-selected="true" style="--mc:#5652a3;--z:20"><span class="av">YOBURN</span></button>
@@ -1611,7 +1642,7 @@
           </div>
           <label class="report-date">
             <span class="report-filter-label">Date</span>
-            <select data-report-date-filter><option value="">All dates</option></select>
+            <span class="report-date-control"><select data-report-date-filter><option value="">All dates</option></select></span>
           </label>
         </div>
         <div class="tbody">
