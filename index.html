@@ -47,20 +47,29 @@
   .nav-icon{position:relative;flex:0 0 15px;height:15px}
   .nav-icon::before,.nav-icon::after{position:absolute;content:""}
   nav.tabs a.active .nav-icon{color:var(--accent)}
-  .nav-icon-running::before{inset:0;border-radius:50%;background:currentColor}
-  .nav-icon-running::after{top:4.5px;left:6px;border-block:3px solid transparent;border-left:4.5px solid var(--card)}
-  .nav-icon-results::before{
-    inset:1px 0;background:linear-gradient(currentColor,currentColor) 1px bottom/3px 6px no-repeat,
-      linear-gradient(currentColor,currentColor) 6px bottom/3px 9px no-repeat,
-      linear-gradient(currentColor,currentColor) 11px bottom/3px 13px no-repeat;
-  }
-  .nav-icon-tasks::before{inset:0 1px;border-radius:3px;background:currentColor}
+  .nav-icon-running::before{inset:0;border:1.5px solid currentColor;border-radius:50%}
+  .nav-icon-running::after{top:4.5px;left:6px;border-block:3px solid transparent;border-left:4.5px solid currentColor}
+  .active .nav-icon-running::before,.active .nav-icon-tasks::before{background:currentColor}
+  .active .nav-icon-running::after{border-left-color:var(--card)}
+  .nav-icon-results{display:flex;align-items:flex-end;justify-content:space-between;padding:1px 0}
+  .nav-icon-results span{width:4px;border:1px solid currentColor;border-radius:1px}
+  .nav-icon-results span:nth-child(1){height:6px}
+  .nav-icon-results span:nth-child(2){height:9px}
+  .nav-icon-results span:nth-child(3){height:13px}
+  .active .nav-icon-results span{background:currentColor}
+  .nav-icon-tasks::before{inset:0 1px;border:1.5px solid currentColor;border-radius:3px}
   .nav-icon-tasks::after{
     top:2.5px;left:5px;width:3.5px;height:6px;box-sizing:content-box;
-    border-right:1.5px solid var(--card);border-bottom:1.5px solid var(--card);transform:rotate(42deg);
+    border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(42deg);
   }
-  .nav-icon-offers::before{inset:0;background:currentColor;clip-path:polygon(0 55%,55% 0,93% 0,100% 7%,100% 45%,45% 100%,36% 100%,0 64%)}
-  .nav-icon-offers::after{right:3px;top:3px;width:3px;height:3px;border-radius:50%;background:var(--card)}
+  .active .nav-icon-tasks::after{border-color:var(--card)}
+  .nav-icon-offers{--tag-shape:polygon(0 55%,55% 0,93% 0,100% 7%,100% 45%,45% 100%,36% 100%,0 64%)}
+  .nav-icon-offers::before{inset:0;background:currentColor;clip-path:var(--tag-shape)}
+  .nav-icon-offers::after{
+    inset:1.5px;clip-path:var(--tag-shape);
+    background:radial-gradient(circle at 72% 29%,currentColor 1px,transparent 1.25px),var(--card);
+  }
+  .active .nav-icon-offers::after{inset:3px 3px auto auto;width:3px;height:3px;border-radius:50%;clip-path:none;background:var(--card)}
   @media (forced-colors:active){.nav-icon{display:none}}
   nav.tabs a.active{color:var(--ink);font-weight:600;border-color:var(--tab-c,var(--accent))}
   nav.tabs a[data-c="m01"]{--tab-c:var(--m01)} nav.tabs a[data-c="m02"]{--tab-c:var(--m02)} nav.tabs a[data-c="m03"]{--tab-c:var(--m03)}
@@ -599,7 +608,7 @@
     </div>
     <nav class="tabs" id="tabs">
       <a href="#running" data-view="running"><span class="nav-icon nav-icon-running" aria-hidden="true"></span><span class="t-zh">Running 安排</span><span class="t-en">Running</span></a>
-      <a href="#results" data-view="results"><span class="nav-icon nav-icon-results" aria-hidden="true"></span><span class="t-zh">测试结果</span><span class="t-en">Test Results</span></a>
+      <a href="#results" data-view="results"><span class="nav-icon nav-icon-results" aria-hidden="true"><span></span><span></span><span></span></span><span class="t-zh">测试结果</span><span class="t-en">Test Results</span></a>
       <a href="#tasks" data-view="tasks"><span class="nav-icon nav-icon-tasks" aria-hidden="true"></span><span class="t-zh">我的任务</span><span class="t-en">My Tasks</span></a>
       <a href="#offers" data-view="offers"><span class="nav-icon nav-icon-offers" aria-hidden="true"></span><span class="t-zh">Offer 清单</span><span class="t-en">Offer List</span></a>
       <a href="#m01" data-view="m01" data-c="m01"><span class="num">M01</span><span>Arthur</span></a>
@@ -884,26 +893,24 @@
           <tr data-report-date="2026-11-15"><th scope="row">11月15日</th><td>Facebook</td><td class="num">$438.14</td><td class="num">≈ $3</td><td class="num">2</td><td class="num">$500</td><td class="num">—</td><td class="num">—</td></tr>
           <tr data-report-date="2026-11-16"><th scope="row">11月16日</th><td>Facebook</td><td class="num">$763.46</td><td class="num"><span title="按各笔花费和 CPC 推算点击数后计算">≈ $3.09</span></td><td class="num">5</td><td class="num">$1,250</td><td class="num">—</td><td class="num">—</td></tr>
         </tbody>
-        <tfoot><tr data-report-total aria-live="polite"><th scope="row" colspan="2">总计</th><td class="num">$3,206.02</td><td class="num">—</td><td class="num">10</td><td class="num">$2,000</td><td class="num">—</td><td class="num">—</td></tr></tfoot>
+        <tfoot><tr data-report-total aria-live="polite"><th scope="row" colspan="2">总计</th><td class="num">$3,206.02</td><td class="num">—</td><td class="num">8</td><td class="num">$2,000</td><td class="num">—</td><td class="num">—</td></tr></tfoot>
       </table></div>
-      <p class="cat" data-report-undated-note>总出单含 <span>2</span> 单未标日期的记录。</p>
       <div class="sec">出单 VSL</div>
       <div class="tbl-wrap offer-test-report"><table>
         <thead><tr><th scope="col">VSL</th><th scope="col" class="num">出单</th></tr></thead>
-        <tbody data-report-attribution="vsl">
+        <tbody data-report-attribution>
           <tr data-report-purchases='{"2026-11-16":3}'><td class="mono"><span class="lvl-tag">388</span> FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD01-250)</td><td class="num">3</td></tr>
-          <tr data-report-undated-purchases="1" data-report-purchases='{"2026-11-10":1,"2026-11-15":1,"2026-11-16":1}'><td class="mono"><span class="lvl-tag">390</span> FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD02-250)</td><td class="num">4</td></tr>
-          <tr data-report-undated-purchases="1" data-report-purchases='{"2026-11-15":1,"2026-11-16":1}'><td class="mono"><span class="lvl-tag">391</span> FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD03-250)</td><td class="num">3</td></tr>
+          <tr data-report-purchases='{"2026-11-10":1,"2026-11-15":1,"2026-11-16":1}'><td class="mono"><span class="lvl-tag">390</span> FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD02-250)</td><td class="num">3</td></tr>
+          <tr data-report-purchases='{"2026-11-15":1,"2026-11-16":1}'><td class="mono"><span class="lvl-tag">391</span> FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD03-250)</td><td class="num">2</td></tr>
           <tr data-report-empty hidden><td colspan="2">所选日期无出单</td></tr>
         </tbody>
       </table></div>
       <div class="sec">出单 Ads</div>
       <div class="tbl-wrap offer-test-report"><table>
         <thead><tr><th scope="col">广告素材</th><th scope="col" class="num">出单</th></tr></thead>
-        <tbody data-report-attribution="ads">
+        <tbody data-report-attribution>
           <tr data-report-purchases='{"2026-11-15":2,"2026-11-16":2}'><td class="mono">YBAD128_H1_C61_E12_868mue6az</td><td class="num">4</td></tr>
-          <tr data-report-undated-purchases="1" data-report-purchases='{"2026-11-10":1}'><td class="mono">YBAD91_H2_C45_E6_868mn4qcm</td><td class="num">2</td></tr>
-          <tr data-report-undated-purchases="1" data-report-purchases='{}'><td class="mono">YBAD95_H1</td><td class="num">1</td></tr>
+          <tr data-report-purchases='{"2026-11-10":1}'><td class="mono">YBAD91_H2_C45_E6_868mn4qcm</td><td class="num">1</td></tr>
           <tr data-report-purchases='{"2026-11-16":1}'><td class="mono">YBAD174_H1_C65_E49_868mv9h53</td><td class="num">1</td></tr>
           <tr data-report-purchases='{"2026-11-16":1}'><td class="mono">YBAD174_H2_C65_E49_868mv9h53</td><td class="num">1</td></tr>
           <tr data-report-purchases='{"2026-11-16":1}'><td>广告归因未知</td><td class="num">1</td></tr>
@@ -1674,26 +1681,24 @@
           <tr data-report-date="2026-11-15"><th scope="row">Nov 15</th><td class="num">$438.14</td><td class="num">≈ $3</td><td class="num">2</td><td class="num">$500</td><td class="num">—</td><td class="num">—</td></tr>
           <tr data-report-date="2026-11-16"><th scope="row">Nov 16</th><td class="num">$763.46</td><td class="num"><span title="Estimated using spend and CPC for each report">≈ $3.09</span></td><td class="num">5</td><td class="num">$1,250</td><td class="num">—</td><td class="num">—</td></tr>
         </tbody>
-        <tfoot><tr data-report-total aria-live="polite"><th scope="row">Total</th><td class="num">$3,206.02</td><td class="num">—</td><td class="num">10</td><td class="num">$2,000</td><td class="num">—</td><td class="num">—</td></tr></tfoot>
+        <tfoot><tr data-report-total aria-live="polite"><th scope="row">Total</th><td class="num">$3,206.02</td><td class="num">—</td><td class="num">8</td><td class="num">$2,000</td><td class="num">—</td><td class="num">—</td></tr></tfoot>
       </table></div>
-      <p class="cat" data-report-undated-note>Total purchases include <span>2</span> undated records.</p>
       <div class="sec">VSL purchases</div>
       <div class="tbl-wrap offer-test-report"><table>
         <thead><tr><th scope="col">VSL</th><th scope="col" class="num">Purchases</th></tr></thead>
-        <tbody data-report-attribution="vsl">
+        <tbody data-report-attribution>
           <tr data-report-purchases='{"2026-11-16":3}'><td class="mono"><span class="lvl-tag">388</span> FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD01-250)</td><td class="num">3</td></tr>
-          <tr data-report-undated-purchases="1" data-report-purchases='{"2026-11-10":1,"2026-11-15":1,"2026-11-16":1}'><td class="mono"><span class="lvl-tag">390</span> FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD02-250)</td><td class="num">4</td></tr>
-          <tr data-report-undated-purchases="1" data-report-purchases='{"2026-11-15":1,"2026-11-16":1}'><td class="mono"><span class="lvl-tag">391</span> FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD03-250)</td><td class="num">3</td></tr>
+          <tr data-report-purchases='{"2026-11-10":1,"2026-11-15":1,"2026-11-16":1}'><td class="mono"><span class="lvl-tag">390</span> FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD02-250)</td><td class="num">3</td></tr>
+          <tr data-report-purchases='{"2026-11-15":1,"2026-11-16":1}'><td class="mono"><span class="lvl-tag">391</span> FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD03-250)</td><td class="num">2</td></tr>
           <tr data-report-empty hidden><td colspan="2">No purchases for the selected date</td></tr>
         </tbody>
       </table></div>
       <div class="sec">Ad purchases</div>
       <div class="tbl-wrap offer-test-report"><table>
         <thead><tr><th scope="col">Ad creative</th><th scope="col" class="num">Purchases</th></tr></thead>
-        <tbody data-report-attribution="ads">
+        <tbody data-report-attribution>
           <tr data-report-purchases='{"2026-11-15":2,"2026-11-16":2}'><td class="mono">YBAD128_H1_C61_E12_868mue6az</td><td class="num">4</td></tr>
-          <tr data-report-undated-purchases="1" data-report-purchases='{"2026-11-10":1}'><td class="mono">YBAD91_H2_C45_E6_868mn4qcm</td><td class="num">2</td></tr>
-          <tr data-report-undated-purchases="1" data-report-purchases='{}'><td class="mono">YBAD95_H1</td><td class="num">1</td></tr>
+          <tr data-report-purchases='{"2026-11-10":1}'><td class="mono">YBAD91_H2_C45_E6_868mn4qcm</td><td class="num">1</td></tr>
           <tr data-report-purchases='{"2026-11-16":1}'><td class="mono">YBAD174_H1_C65_E49_868mv9h53</td><td class="num">1</td></tr>
           <tr data-report-purchases='{"2026-11-16":1}'><td class="mono">YBAD174_H2_C65_E49_868mv9h53</td><td class="num">1</td></tr>
           <tr data-report-purchases='{"2026-11-16":1}'><td>Ad attribution unknown</td><td class="num">1</td></tr>
@@ -2630,27 +2635,18 @@
       totalSpend.textContent=formatCurrency(spend,2);
       totalRevenue.textContent=formatCurrency(revenue,0);
       updateReportReturns(totalRoas,totalNet,spend,revenue);
-      var undatedOrders=0;
+      totalOrders.textContent=String(orders);
       panel.querySelectorAll("[data-report-attribution]").forEach(function(body){
         var hasPurchases=false;
         body.querySelectorAll("[data-report-purchases]").forEach(function(row){
           var purchases=JSON.parse(row.dataset.reportPurchases);
-          var undated=Number(row.dataset.reportUndatedPurchases||0);
-          var count=selectedDate?(purchases[selectedDate]||0):Object.values(purchases).reduce(function(sum,n){return sum+n;},undated);
-          if(body.dataset.reportAttribution==="vsl") undatedOrders+=undated;
+          var count=selectedDate?(purchases[selectedDate]||0):Object.values(purchases).reduce(function(sum,n){return sum+n;},0);
           row.hidden=count===0;
           row.lastElementChild.textContent=String(count);
           hasPurchases=hasPurchases||count>0;
         });
         body.querySelector("[data-report-empty]").hidden=hasPurchases;
       });
-      var visibleUndated=selectedDate?0:undatedOrders;
-      totalOrders.textContent=String(orders+visibleUndated);
-      var note=panel.querySelector("[data-report-undated-note]");
-      if(note){
-        note.hidden=visibleUndated===0;
-        note.querySelector("span").textContent=String(visibleUndated);
-      }
     });
   }
   function activateTab(tab){
