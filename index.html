@@ -335,6 +335,31 @@
     .ttab::after{display:none}
     .ttab .av{padding-inline:5px}
   }
+
+  [data-report-tabs]>.ttabs{
+    display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;
+    max-width:400px;height:auto;padding:0;margin:0 0 12px;
+  }
+  [data-report-tabs] .ttab{
+    justify-content:center;gap:8px;min-width:0;height:auto;min-height:44px;margin:0;padding:8px;
+    border:1px solid #818c9e;border-radius:8px;background:#fff;color:var(--ink);
+    font-size:14px;font-weight:750;line-height:1.25;text-align:center;
+    transition:background .15s,border-color .15s;
+  }
+  [data-report-tabs] .ttab .av{padding:0;background:transparent;color:inherit;font:inherit}
+  [data-report-tabs] .ttab::after{content:none}
+  [data-report-tabs] .ttab[aria-selected="false"]:hover{
+    background:#f0f3f8;border-color:#788397;filter:none;
+  }
+  [data-report-tabs] .ttab[aria-selected="true"]{
+    border-color:var(--mc);background:var(--mc);color:#fff;
+  }
+  [data-report-tabs] .ttab[aria-selected="true"]::before{
+    content:"";width:6px;height:11px;box-sizing:border-box;
+    border:solid currentColor;border-width:0 2px 2px 0;transform:rotate(45deg) translateY(-1px);
+  }
+  [data-report-tabs] .ttab:focus-visible{outline:2px solid var(--ink);outline-offset:2px;z-index:31}
+  [data-report-tabs]>.tbody{border-radius:12px}
   .tpanel{padding:2px 2px 0}
   .tp-h{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px}
   .tp-n{font-size:13px;color:var(--muted)} .tp-n b{color:var(--ink)}
