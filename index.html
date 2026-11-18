@@ -2506,47 +2506,53 @@
   .tk-ib{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:32px;padding:0 10px;border:1px solid var(--line);background:#fff;color:var(--ink2);border-radius:8px;cursor:pointer;font:inherit;font-size:13px}
   .tk-ib:hover{color:var(--ink);border-color:#c9cfd8}
   .tk-ib svg{width:15px;height:15px}
-  .tk-seg{display:inline-flex;gap:6px;margin-top:16px}
-  .tk-seg button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:4px 12px;font:inherit;font-size:13px;font-weight:600;color:var(--ink2);cursor:pointer}
-  .tk-seg button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
-  .tk-grp{margin-top:16px}
-  .tk-grp-h{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;margin-bottom:4px}
-  .tk-grp-h .cat{font-weight:500}
-  .tk-offer-toggle{min-width:0;flex:1;justify-content:flex-start;height:36px;padding:0 10px;font-size:15px;font-weight:700}
-  .tk-offer-toggle[aria-expanded="true"] .tk-chev{transform:rotate(45deg)}
-  .tk-root-path{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);margin:2px 0 6px 2px}
-  .tk-root-path svg{width:14px;height:14px;color:#4aa3e8}
-  .tk-fold{border:1px solid var(--line);border-radius:10px;background:#fff;margin-top:8px;overflow:hidden}
-  .tk-fold-h{display:flex;align-items:center;gap:9px;padding:10px 12px;cursor:pointer;user-select:none;flex-wrap:wrap}
-  .tk-fold-h:hover{background:#fafbfc}
+  .tk-seg{display:inline-flex;flex-wrap:wrap;gap:4px;margin:16px 0 4px;padding:4px;border:1px solid var(--line);border-radius:12px;background:#f0f2f5}
+  .tk-seg button{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid transparent;background:transparent;border-radius:8px;padding:5px 11px;font:inherit;font-size:13px;font-weight:650;color:var(--ink2);cursor:pointer;white-space:nowrap}
+  .tk-seg button:hover{background:#fff;color:var(--ink)}
+  .tk-seg button[aria-pressed="true"]{background:#fff;color:var(--accent);border-color:#f4d7d2;box-shadow:0 1px 2px rgba(22,29,44,.06)}
+  .tk-count{display:inline-flex;justify-content:center;min-width:20px;padding:1px 6px;border-radius:99px;background:#eef0f4;color:var(--ink2);font-size:11px;font-weight:700;font-variant-numeric:tabular-nums}
+  .tk-seg button[aria-pressed="true"] .tk-count{background:var(--accent-bg);color:var(--accent)}
+  .tk-grp{margin-top:14px;border:1px solid var(--line);border-radius:12px;background:#fff;overflow:hidden}
+  .tk-grp-h{display:flex;align-items:center;gap:8px;padding:6px 10px;background:#f8f9fb}
+  .tk-grp.expanded .tk-grp-h{border-bottom:1px solid var(--line)}
+  .tk-offer-toggle,.tk-fold-toggle{display:flex;align-items:center;gap:9px;min-width:0;flex:1;justify-content:flex-start;text-align:left;background:transparent;color:var(--ink);border:0;border-radius:7px;cursor:pointer;font:inherit}
+  .tk-offer-toggle{padding:8px;font-size:15px;font-weight:750}
+  .tk-offer-toggle:hover,.tk-fold-toggle:hover{background:#f1f3f6}
+  .tk-offer-toggle[aria-expanded="true"] .tk-chev,.tk-fold-toggle[aria-expanded="true"] .tk-chev{transform:rotate(45deg)}
+  #tk-root button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+  .tk-grp-actions{display:flex;gap:4px;flex-shrink:0}
+  .tk-offer-body{padding:10px 13px 13px 17px}
+  .tk-root-path{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink2);margin:0 0 6px}
+  .tk-root-path svg{width:14px;height:14px;color:#3c78aa}
+  .tk-tree{display:grid;gap:7px;margin-left:7px;padding-left:14px;border-left:1px solid #dce2e9}
+  .tk-fold{position:relative;min-width:0;border:1px solid var(--line);border-radius:8px;background:#fff}
+  .tk-fold::before{content:"";position:absolute;width:14px;left:-15px;top:22px;border-top:1px solid #dce2e9}
+  .tk-fold-h{display:flex;align-items:center;gap:6px;padding:3px 7px}
+  .tk-fold.open .tk-fold-h{background:#f8f9fb;border-radius:8px 8px 0 0}
+  .tk-fold-toggle{padding:7px 5px;min-height:36px}
   .tk-chev{width:8px;height:8px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-45deg);transition:transform .15s;flex:0 0 auto;margin-right:2px}
-  .tk-fold.open .tk-chev{transform:rotate(45deg)}
-  .tk-fic svg{width:18px;height:18px;display:block;color:#4aa3e8;fill:#cfe6fa}
-  .tk-path{display:flex;align-items:center;gap:5px;flex-wrap:wrap;font-size:13.5px;color:var(--ink2);min-width:0}
+  .tk-fic svg{width:16px;height:16px;display:block;color:#3c78aa;fill:#e2f0fa}
+  .tk-path{display:flex;align-items:center;gap:5px;flex-wrap:wrap;font-size:13px;color:var(--ink2);min-width:0;overflow-wrap:anywhere}
   .tk-path span.last{font-weight:700;color:var(--ink)}
   .tk-path i.sep{font-style:normal;color:var(--faint)}
-  .tk-fstat{margin-left:auto;font-size:12px;color:var(--muted);white-space:nowrap}
-  .tk-fstat.all{color:#13865f;font-weight:600}
-  .tk-sm{height:28px;width:28px;padding:0}
+  .tk-fstat{margin-left:auto;font-size:12px;color:var(--ink2);white-space:nowrap}
+  .tk-sm{height:30px;width:30px;padding:0;flex-shrink:0}
   .tk-sm svg{width:14px;height:14px}
-  .tk-fold .tk-tbl{margin:0;border:0;border-top:1px solid var(--line2);border-radius:0}
+  .tk-fold .tk-tbl{margin:0;border:0;border-top:1px solid var(--line2);border-radius:0 0 8px 8px}
   .tk-tbl td{vertical-align:middle}
-  .tk-tbl tr.done td{background:#f2fbf6}
-  .tk-tbl td.cr{font-family:"SF Mono",Menlo,Consolas,monospace;font-weight:600;font-size:13px;word-break:break-word;min-width:170px}
+  .tk-tbl td.cr{font-family:"SF Mono",Menlo,Consolas,monospace;font-weight:600;font-size:13px;overflow-wrap:anywhere;min-width:170px}
+  .tk-tbl td.tk-date{width:1%;font-size:12px;color:var(--ink2);white-space:nowrap;font-variant-numeric:tabular-nums}
   .tk-tbl td.nt{font-size:12.5px;color:var(--ink2)}
-  .tk-tbl td.ck{width:1%;white-space:nowrap}
-  .tk-chk{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink2);cursor:pointer;white-space:nowrap}
-  .tk-chk input{width:18px;height:18px;accent-color:#13865f;cursor:pointer}
-  .tk-res{border:1px solid transparent;border-radius:6px;padding:4px 6px;font:inherit;font-size:12.5px;width:100%;min-width:140px;background:transparent}
-  .tk-res:hover,.tk-res:focus{border-color:var(--line);background:#fff;outline:none}
-  .tk-empty{color:var(--faint);font-size:13.5px;padding:18px 4px}
+  .tk-empty{color:var(--ink2);font-size:13.5px;padding:18px 4px}
   .tk-busy{opacity:.55;pointer-events:none}
   @media (max-width:640px){
+    .tk-offer-body{padding:8px 8px 10px 10px}
+    .tk-tree{padding-left:9px}
+    .tk-fold::before{width:9px;left:-10px}
+    .tk-fold-h{padding-inline:4px}
     .tk-tbl th.h-nt,.tk-tbl td.nt{display:none}
     .tk-tbl th,.tk-tbl td{padding:7px 8px}
     .tk-tbl td.cr{min-width:0;font-size:12px}
-    .tk-res{min-width:90px}
-    .tk-chk span{display:none}
   }
 </style>
 <script>
@@ -2573,16 +2579,16 @@
   var L = {
     zh:{title:"我的任务",ask:"你是谁？",askHint:"输入你的名字首字母",enter:"进入",unknown:"没有这个成员，请检查名字首字母。",ph:"名字首字母",
         tasks:function(m){return m+" 的任务";},switchMe:"切换",refresh:"刷新",updated:"更新于",
-        all:"全部",todo:"未上线",done:"已上线",cr:"素材",note:"备注",st:"已上线",res:"结果",resPh:"写结果，回车保存",
-        expandOffer:"展开",collapseOffer:"收起",empty:"目前没有分给你的任务。",emptyF:"没有符合条件的任务。",nofolder:"未分组",
-        netErr:"连接失败，请检查网络后重试。",saved:"已保存",copyPath:"复制云盘路径",copied:"已复制路径",expandAll:"全部展开",collapseAll:"全部收起",fprog:function(d,n){return "已上线 "+d+" / "+n;}},
+        filters:"按日期筛选任务",all:"全部",today:"今日任务",older:"旧任务",date:"日期",cr:"素材",note:"备注",
+        expandOffer:"展开",collapseOffer:"收起",empty:"目前没有分给你的任务。",emptyToday:"今天没有分配任务。",emptyOlder:"没有旧任务。",
+        netErr:"连接失败，请检查网络后重试。",copyPath:"复制云盘路径",copied:"已复制路径",expandAll:"展开所有文件夹",collapseAll:"收起所有文件夹"},
     en:{title:"My Tasks",ask:"Who are you?",askHint:"Enter the initials of your name",enter:"Enter",unknown:"No such member — check your initials.",ph:"Initials",
         tasks:function(m){return m+"'s tasks";},switchMe:"Switch",refresh:"Refresh",updated:"Updated",
-        all:"All",todo:"Not launched",done:"Launched",cr:"Creative",note:"Note",st:"Launched",res:"Result",resPh:"Type a result, Enter to save",
-        expandOffer:"Expand",collapseOffer:"Collapse",empty:"No tasks assigned to you yet.",emptyF:"No tasks match.",nofolder:"No folder",
-        netErr:"Connection failed, please check your network and retry.",saved:"Saved",copyPath:"Copy drive path",copied:"Path copied",expandAll:"Expand all",collapseAll:"Collapse all",fprog:function(d,n){return d+" / "+n+" launched";}}
+        filters:"Filter tasks by date",all:"All",today:"Today",older:"Past tasks",date:"Date",cr:"Creative",note:"Note",
+        expandOffer:"Expand",collapseOffer:"Collapse",empty:"No tasks assigned to you yet.",emptyToday:"No tasks scheduled for today.",emptyOlder:"No past tasks.",
+        netErr:"Connection failed, please check your network and retry.",copyPath:"Copy drive path",copied:"Path copied",expandAll:"Expand all folders",collapseAll:"Collapse all folders"}
   };
-  var st={tasks:[],filter:"all",msg:"",msgCls:"",busy:false,updated:null,open:{},expandedOffers:new Map([["VisiVra",false]])};
+  var st={tasks:[],filter:"today",msg:"",msgCls:"",busy:false,updated:null,open:{},expandedOffers:new Map([["VisiVra",false]])};
   function lang(){return document.documentElement.getAttribute("data-lang")==="en"?"en":"zh";}
   function t(k){return L[lang()][k];}
   function get(k){try{return localStorage.getItem(k)||"";}catch(e){return "";}}
@@ -2605,29 +2611,26 @@
     if(!quiet){st.busy=true;render();}
     return rpc("list_tasks",{}).then(function(rows){st.tasks=rows||[];st.busy=false;st.updated=new Date();if(st.msgCls==="err")st.msg="";render();}).catch(fail);
   }
-  function upsert(r){if(!r)return;for(var i=0;i<st.tasks.length;i++){if(st.tasks[i].id===r.id){st.tasks[i]=r;return;}}}
   function hhmm(d){return ("0"+d.getHours()).slice(-2)+":"+("0"+d.getMinutes()).slice(-2);}
-  var planningFolders=new Set([
-    "GlucoBase|GLUCOBASE 01 - PACK - GSAD01 A GSAD03",
-    "GlucoBase|GLUCOBASE 01 - PACK - GSAD04 A GSAD06",
-    "GlucoBase|GLUCOBASE 01 - PACK - GSAD07 A GSAD11",
-    "GlucoBase|GLUCOBASE 01 - PACK - GSAD12 A GSAD16",
-    "YOBURN|YOBURN 02 - PACK - YBAD126 A YBAD128",
-    "YOBURN|YOBURN 02 - PACK - YBAD134 A YBAD138",
-    "YOBURN|YOBURN 02 - PACK - YBAD174 A YBAD178",
-    "AlkaMelt|AlkaMelt",
-    "YOBURN|YOBURN 02 - PACK - YBAD108 A YBAD110",
-    "YOBURN|YOBURN 02 - PACK - YBAD111 A YBAD113",
-    "YOBURN|YOBURN 02 - PACK - YBAD114 A YBAD116",
-    "YOBURN|YOBURN 02 - PACK - YBAD129 A YBAD133",
-    "YOBURN|YOBURN 02 - PACK - YBAD159 A YBAD163",
-    "YOBURN|YOBURN 02 - PACK - YBAD169 A YBAD173",
-    "YOBURN|YOBURN 02 - PACK - YBAD194 A YBAD198",
-    "YOBURN|YOBURN 02 - PACK - YBAD254 A YBAD258",
-    "YOBURN|YOBURN 02 - PACK - YBAD264 A YBAD268"
-  ]);
-  function tracksLaunch(task){return !planningFolders.has(task.offer+"|"+task.folder);}
   function taskTime(task){return Math.max(Date.parse(task.created_at)||0,Date.parse(task.claimed_at)||0);}
+  function shanghaiDate(time){return new Date(time+8*60*60*1000).toISOString().slice(0,10);}
+  // Scheduled batches use an MM/DD prefix in their notes.
+  var scheduledDatePrefix=/^(\d{2})\/(\d{2}) · /;
+  function taskDate(task,time){
+    if(!time) return "";
+    var assigned=shanghaiDate(time), scheduled=scheduledDatePrefix.exec(task.note||"");
+    if(!scheduled) return assigned;
+    var year=Number(assigned.slice(0,4)), assignedMonth=assigned.slice(5,7), month=scheduled[1];
+    if(assignedMonth==="12"&&month==="01") year++;
+    if(assignedMonth==="01"&&month==="12") year--;
+    var date=year+"-"+month+"-"+scheduled[2], parsed=Date.parse(date);
+    return Number.isFinite(parsed)&&new Date(parsed).toISOString().slice(0,10)===date?date:assigned;
+  }
+  function taskNote(task){
+    var note=(task.note||"").replace(scheduledDatePrefix,"").replace(/ · 已上线 \/ Launched$/,"");
+    if(note==="YOBURN 素材测试 / Creative test") note="";
+    return [task.vsl?("VSL "+task.vsl):"",note].filter(Boolean).join(" · ");
+  }
   function render(){
     document.querySelectorAll("#tk-app [data-i]").forEach(function(el){el.textContent=t(el.getAttribute("data-i"));});
     var root=document.getElementById("tk-root"); if(!root) return;
@@ -2644,97 +2647,114 @@
       var inp=document.getElementById("tk-in"); inp.onkeydown=function(e){if(e.key==="Enter")go();}; setTimeout(function(){try{inp.focus();}catch(e){}},0);
       return;
     }
-    var mine=st.tasks.filter(function(x){return x.claimed_by===m;});
-    var tracked=mine.filter(tracksLaunch);
-    var filter=tracked.length?st.filter:"all";
+    var today=shanghaiDate(Date.now());
+    var mine=st.tasks.filter(function(task){return task.claimed_by===m;}).map(function(task){
+      var time=taskTime(task);
+      return {task:task,time:time,date:taskDate(task,time),note:taskNote(task)};
+    });
+    var views={
+      all:mine,
+      today:mine.filter(function(row){return row.date===today;}),
+      older:mine.filter(function(row){return row.date&&row.date<today;})
+    };
+    var filter=st.filter, rows=views[filter];
     h+='<div class="tk-head"><span class="tk-av" style="--mc:'+(COLOR[m]||"#888")+'">'+m+'</span><span class="nm">'+t("tasks")(m)+'</span><span class="sp"></span>'+
        (st.updated?'<span class="tk-upd">'+t("updated")+' '+hhmm(st.updated)+'</span>':'')+
        '<button class="tk-ib" id="tk-refresh" title="'+t("refresh")+'" aria-label="'+t("refresh")+'">'+ic("refresh")+'</button>'+
        '<button class="tk-ib" id="tk-switch" title="'+t("switchMe")+'">'+ic("swap")+'<span>'+t("switchMe")+'</span></button></div>';
     if(st.msg) h+='<div class="tk-msg '+st.msgCls+'">'+esc(st.msg)+'</div>';
-    if(tracked.length) h+='<div class="tk-seg">'+[["all","all"],["todo","todo"],["done","done"]].map(function(f){return '<button data-f="'+f[0]+'" class="'+(filter===f[0]?"on":"")+'">'+t(f[1])+'</button>';}).join("")+'</div>';
-    var rows=filter==="all"?mine:tracked.filter(function(x){return filter==="done"?x.done:!x.done;});
-    h+='<div class="'+(st.busy?"tk-busy":"")+'">';
-    if(!mine.length) h+='<div class="tk-box"><div class="tk-empty">'+t("empty")+'</div></div>';
-    else if(!rows.length) h+='<div class="tk-box"><div class="tk-empty">'+t("emptyF")+'</div></div>';
-    var groups=new Map(), auto=filter!=="all";
-    rows.sort(function(a,b){return taskTime(b)-taskTime(a)||b.id-a.id;}).forEach(function(x){
-      if(!groups.has(x.offer)) groups.set(x.offer,new Map());
-      var folders=groups.get(x.offer), folder=x.folder||"";
-      if(!folders.has(folder)) folders.set(folder,[]);
-      folders.get(folder).push(x);
+    h+='<div class="tk-seg" role="group" aria-label="'+t("filters")+'">'+["all","today","older"].map(function(key){
+      return '<button type="button" id="tk-filter-'+key+'" data-f="'+key+'" aria-pressed="'+(filter===key)+'">'+t(key)+'<span class="tk-count">'+views[key].length+'</span></button>';
+    }).join("")+'</div>';
+    h+='<div class="'+(st.busy?"tk-busy":"")+'" aria-busy="'+st.busy+'">';
+    if(!rows.length&&!st.busy){
+      var emptyText=mine.length?t(filter==="today"?"emptyToday":"emptyOlder"):t("empty");
+      h+='<div class="tk-box"><div class="tk-empty">'+emptyText+'</div></div>';
+    }
+    var groups=new Map();
+    rows.slice().sort(function(a,b){return b.date.localeCompare(a.date)||b.time-a.time||b.task.id-a.task.id;}).forEach(function(row){
+      var task=row.task, folder=task.folder||"";
+      if(!groups.has(task.offer)) groups.set(task.offer,{count:0,folders:new Map()});
+      var group=groups.get(task.offer);
+      group.count++;
+      if(!group.folders.has(folder)) group.folders.set(folder,[]);
+      group.folders.get(folder).push(row);
     });
-    groups.forEach(function(folders,o){
-      var all=mine.filter(function(x){return x.offer===o;});
-      var launchTasks=all.filter(tracksLaunch);
-      var progress=launchTasks.length?launchTasks.filter(function(x){return x.done;}).length+' / '+launchTasks.length:all.length;
-      var expanded=st.expandedOffers.get(o)!==false, offerId=encodeURIComponent(o);
-      h+='<div class="tk-grp"><div class="tk-grp-h">'+
-         '<button type="button" class="tk-ib tk-offer-toggle" id="tk-toggle-'+offerId+'" data-offer-toggle="'+esc(o)+'" aria-expanded="'+expanded+'" aria-controls="tk-offer-'+offerId+'" title="'+t(expanded?"collapseOffer":"expandOffer")+'">'+
-         '<span class="tk-chev" aria-hidden="true"></span>'+(OCI[o]?'<i class="ci" data-ci="'+OCI[o]+'" aria-hidden="true"></i>':'')+esc(o)+'<span class="cat">'+progress+'</span></button>';
+    groups.forEach(function(group,offer){
+      var expanded=st.expandedOffers.get(offer)!==false, offerId=encodeURIComponent(offer);
+      h+='<article class="tk-grp'+(expanded?" expanded":"")+'"><div class="tk-grp-h">'+
+         '<button type="button" class="tk-offer-toggle" id="tk-toggle-'+offerId+'" data-offer-toggle="'+esc(offer)+'" aria-expanded="'+expanded+'" aria-controls="tk-offer-'+offerId+'">'+
+         '<span class="tk-chev" aria-hidden="true"></span>'+(OCI[offer]?'<i class="ci" data-ci="'+OCI[offer]+'" aria-hidden="true"></i>':'')+esc(offer)+'<span class="tk-count">'+group.count+'</span></button>';
       if(!expanded){
-        h+='</div><div id="tk-offer-'+offerId+'" hidden></div></div>';
+        h+='</div><div id="tk-offer-'+offerId+'" hidden></div></article>';
         return;
       }
-      h+='<button class="tk-ib tk-sm" data-openall="'+esc(o)+'" title="'+t("expandAll")+'">'+ic("expand")+'</button><button class="tk-ib tk-sm" data-closeall="'+esc(o)+'" title="'+t("collapseAll")+'">'+ic("collapse")+'</button></div>'+
-         '<div id="tk-offer-'+offerId+'"><div class="tk-root-path">'+ic("folder")+'<span>'+esc(DRIVE_ROOT)+'</span></div>';
-      folders.forEach(function(g,f){
-        var fall=all.filter(function(x){return (x.folder||"")===f;});
-        var trackFolder=tracksLaunch(g[0]), fd=fall.filter(function(x){return x.done;}).length;
-        var folderStatus=trackFolder?t("fprog")(fd,fall.length):fall.length;
-        var key=o+"|"+f, open=st.open[key]??auto, path=drivePath(o,f);
+      h+='<div class="tk-grp-actions">'+
+         '<button type="button" class="tk-ib tk-sm" data-openall="'+esc(offer)+'" title="'+t("expandAll")+'" aria-label="'+t("expandAll")+'">'+ic("expand")+'</button>'+
+         '<button type="button" class="tk-ib tk-sm" data-closeall="'+esc(offer)+'" title="'+t("collapseAll")+'" aria-label="'+t("collapseAll")+'">'+ic("collapse")+'</button></div></div>'+
+         '<div class="tk-offer-body" id="tk-offer-'+offerId+'"><div class="tk-root-path">'+ic("folder")+'<span>'+esc(DRIVE_ROOT)+'</span></div><div class="tk-tree">';
+      group.folders.forEach(function(folderRows,folder){
+        var key=offer+"|"+folder, folderId=encodeURIComponent(key), open=st.open[key]===true, path=drivePath(offer,folder);
         var crumbs=path.map(function(seg,i){return '<span class="'+(i===path.length-1?"last":"")+'">'+esc(seg)+'</span>';}).join('<i class="sep">/</i>');
-        h+='<div class="tk-fold'+(open?" open":"")+'"><div class="tk-fold-h" data-fold="'+esc(key)+'"><span class="tk-chev"></span><span class="tk-fic">'+ic("folder")+'</span>'+
-           '<span class="tk-path">'+crumbs+'</span><span class="tk-fstat'+(trackFolder&&fd===fall.length?" all":"")+'">'+folderStatus+'</span>'+
-           '<button class="tk-ib tk-sm" data-copypath="'+esc(DRIVE_ROOT+" / "+path.join(" / "))+'" title="'+t("copyPath")+'">'+ic("copy")+'</button></div>';
+        h+='<div class="tk-fold'+(open?" open":"")+'"><div class="tk-fold-h">'+
+           '<button type="button" class="tk-fold-toggle" id="tk-folder-toggle-'+folderId+'" data-fold="'+esc(key)+'" aria-expanded="'+open+'" aria-controls="tk-folder-'+folderId+'">'+
+           '<span class="tk-chev" aria-hidden="true"></span><span class="tk-fic">'+ic("folder")+'</span>'+
+           '<span class="tk-path">'+crumbs+'</span><span class="tk-fstat">'+folderRows.length+'</span></button>'+
+           '<button type="button" class="tk-ib tk-sm" data-copypath="'+esc(DRIVE_ROOT+" / "+path.join(" / "))+'" title="'+t("copyPath")+'" aria-label="'+t("copyPath")+'">'+ic("copy")+'</button></div>'+
+           '<div id="tk-folder-'+folderId+'" class="tbl-wrap tk-tbl"'+(open?"":" hidden")+'>';
         if(open){
-          h+='<div class="tbl-wrap tk-tbl"><table><thead><tr><th>'+t("cr")+'</th><th class="h-nt">'+t("note")+'</th>'+(trackFolder?'<th>'+t("st")+'</th>':'')+'<th>'+t("res")+'</th></tr></thead><tbody>';
-          g.forEach(function(x){
-            var nt=[x.vsl?("VSL "+x.vsl):"",x.note||""].filter(Boolean).join(" · ");
-            h+='<tr class="'+(trackFolder&&x.done?"done":"")+'"><td class="cr">'+esc(x.creative)+'</td><td class="nt">'+esc(nt)+'</td>'+
-               (trackFolder?'<td class="ck"><label class="tk-chk"><input type="checkbox" data-done="'+x.id+'"'+(x.done?" checked":"")+'><span>'+t("st")+'</span></label></td>':'')+
-               '<td><input class="tk-res" data-res="'+x.id+'" value="'+esc(x.result||"")+'" placeholder="'+t("resPh")+'"></td></tr>';
+          var showNotes=folderRows.some(function(row){return row.note;});
+          h+='<table><thead><tr><th scope="col">'+t("cr")+'</th><th scope="col">'+t("date")+'</th>'+
+             (showNotes?'<th scope="col" class="h-nt">'+t("note")+'</th>':'')+'</tr></thead><tbody>';
+          folderRows.forEach(function(row){
+            h+='<tr><td class="cr">'+esc(row.task.creative)+'</td><td class="tk-date">'+
+               (row.date?'<time datetime="'+row.date+'">'+row.date.slice(5).replace("-","/")+'</time>':'—')+'</td>'+
+               (showNotes?'<td class="nt">'+esc(row.note)+'</td>':'')+'</tr>';
           });
-          h+='</tbody></table></div>';
+          h+='</tbody></table>';
         }
-        h+='</div>';
+        h+='</div></div>';
       });
-      h+='</div></div>';
+      h+='</div></div></article>';
     });
     h+='</div>';
     root.innerHTML=h;
     if(window.fillCatIcons) window.fillCatIcons(root);
     document.getElementById("tk-refresh").onclick=function(){st.msg="";load();};
     document.getElementById("tk-switch").onclick=function(){set("tk-me","");st.tasks=[];st.msg="";render();};
-    root.querySelectorAll("[data-f]").forEach(function(b){b.onclick=function(){st.filter=b.getAttribute("data-f");render();};});
+    root.querySelectorAll("[data-f]").forEach(function(b){b.onclick=function(){
+      st.filter=b.getAttribute("data-f");render();
+      document.getElementById(b.id)?.focus();
+    };});
     root.querySelectorAll("[data-offer-toggle]").forEach(function(b){b.onclick=function(){
       var offer=b.getAttribute("data-offer-toggle");
       st.expandedOffers.set(offer,b.getAttribute("aria-expanded")==="false");
       render();
       document.getElementById(b.id)?.focus();
     };});
-    root.querySelectorAll("[data-fold]").forEach(function(el){el.onclick=function(e){if(e.target.closest("button"))return;var k=el.getAttribute("data-fold");st.open[k]=!(st.open[k]??auto);render();};});
-    root.querySelectorAll("[data-openall]").forEach(function(b){b.onclick=function(){var o=b.getAttribute("data-openall");st.tasks.forEach(function(x){if(x.offer===o)st.open[o+"|"+(x.folder||"")]=true;});render();};});
-    root.querySelectorAll("[data-closeall]").forEach(function(b){b.onclick=function(){var o=b.getAttribute("data-closeall");st.tasks.forEach(function(x){if(x.offer===o)st.open[o+"|"+(x.folder||"")]=false;});render();};});
+    root.querySelectorAll("[data-fold]").forEach(function(b){b.onclick=function(){
+      st.open[b.getAttribute("data-fold")]=b.getAttribute("aria-expanded")==="false";
+      render();
+      document.getElementById(b.id)?.focus();
+    };});
+    ["data-openall","data-closeall"].forEach(function(action){
+      root.querySelectorAll("["+action+"]").forEach(function(b){b.onclick=function(){
+        var offer=b.getAttribute(action);
+        groups.get(offer).folders.forEach(function(_,folder){st.open[offer+"|"+folder]=action==="data-openall";});
+        render();
+      };});
+    });
     root.querySelectorAll("[data-copypath]").forEach(function(b){b.onclick=function(){var txt=b.getAttribute("data-copypath");
       var ok=function(){st.msg=t("copied")+"："+txt;st.msgCls="ok";render();};
       try{navigator.clipboard.writeText(txt).then(ok,function(){fallback(txt);ok();});}catch(e){fallback(txt);ok();}};});
     function fallback(txt){try{var ta=document.createElement("textarea");ta.value=txt;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();document.execCommand("copy");document.body.removeChild(ta);}catch(e){}}
-    root.querySelectorAll("[data-done]").forEach(function(c){c.onchange=function(){
-      var id=+c.getAttribute("data-done"), r=root.querySelector('[data-res="'+id+'"]');
-      st.busy=true; render();
-      rpc("set_done",{p_id:id,p_done:c.checked,p_result:r?r.value:null}).then(function(x){upsert(x);st.busy=false;render();}).catch(fail);};});
-    root.querySelectorAll("[data-res]").forEach(function(inp){
-      var save=function(){var id=+inp.getAttribute("data-res"), x=st.tasks.filter(function(z){return z.id===id;})[0];
-        if(!x||(x.result||"")===inp.value) return;
-        rpc("set_done",{p_id:id,p_done:x.done,p_result:inp.value}).then(function(r){upsert(r);st.msg=t("saved");st.msgCls="ok";render();}).catch(fail);};
-      inp.onkeydown=function(e){if(e.key==="Enter")inp.blur();}; inp.onblur=save;});
   }
   document.querySelectorAll(".langsw button").forEach(function(b){b.addEventListener("click",function(){setTimeout(render,0);});});
   function onView(){ if(location.hash==="#tasks") load(); }
   window.addEventListener("hashchange",onView);
-  setInterval(function(){var a=document.activeElement;var editing=a&&a.classList&&(a.classList.contains("tk-res")||a.id==="tk-in");
-    if(location.hash==="#tasks"&&!st.busy&&!editing&&!document.hidden&&me()) load(true);},20000);
+  setInterval(function(){
+    if(location.hash==="#tasks"&&!st.busy&&!document.hidden&&me()) load(true);
+  },20000);
   render(); onView();
 })();
 </script>
