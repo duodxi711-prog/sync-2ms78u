@@ -789,7 +789,6 @@
             <span class="workspace-filter-label" id="workspace-filter-offer"><span class="t-zh">Offer 类型</span><span class="t-en">Offer type</span></span>
             <div class="workspace-filter-options">
               <button type="button" data-workspace-filter-value="all" aria-pressed="true"><span class="t-zh">全部</span><span class="t-en">All</span></button>
-              <button type="button" data-workspace-filter-value="general" aria-pressed="false"><span class="t-zh">通用</span><span class="t-en">General</span></button>
               <button type="button" data-workspace-filter-value="weight-loss" aria-pressed="false"><span class="t-zh">减肥</span><span class="t-en">Weight Loss</span></button>
               <button type="button" data-workspace-filter-value="copd" aria-pressed="false">COPD</button>
               <button type="button" data-workspace-filter-value="blood-sugar" aria-pressed="false"><span class="t-zh">血糖</span><span class="t-en">Blood Sugar</span></button>
@@ -805,8 +804,7 @@
           </div>
         </div>
         <div class="workspace-library-scroll" tabindex="0" role="region" aria-labelledby="workspace-library-heading">
-          <section class="workspace-copy-group" data-workspace-copy-group="general" aria-labelledby="workspace-all-headlines">
-            <h4 id="workspace-all-headlines"><span class="t-zh">全品类通用</span><span class="t-en">General</span></h4>
+          <div class="workspace-copy-group" data-workspace-copy-group="general">
             <div class="workspace-copy-item" data-workspace-copy-type="headline">
               <div class="workspace-item-head">
                 <span id="general-headline-label"><span class="t-zh">标题</span><span class="t-en">Headline</span></span>
@@ -814,7 +812,7 @@
               </div>
               <p class="workspace-copy-text" id="general-headline" lang="en">I Tried Everything... Then I Found This 💯</p>
             </div>
-          </section>
+          </div>
           <section class="workspace-copy-group" data-workspace-copy-group="weight-loss" aria-labelledby="workspace-weight-loss">
             <h4 id="workspace-weight-loss"><span class="t-zh">减肥通用</span><span class="t-en">Weight Loss · General</span></h4>
             <div class="workspace-copy-item" data-workspace-copy-type="headline">
@@ -3145,7 +3143,8 @@ If you're 40+ and nothing seems to work, tap below to see what changed everythin
     var category=selectedFilter("offer"), type=selectedFilter("type");
     var visible=false;
     copyGroups.forEach(function(group){
-      var categoryMatches=category==="all"||group.dataset.workspaceCopyGroup===category;
+      var groupCategory=group.dataset.workspaceCopyGroup;
+      var categoryMatches=category==="all"||groupCategory==="general"||groupCategory===category;
       var groupVisible=false;
       group.querySelectorAll("[data-workspace-copy-type]").forEach(function(item){
         item.hidden=!(categoryMatches&&(type==="all"||item.dataset.workspaceCopyType===type));
