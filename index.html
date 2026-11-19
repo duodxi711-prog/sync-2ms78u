@@ -621,22 +621,60 @@
   @media (forced-colors:active){.nav-icon-workspace{display:none}}
 
   .workspace-title{margin:0 0 20px;font-size:clamp(24px,3vw,32px);line-height:1.25}
-  .workspace-resource{padding:18px 20px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius)}
-  .workspace-resource-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px}
-  .workspace-resource-head h3{margin:0;font-size:16px;line-height:1.4}
-  .workspace-resource .cpy{min-height:36px;padding:6px 11px;color:var(--accent);font-size:13px;font-weight:650}
-  .workspace-resource .cpy.done{color:#13865f}
-  .workspace-resource .cpy.fail{color:#8a5b00}
-  .workspace-resource .cpy:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .workspace-grid{display:grid;gap:20px;align-items:start}
+  .workspace-grid>*{min-width:0}
+  .workspace-panel-title{margin:0 0 10px;font-size:16px;line-height:1.5}
+  .workspace-resource,.workspace-library-panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius)}
+  .workspace-resource{padding:16px 18px}
+  .workspace-resource-head,.workspace-item-head,.workspace-dataset{
+    display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px
+  }
+  .workspace-resource-head{margin-bottom:12px}
+  .workspace-resource h4,.workspace-copy-group h4{margin:0;font-size:14px;line-height:1.5}
+  .workspace-dataset{margin-top:12px}
+  .workspace-dataset>span{color:var(--ink2);font-size:13px}
+  .workspace-grid .cpy{min-height:34px;padding:5px 10px;color:var(--accent);font-size:12px;font-weight:650}
+  .workspace-grid .cpy.done{color:#13865f}
+  .workspace-grid .cpy.fail{color:#8a5b00}
+  .workspace-grid .cpy:focus-visible,.workspace-library-controls button:focus-visible{
+    outline:2px solid var(--accent);outline-offset:2px
+  }
   .workspace-resource code{
-    display:block;padding:12px 14px;background:#f5f6f8;border:1px solid var(--line2);border-radius:8px;
+    display:block;padding:11px 12px;background:#f5f6f8;border:1px solid var(--line2);border-radius:8px;
     font:13px/1.75 ui-monospace,SFMono-Regular,Consolas,monospace;
     white-space:pre-wrap;overflow-wrap:anywhere;user-select:text;
   }
+  .workspace-library-panel{display:flex;flex-direction:column;overflow:hidden}
+  .workspace-library-controls{display:flex;flex-wrap:wrap;gap:6px;padding:12px 14px;border-bottom:1px solid var(--line);flex:none}
+  .workspace-library-controls button{
+    padding:5px 10px;min-height:34px;background:var(--card);border:1px solid var(--line);border-radius:7px;
+    color:var(--ink2);font:inherit;font-size:13px;line-height:1.3;cursor:pointer;
+  }
+  .workspace-library-controls button:hover{background:#f5f6f8}
+  .workspace-library-controls button[aria-pressed="true"]{
+    color:var(--accent);background:var(--accent-bg);border-color:#efc8c1;font-weight:650;
+  }
+  .workspace-library-scroll{min-height:0;padding:14px}
+  .workspace-library-scroll:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+  .workspace-copy-group:not([hidden])~.workspace-copy-group{margin-top:16px}
+  .workspace-copy-group h4{margin-bottom:8px}
+  .workspace-copy-item{padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#fafbfc}
+  .workspace-copy-item+.workspace-copy-item{margin-top:8px}
+  .workspace-item-head>span{color:var(--ink2);font-size:12px;font-weight:650}
+  .workspace-copy-text{margin:4px 0 0;font-size:14px;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+  .workspace-copy-empty{margin:8px 0;color:var(--ink2);font-size:14px}
+  .workspace-grid [hidden]{display:none!important}
   @media (max-width:640px){
     .workspace-title{margin-bottom:14px}
     .workspace-resource{padding:13px}
-    .workspace-resource .cpy{min-height:44px}
+    .workspace-grid .cpy,.workspace-library-controls button{min-height:44px}
+  }
+  @media screen and (min-width:960px){
+    main:has(>.view[data-view="workspace"].active){max-width:1580px;padding-bottom:22px}
+    body:has(.view[data-view="workspace"].active)>footer{max-width:1580px;padding-bottom:16px}
+    .workspace-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .workspace-library-panel{max-height:max(300px,calc(100vh - 170px));max-height:max(300px,calc(100dvh - 170px))}
+    .workspace-library-scroll{overflow-y:auto;overscroll-behavior-y:contain;scrollbar-gutter:stable;scrollbar-width:thin;scrollbar-color:#aab1bd transparent}
   }
 
   @media screen and (max-width:959px){
@@ -719,13 +757,78 @@
 <main>
 <section class="view" data-view="workspace" aria-labelledby="workspace-heading">
   <h2 class="workspace-title" id="workspace-heading"><span class="t-zh">工作台</span><span class="t-en">Workspace</span></h2>
-  <article class="workspace-resource" aria-labelledby="facebook-parameters-heading">
-    <div class="workspace-resource-head">
-      <h3 id="facebook-parameters-heading"><span class="t-zh">Facebook URL 参数</span><span class="t-en">Facebook URL Parameters</span></h3>
-      <button type="button" class="cpy" data-copy-target="facebook-url-parameters" aria-live="polite"><span class="t-zh">复制参数</span><span class="t-en">Copy parameters</span></button>
-    </div>
-    <code id="facebook-url-parameters">cwr={{campaign.id}}&amp;cname={{campaign.name}}&amp;domain={{domain}}&amp;placement={{placement}}&amp;adset={{adset.name}}&amp;adname={{ad.name}}&amp;site={{site_source_name}}&amp;xid=1cj51r4o&amp;sub1={{ad.id}}&amp;sub2={{adset.id}}&amp;sub3={{campaign.id}}&amp;sub4={{ad.name}}&amp;sub5={{adset.name}}&amp;sub6={{campaign.name}}&amp;sub7={{placement}}&amp;sub8={{site_source_name}}&amp;utm_source=facebook&amp;utm_medium=paid</code>
-  </article>
+  <div class="workspace-grid">
+    <section class="workspace-general" aria-labelledby="workspace-general-heading">
+      <h3 class="workspace-panel-title" id="workspace-general-heading"><span class="t-zh">通用信息</span><span class="t-en">General Information</span></h3>
+      <article class="workspace-resource" aria-labelledby="facebook-parameters-heading">
+        <div class="workspace-resource-head">
+          <h4 id="facebook-parameters-heading"><span class="t-zh">Facebook URL 参数</span><span class="t-en">Facebook URL Parameters</span></h4>
+          <button type="button" class="cpy" data-copy-target="facebook-url-parameters" data-copy-kind="parameters" aria-live="polite"><span class="t-zh">复制参数</span><span class="t-en">Copy parameters</span></button>
+        </div>
+        <code id="facebook-url-parameters">cwr={{campaign.id}}&amp;cname={{campaign.name}}&amp;domain={{domain}}&amp;placement={{placement}}&amp;adset={{adset.name}}&amp;adname={{ad.name}}&amp;site={{site_source_name}}&amp;xid=1cj51r4o&amp;sub1={{ad.id}}&amp;sub2={{adset.id}}&amp;sub3={{campaign.id}}&amp;sub4={{ad.name}}&amp;sub5={{adset.name}}&amp;sub6={{campaign.name}}&amp;sub7={{placement}}&amp;sub8={{site_source_name}}&amp;utm_source=facebook&amp;utm_medium=paid</code>
+      </article>
+      <article class="workspace-resource workspace-dataset">
+        <h4>Dataset</h4>
+        <span><span class="t-zh">待补充</span><span class="t-en">Pending</span></span>
+      </article>
+    </section>
+    <section class="workspace-library" aria-labelledby="workspace-library-heading">
+      <h3 class="workspace-panel-title" id="workspace-library-heading"><span class="t-zh">文案库</span><span class="t-en">Ad Copy Library</span></h3>
+      <div class="workspace-library-panel">
+        <div class="workspace-library-controls" role="group" aria-labelledby="workspace-filter-label">
+          <span class="sr-only" id="workspace-filter-label"><span class="t-zh">按 Offer 类型筛选</span><span class="t-en">Filter by offer type</span></span>
+            <button type="button" data-workspace-copy-filter="all" aria-pressed="true"><span class="t-zh">全部</span><span class="t-en">All</span></button>
+            <button type="button" data-workspace-copy-filter="general" aria-pressed="false"><span class="t-zh">通用</span><span class="t-en">General</span></button>
+            <button type="button" data-workspace-copy-filter="weight-loss" aria-pressed="false"><span class="t-zh">减肥</span><span class="t-en">Weight Loss</span></button>
+            <button type="button" data-workspace-copy-filter="copd" aria-pressed="false">COPD</button>
+            <button type="button" data-workspace-copy-filter="blood-sugar" aria-pressed="false"><span class="t-zh">血糖</span><span class="t-en">Blood Sugar</span></button>
+        </div>
+        <div class="workspace-library-scroll" tabindex="0" role="region" aria-labelledby="workspace-library-heading">
+          <section class="workspace-copy-group" data-workspace-copy-group="general" aria-labelledby="workspace-all-headlines">
+            <h4 id="workspace-all-headlines"><span class="t-zh">全品类通用</span><span class="t-en">General</span></h4>
+            <div class="workspace-copy-item">
+              <div class="workspace-item-head">
+                <span id="general-headline-label"><span class="t-zh">标题</span><span class="t-en">Headline</span></span>
+                <button type="button" class="cpy" data-copy-target="general-headline" aria-live="polite" aria-describedby="general-headline-label"><span class="t-zh">复制</span><span class="t-en">Copy</span></button>
+              </div>
+              <p class="workspace-copy-text" id="general-headline" lang="en">I Tried Everything... Then I Found This 💯</p>
+            </div>
+          </section>
+          <section class="workspace-copy-group" data-workspace-copy-group="weight-loss" aria-labelledby="workspace-weight-loss">
+            <h4 id="workspace-weight-loss"><span class="t-zh">减肥通用</span><span class="t-en">Weight Loss · General</span></h4>
+            <div class="workspace-copy-item">
+              <div class="workspace-item-head">
+                <span id="weight-loss-headline-label"><span class="t-zh">标题</span><span class="t-en">Headline</span></span>
+                <button type="button" class="cpy" data-copy-target="weight-loss-headline" aria-live="polite" aria-describedby="weight-loss-headline-label"><span class="t-zh">复制</span><span class="t-en">Copy</span></button>
+              </div>
+              <p class="workspace-copy-text" id="weight-loss-headline" lang="en">Ready for a Slimmer You? Take the First Step ✨</p>
+            </div>
+            <div class="workspace-copy-item">
+              <div class="workspace-item-head">
+                <span id="weight-loss-body-1-label"><span class="t-zh">正文 1</span><span class="t-en">Primary text 1</span></span>
+                <button type="button" class="cpy" data-copy-target="weight-loss-body-1" aria-live="polite" aria-describedby="weight-loss-body-1-label"><span class="t-zh">复制</span><span class="t-en">Copy</span></button>
+              </div>
+              <p class="workspace-copy-text" id="weight-loss-body-1" lang="en">Struggling to lose those stubborn pounds? 🤔
+You're not alone. Millions of adults over 40 hit the same wall — but what if the real issue wasn't your willpower?
+This short video breaks down a simple morning ritual that's helping people feel lighter and more energized. No extreme diets, no exhausting workouts.
+Tap below to see how it works — it only takes 2 minutes! 👇</p>
+            </div>
+            <div class="workspace-copy-item">
+              <div class="workspace-item-head">
+                <span id="weight-loss-body-2-label"><span class="t-zh">正文 2</span><span class="t-en">Primary text 2</span></span>
+                <button type="button" class="cpy" data-copy-target="weight-loss-body-2" aria-live="polite" aria-describedby="weight-loss-body-2-label"><span class="t-zh">复制</span><span class="t-en">Copy</span></button>
+              </div>
+              <p class="workspace-copy-text" id="weight-loss-body-2" lang="en">I Thought I'd Tried Everything... 💯
+Keto. Fasting. Cardio. Nothing worked — until I found this.
+It's not another supplement or shake. It's a simple habit that fits into any morning routine, and it's helping thousands of people finally feel like themselves again.
+If you're 40+ and nothing seems to work, tap below to see what changed everything 👇</p>
+            </div>
+          </section>
+          <p class="workspace-copy-empty" role="status" hidden><span class="t-zh">这个分类暂时没有文案。</span><span class="t-en">No ad copy in this category yet.</span></p>
+        </div>
+      </div>
+    </section>
+  </div>
 </section>
 
 <div class="lang lang-zh" lang="zh-CN">
@@ -2981,7 +3084,10 @@
   function setState(b,st){
     b.className="cpy"+(st?" "+st:"");
     var isResource=b.hasAttribute("data-copy-target");
-    var action=isResource?(en()?"Copy parameters":"复制参数"):(en()?"Copy VSL":"复制 VSL");
+    var action=en()?"Copy VSL":"复制 VSL";
+    if(isResource){
+      action=b.dataset.copyKind==="parameters"?(en()?"Copy parameters":"复制参数"):(en()?"Copy":"复制");
+    }
     var l=label(st)||(isResource?action:"");
     b.innerHTML=(st==="done"?"✓":ICON)+(l?"<span>"+l+"</span>":"");
     b.title=action;
@@ -3000,6 +3106,26 @@
       }catch(err){fail();}
     });
   }
+
+  var copyFilters=document.querySelectorAll("[data-workspace-copy-filter]");
+  var copyGroups=document.querySelectorAll("[data-workspace-copy-group]");
+  var copyScroll=document.querySelector(".workspace-library-scroll");
+  var copyEmpty=document.querySelector(".workspace-copy-empty");
+  copyFilters.forEach(function(button){
+    button.addEventListener("click",function(){
+      var category=button.dataset.workspaceCopyFilter;
+      copyFilters.forEach(function(filter){
+        filter.setAttribute("aria-pressed",String(filter===button));
+      });
+      var visible=false;
+      copyGroups.forEach(function(group){
+        group.hidden=category!=="all"&&group.dataset.workspaceCopyGroup!==category;
+        if(!group.hidden) visible=true;
+      });
+      copyEmpty.hidden=visible;
+      copyScroll.scrollTop=0;
+    });
+  });
   document.querySelectorAll("button[data-copy-target]").forEach(function(b){
     var target=document.getElementById(b.dataset.copyTarget);
     if(target) bindCopy(b,target.textContent,target);
