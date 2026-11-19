@@ -30,7 +30,6 @@
   .top-inner{max-width:1080px;margin:0 auto;padding:14px 24px 0}
   .title-row{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
   .title-row h1{font-size:20px;margin:0;letter-spacing:.5px;display:flex;align-items:center;gap:10px}
-  .title-row h1 .brand{height:46px;width:auto;flex:0 0 auto;display:block}
   .title-row{align-items:flex-end !important}
   .title-row .meta{margin-bottom:var(--meta-mb,11.75px);line-height:1.4}
   .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
@@ -528,7 +527,6 @@
     .top-inner{padding:10px 14px 0}
     .title-row{flex-wrap:nowrap;gap:8px}
     .title-row h1{font-size:17px;gap:8px}
-    .title-row h1 .brand{height:34px}
     .title-row .meta{display:none}
     .langsw button{padding:4px 10px;font-size:12.5px}
     nav.tabs{margin-top:6px}
@@ -612,7 +610,16 @@
   .otable td.c-cat i.ci{color:var(--ink2)}
 </style>
 <style>
-  .brand-home{display:inline-flex;align-items:center;border-radius:5px}
+  .brand-home{
+    position:relative;display:block;flex:none;width:152px;aspect-ratio:3.12;
+    overflow:hidden;border-radius:5px;
+  }
+  /* Crop the white margins around the wordmark without stretching the image. */
+  .brand-home .brand{
+    position:absolute;left:50%;top:50%;width:116%;height:auto;display:block;
+    transform:translate(-50%,-50%);
+  }
+  @media (max-width:640px){.brand-home{width:120px}}
   .nav-group-label{display:none}
   nav.tabs a:focus-visible,.brand-home:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
   .nav-icon-workspace{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;padding:1px}
@@ -720,7 +727,7 @@
     }
     .title-row{display:contents}
     .title-row h1{grid-row:1;margin-left:8px}
-    .title-row h1 .brand{height:48px}
+    .brand-home{width:176px}
     .top-inner>.langsw{grid-row:3;justify-self:start;margin:0 8px}
     .title-row .meta{grid-row:4;margin:0 8px;font-size:11px}
     nav.tabs{
