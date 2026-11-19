@@ -381,9 +381,9 @@
     padding:10px 14px;background:#fff;border:1px solid #e1e5ec;border-radius:14px;
     box-shadow:0 2px 6px rgba(32,40,61,.04);
   }
-  .report-offer,.report-date{display:flex;align-items:center;gap:10px;min-width:0}
+  .report-offer,.report-date,.report-platform{display:flex;align-items:center;gap:10px;min-width:0}
   .report-filter-label{color:var(--ink2);font-size:13px;font-weight:650;white-space:nowrap}
-  .report-date{padding-left:16px;border-left:1px solid #e4e8ef}
+  .report-date,.report-platform{padding-left:16px;border-left:1px solid #e4e8ef}
   .report-filters .ttabs{
     display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;gap:3px;
     width:236px;height:var(--report-control-height);margin:0;padding:3px;
@@ -405,37 +405,43 @@
   [data-report-tabs] .ttab[aria-selected="true"]::before{
     content:"";flex:0 0 6px;height:6px;border-radius:50%;background:currentColor;
   }
-  .report-date-control{position:relative;display:block;width:164px;min-width:0}
-  .report-date-control::before,.report-date-control::after{
+  .report-date-control,.report-platform-control{position:relative;display:block;min-width:0}
+  .report-date-control{width:164px}
+  .report-platform-control{width:130px}
+  .report-date-control::before,.report-date-control::after,.report-platform-control::after{
     content:"";position:absolute;top:50%;pointer-events:none;color:#68758a;
   }
   .report-date-control::before{
     left:13px;width:13px;height:13px;border:1.5px solid currentColor;border-top-width:4px;
     border-radius:3px;transform:translateY(-50%);
   }
-  .report-date-control::after{
+  .report-date-control::after,.report-platform-control::after{
     right:15px;width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;
     transform:translateY(-68%) rotate(45deg);
   }
-  .report-date select{
+  .report-date select,.report-platform select{
     display:block;width:100%;height:var(--report-control-height);padding:0 32px 0 36px;
     appearance:none;background:#f8f9fb;border:1px solid #e1e5ed;border-radius:10px;
     color:var(--ink);font:inherit;font-size:13px;font-weight:650;font-variant-numeric:tabular-nums;cursor:pointer;
   }
-  .report-date select:hover{background:#fff;border-color:#a6afbd}
-  .report-date select:focus-visible,[data-report-tabs] .ttab:focus-visible{
+  .report-platform select{padding-left:12px}
+  .report-date select:hover,.report-platform select:hover{background:#fff;border-color:#a6afbd}
+  .report-date select:focus-visible,.report-platform select:focus-visible,[data-report-tabs] .ttab:focus-visible{
     outline:2px solid var(--report-focus);outline-offset:2px;z-index:31;
+  }
+  @media (max-width:820px){
+    .report-filters{flex-wrap:wrap}
   }
   @media (max-width:600px){
     .report-filters{display:grid;width:100%;gap:10px;padding:10px 12px}
-    .report-offer,.report-date{display:grid;grid-template-columns:2.6rem minmax(0,1fr)}
-    .report-date{padding-left:0;border-left:0}
-    .report-filters .ttabs,.report-date-control{width:100%}
+    .report-offer,.report-date,.report-platform{display:grid;grid-template-columns:3.1rem minmax(0,1fr)}
+    .report-date,.report-platform{padding-left:0;border-left:0}
+    .report-filters .ttabs,.report-date-control,.report-platform-control{width:100%}
   }
   @media (forced-colors:active){
     [data-report-tabs] .ttab[aria-selected="true"]{border-color:Highlight;color:Highlight}
-    .report-date select{appearance:auto;padding-left:12px;padding-right:12px}
-    .report-date-control::before,.report-date-control::after{display:none}
+    .report-date select,.report-platform select{appearance:auto;padding-left:12px;padding-right:12px}
+    .report-date-control::before,.report-date-control::after,.report-platform-control::after{display:none}
   }
   [data-report-tabs]>.tbody{padding:0;background:transparent;border:0;box-shadow:none}
   [data-report-tabs] .tpanel{padding:0}
@@ -1020,6 +1026,10 @@
             <span class="report-filter-label">日期</span>
             <span class="report-date-control"><select data-report-date-filter><option value="">全部日期</option></select></span>
           </label>
+          <label class="report-platform">
+            <span class="report-filter-label">平台</span>
+            <span class="report-platform-control"><select data-report-platform-filter><option value="">全平台</option><option value="facebook" title="Facebook">FB</option><option value="newsbreak" title="NewsBreak">NB</option></select></span>
+          </label>
         </div>
         <div class="tbody">
     <div class="tpanel" id="report-panel-zh-yoburn" role="tabpanel" aria-labelledby="report-tab-zh-yoburn">
@@ -1027,11 +1037,12 @@
       <div class="tbl-wrap offer-test-report"><table>
         <thead><tr><th scope="col">日期</th><th scope="col">平台</th><th scope="col" class="num">花费</th><th scope="col" class="num">CPC</th><th scope="col" class="num">出单</th><th scope="col" class="num">营业额</th><th scope="col" class="num" title="营业额 ÷ 广告花费">ROAS</th><th scope="col" class="num" title="营业额 − 广告花费">净盈亏</th></tr></thead>
         <tbody>
-          <tr data-report-date="2026-11-10"><th scope="row">11月10日</th><td>Facebook</td><td class="num">$2,004.42</td><td class="num"><span title="按 549 次 RedTrack 点击估算">≈ $3.65</span></td><td class="num">1</td><td class="num">$250</td><td class="num">—</td><td class="num">—</td></tr>
-          <tr data-report-date="2026-11-15"><th scope="row">11月15日</th><td>Facebook</td><td class="num">$438.14</td><td class="num">≈ $3</td><td class="num">2</td><td class="num">$500</td><td class="num">—</td><td class="num">—</td></tr>
-          <tr data-report-date="2026-11-16"><th scope="row">11月16日</th><td>Facebook</td><td class="num">$763.46</td><td class="num"><span title="按各笔花费和 CPC 推算点击数后计算">≈ $3.09</span></td><td class="num">5</td><td class="num">$1,250</td><td class="num">—</td><td class="num">—</td></tr>
-          <tr data-report-date="2026-11-17"><th scope="row">11月17日</th><td>Facebook</td><td class="num">$2,058.50</td><td class="num"><span title="按已提供 CPC 的记录估算，未纳入仅补报花费的记录">≈ $3.73</span></td><td class="num">6</td><td class="num">$1,500</td><td class="num">—</td><td class="num">—</td></tr>
-          <tr data-report-date="2026-11-18"><th scope="row">11月18日</th><td>Facebook</td><td class="num">$338.39</td><td class="num">$4.05</td><td class="num">2</td><td class="num">$500</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr data-report-date="2026-11-10" data-report-platform="facebook"><th scope="row">11月10日</th><td>Facebook</td><td class="num">$2,004.42</td><td class="num"><span title="按 549 次 RedTrack 点击估算">≈ $3.65</span></td><td class="num">1</td><td class="num">$250</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr data-report-date="2026-11-15" data-report-platform="facebook"><th scope="row">11月15日</th><td>Facebook</td><td class="num">$438.14</td><td class="num">≈ $3</td><td class="num">2</td><td class="num">$500</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr data-report-date="2026-11-16" data-report-platform="facebook"><th scope="row">11月16日</th><td>Facebook</td><td class="num">$763.46</td><td class="num"><span title="按各笔花费和 CPC 推算点击数后计算">≈ $3.09</span></td><td class="num">5</td><td class="num">$1,250</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr data-report-date="2026-11-17" data-report-platform="facebook" data-report-cpc-spend="1744.65"><th scope="row">11月17日</th><td>Facebook</td><td class="num">$2,058.50</td><td class="num"><span title="按已提供 CPC 的记录估算，未纳入仅补报花费的记录">≈ $3.73</span></td><td class="num">6</td><td class="num">$1,500</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr data-report-date="2026-11-18" data-report-platform="facebook"><th scope="row">11月18日</th><td>Facebook</td><td class="num">$338.39</td><td class="num">$4.05</td><td class="num">2</td><td class="num">$500</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr data-report-empty hidden><td colspan="8">所选条件下没有投放记录</td></tr>
         </tbody>
         <tfoot><tr data-report-total aria-live="polite"><th scope="row" colspan="2">总计</th><td class="num">$5,602.91</td><td class="num">—</td><td class="num">16</td><td class="num">$4,000</td><td class="num">—</td><td class="num">—</td></tr></tfoot>
       </table></div>
@@ -1042,7 +1053,7 @@
           <tr data-report-purchases='{"2026-11-16":3,"2026-11-17":2}'><td class="mono"><span class="lvl-tag">388</span> FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD01-250)</td><td class="num">5</td></tr>
           <tr data-report-purchases='{"2026-11-10":1,"2026-11-15":1,"2026-11-16":1,"2026-11-17":2,"2026-11-18":1}'><td class="mono"><span class="lvl-tag">390</span> FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD02-250)</td><td class="num">6</td></tr>
           <tr data-report-purchases='{"2026-11-15":1,"2026-11-16":1,"2026-11-17":2,"2026-11-18":1}'><td class="mono"><span class="lvl-tag">391</span> FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD03-250)</td><td class="num">5</td></tr>
-          <tr data-report-empty hidden><td colspan="2">所选日期无出单</td></tr>
+          <tr data-report-empty hidden><td colspan="2">所选条件下无出单</td></tr>
         </tbody>
       </table></div>
       <div class="sec">出单 Ads</div>
@@ -1056,7 +1067,7 @@
           <tr data-report-purchases='{"2026-11-16":1}' data-report-unattributed><td>广告归因未知</td><td class="num">1</td></tr>
           <tr data-report-purchases='{"2026-11-18":1}'><td class="mono">YBAD169_H1_C60_E39_868mv9h51</td><td class="num">1</td></tr>
           <tr data-report-purchases='{"2026-11-18":1}'><td class="mono">YBAD129_H2_C26_E10_atx00000x</td><td class="num">1</td></tr>
-          <tr data-report-empty hidden><td colspan="2">所选日期无出单</td></tr>
+          <tr data-report-empty hidden><td colspan="2">所选条件下无出单</td></tr>
         </tbody>
       </table></div>
     </div>
@@ -1065,13 +1076,14 @@
       <div class="tbl-wrap offer-test-report"><table>
         <thead><tr><th scope="col">日期</th><th scope="col">平台</th><th scope="col" class="num">花费</th><th scope="col" class="num">CPC</th><th scope="col" class="num">出单</th><th scope="col" class="num">营业额</th><th scope="col" class="num" title="营业额 ÷ 广告花费">ROAS</th><th scope="col" class="num" title="营业额 − 广告花费">净盈亏</th></tr></thead>
         <tbody>
-          <tr data-report-date="2026-11-14"><th scope="row">11月14日</th><td>NewsBreak</td><td class="num">$907.00</td><td class="num">$0.58</td><td class="num">0</td><td class="num">$0</td><td class="num">—</td><td class="num">—</td></tr>
-          <tr data-report-date="2026-11-15"><th scope="row">11月15日</th><td>NewsBreak</td><td class="num">$292.46</td><td class="num">$0.19</td><td class="num">1</td><td class="num">$250</td><td class="num">—</td><td class="num">—</td></tr>
-          <tr data-report-date="2026-11-16"><th scope="row">11月16日</th><td>NewsBreak</td><td class="num">$552.06</td><td class="num">$0.28</td><td class="num">1</td><td class="num">$250</td><td class="num">—</td><td class="num">—</td></tr>
-          <tr data-report-date="2026-11-16"><th scope="row">11月16日</th><td>Facebook</td><td class="num">$1,313.39</td><td class="num"><span title="按各笔花费和 CPC 推算点击数后计算">≈ $1.71</span></td><td class="num">5</td><td class="num">$1,250</td><td class="num">—</td><td class="num">—</td></tr>
-          <tr data-report-date="2026-11-17"><th scope="row">11月17日</th><td>NewsBreak</td><td class="num">$250.00</td><td class="num">$0.53</td><td class="num">0</td><td class="num">$0</td><td class="num">—</td><td class="num">—</td></tr>
-          <tr data-report-date="2026-11-17"><th scope="row">11月17日</th><td>Facebook</td><td class="num">$3,226.58</td><td class="num"><span title="按已提供 CPC 的记录估算，未纳入仅补报花费的记录">≈ $1.72</span></td><td class="num">13</td><td class="num">$3,250</td><td class="num">—</td><td class="num">—</td></tr>
-          <tr data-report-date="2026-11-18"><th scope="row">11月18日</th><td>Facebook</td><td class="num">$1,895.00</td><td class="num">$1.90</td><td class="num">3</td><td class="num">$750</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr data-report-date="2026-11-14" data-report-platform="newsbreak"><th scope="row">11月14日</th><td>NewsBreak</td><td class="num">$907.00</td><td class="num">$0.58</td><td class="num">0</td><td class="num">$0</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr data-report-date="2026-11-15" data-report-platform="newsbreak"><th scope="row">11月15日</th><td>NewsBreak</td><td class="num">$292.46</td><td class="num">$0.19</td><td class="num">1</td><td class="num">$250</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr data-report-date="2026-11-16" data-report-platform="newsbreak"><th scope="row">11月16日</th><td>NewsBreak</td><td class="num">$552.06</td><td class="num">$0.28</td><td class="num">1</td><td class="num">$250</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr data-report-date="2026-11-16" data-report-platform="facebook"><th scope="row">11月16日</th><td>Facebook</td><td class="num">$1,313.39</td><td class="num"><span title="按各笔花费和 CPC 推算点击数后计算">≈ $1.71</span></td><td class="num">5</td><td class="num">$1,250</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr data-report-date="2026-11-17" data-report-platform="newsbreak"><th scope="row">11月17日</th><td>NewsBreak</td><td class="num">$250.00</td><td class="num">$0.53</td><td class="num">0</td><td class="num">$0</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr data-report-date="2026-11-17" data-report-platform="facebook" data-report-cpc-spend="3225.98"><th scope="row">11月17日</th><td>Facebook</td><td class="num">$3,226.58</td><td class="num"><span title="按已提供 CPC 的记录估算，未纳入仅补报花费的记录">≈ $1.72</span></td><td class="num">13</td><td class="num">$3,250</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr data-report-date="2026-11-18" data-report-platform="facebook"><th scope="row">11月18日</th><td>Facebook</td><td class="num">$1,895.00</td><td class="num">$1.90</td><td class="num">3</td><td class="num">$750</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr data-report-empty hidden><td colspan="8">所选条件下没有投放记录</td></tr>
         </tbody>
         <tfoot><tr data-report-total aria-live="polite"><th scope="row" colspan="2">总计</th><td class="num">$8,436.49</td><td class="num">—</td><td class="num">23</td><td class="num">$5,750</td><td class="num">—</td><td class="num">—</td></tr></tfoot>
       </table></div>
@@ -1079,24 +1091,24 @@
       <div class="tbl-wrap offer-test-report"><table>
         <thead><tr><th scope="col">VSL</th><th scope="col" class="num">出单</th></tr></thead>
         <tbody data-report-attribution>
-          <tr data-report-purchases='{"2026-11-15":1,"2026-11-16":1,"2026-11-17":1}'><td class="mono"><span class="lvl-tag">403</span> FB-BH-BuyGoods-GlucoBase(MOD01-250)</td><td class="num">3</td></tr>
-          <tr data-report-purchases='{"2026-11-16":2,"2026-11-17":3}'><td class="mono"><span class="lvl-tag">404</span> FB-BH-BuyGoods-GlucoBase(MOD01-ML01-250)</td><td class="num">5</td></tr>
-          <tr data-report-purchases='{"2026-11-16":2,"2026-11-17":6,"2026-11-18":3}'><td class="mono"><span class="lvl-tag">405</span> FB-BH-BuyGoods-GlucoBase(MOD01-ML02-250)</td><td class="num">11</td></tr>
-          <tr data-report-purchases='{"2026-11-16":1,"2026-11-17":1}'><td class="mono"><span class="lvl-tag">406</span> FB-BH-BuyGoods-GlucoBase(MOD01-ML03-250)</td><td class="num">2</td></tr>
+          <tr data-report-purchases='{"2026-11-15":1,"2026-11-16":1,"2026-11-17":1}' data-report-platform-purchases='{"2026-11-16":{"newsbreak":1}}'><td class="mono"><span class="lvl-tag">403</span> FB-BH-BuyGoods-GlucoBase(MOD01-250)</td><td class="num">3</td></tr>
+          <tr data-report-purchases='{"2026-11-16":2,"2026-11-17":3}' data-report-platform-purchases='{"2026-11-16":{"facebook":2}}'><td class="mono"><span class="lvl-tag">404</span> FB-BH-BuyGoods-GlucoBase(MOD01-ML01-250)</td><td class="num">5</td></tr>
+          <tr data-report-purchases='{"2026-11-16":2,"2026-11-17":6,"2026-11-18":3}' data-report-platform-purchases='{"2026-11-16":{"facebook":2}}'><td class="mono"><span class="lvl-tag">405</span> FB-BH-BuyGoods-GlucoBase(MOD01-ML02-250)</td><td class="num">11</td></tr>
+          <tr data-report-purchases='{"2026-11-16":1,"2026-11-17":1}' data-report-platform-purchases='{"2026-11-16":{"facebook":1}}'><td class="mono"><span class="lvl-tag">406</span> FB-BH-BuyGoods-GlucoBase(MOD01-ML03-250)</td><td class="num">2</td></tr>
           <tr data-report-purchases='{"2026-11-17":2}'><td class="mono"><span class="lvl-tag">407</span> FB-BH-BuyGoods-GlucoBase(MOD01-ML04-250)</td><td class="num">2</td></tr>
-          <tr data-report-empty hidden><td colspan="2">所选日期无出单</td></tr>
+          <tr data-report-empty hidden><td colspan="2">所选条件下无出单</td></tr>
         </tbody>
       </table></div>
       <div class="sec">出单 Ads</div>
       <div class="tbl-wrap offer-test-report"><table>
         <thead><tr><th scope="col">广告素材</th><th scope="col" class="num">出单</th></tr></thead>
         <tbody data-report-attribution>
-          <tr data-report-purchases='{"2026-11-15":1,"2026-11-16":1}'><td class="mono">GSAD06_C41_E15_868mueajh</td><td class="num">2</td></tr>
-          <tr data-report-purchases='{"2026-11-16":1}'><td class="mono">GSAD13_H2_C27_E73_868muw750</td><td class="num">1</td></tr>
-          <tr data-report-purchases='{"2026-11-16":1,"2026-11-17":5,"2026-11-18":1}'><td class="mono">GSAD11_H1_C72_E67_atx00000y</td><td class="num">7</td></tr>
-          <tr data-report-purchases='{"2026-11-16":1}'><td class="mono">GSAD7_H1_C72_E67_atx00000y</td><td class="num">1</td></tr>
-          <tr data-report-purchases='{"2026-11-16":1}'><td class="mono">GSAD7_H2_C72_E67_atx00000y</td><td class="num">1</td></tr>
-          <tr data-report-purchases='{"2026-11-16":1}' data-report-unattributed><td>用户分享（广告归因未知）</td><td class="num">1</td></tr>
+          <tr data-report-purchases='{"2026-11-15":1,"2026-11-16":1}' data-report-platform-purchases='{"2026-11-16":{"newsbreak":1}}'><td class="mono">GSAD06_C41_E15_868mueajh</td><td class="num">2</td></tr>
+          <tr data-report-purchases='{"2026-11-16":1}' data-report-platform-purchases='{"2026-11-16":{"facebook":1}}'><td class="mono">GSAD13_H2_C27_E73_868muw750</td><td class="num">1</td></tr>
+          <tr data-report-purchases='{"2026-11-16":1,"2026-11-17":5,"2026-11-18":1}' data-report-platform-purchases='{"2026-11-16":{"facebook":1}}'><td class="mono">GSAD11_H1_C72_E67_atx00000y</td><td class="num">7</td></tr>
+          <tr data-report-purchases='{"2026-11-16":1}' data-report-platform-purchases='{"2026-11-16":{"facebook":1}}'><td class="mono">GSAD7_H1_C72_E67_atx00000y</td><td class="num">1</td></tr>
+          <tr data-report-purchases='{"2026-11-16":1}' data-report-platform-purchases='{"2026-11-16":{"facebook":1}}'><td class="mono">GSAD7_H2_C72_E67_atx00000y</td><td class="num">1</td></tr>
+          <tr data-report-purchases='{"2026-11-16":1}' data-report-platform-purchases='{"2026-11-16":{"facebook":1}}' data-report-unattributed><td>用户分享（广告归因未知）</td><td class="num">1</td></tr>
           <tr data-report-purchases='{"2026-11-17":1}'><td class="mono">GSAD11_H2_C72_E67_atx00000y</td><td class="num">1</td></tr>
           <tr data-report-purchases='{"2026-11-17":1}'><td class="mono">GSAD8_H1_C72_E67_atx00000y</td><td class="num">1</td></tr>
           <tr data-report-purchases='{"2026-11-17":2,"2026-11-18":1}'><td class="mono">GSAD02_H1_C65_E49_868mttt4x</td><td class="num">3</td></tr>
@@ -1104,7 +1116,7 @@
           <tr data-report-purchases='{"2026-11-17":2}'><td class="mono">GSAD04_C41_E15_868mueajh</td><td class="num">2</td></tr>
           <tr data-report-purchases='{"2026-11-17":1}'><td class="mono">GSAD12_H1_C27_E73_868muw750</td><td class="num">1</td></tr>
           <tr data-report-purchases='{"2026-11-18":1}' data-report-unattributed><td>广告归因未知</td><td class="num">1</td></tr>
-          <tr data-report-empty hidden><td colspan="2">所选日期无出单</td></tr>
+          <tr data-report-empty hidden><td colspan="2">所选条件下无出单</td></tr>
         </tbody>
       </table></div>
     </div>
@@ -1952,6 +1964,10 @@
             <span class="report-filter-label">Date</span>
             <span class="report-date-control"><select data-report-date-filter><option value="">All dates</option></select></span>
           </label>
+          <label class="report-platform">
+            <span class="report-filter-label">Platform</span>
+            <span class="report-platform-control"><select data-report-platform-filter><option value="">All platforms</option><option value="facebook" title="Facebook">FB</option><option value="newsbreak" title="NewsBreak">NB</option></select></span>
+          </label>
         </div>
         <div class="tbody">
     <div class="tpanel" id="report-panel-en-yoburn" role="tabpanel" aria-labelledby="report-tab-en-yoburn">
@@ -1959,11 +1975,12 @@
       <div class="tbl-wrap offer-test-report"><table>
         <thead><tr><th scope="col">Date</th><th scope="col" class="num">Spend</th><th scope="col" class="num">CPC</th><th scope="col" class="num">Purchases</th><th scope="col" class="num">Revenue</th><th scope="col" class="num" title="Revenue ÷ ad spend">ROAS</th><th scope="col" class="num" title="Revenue − ad spend">Net P/L</th></tr></thead>
         <tbody>
-          <tr data-report-date="2026-11-10"><th scope="row">Nov 10</th><td class="num">$2,004.42</td><td class="num"><span title="Estimated from 549 RedTrack clicks">≈ $3.65</span></td><td class="num">1</td><td class="num">$250</td><td class="num">—</td><td class="num">—</td></tr>
-          <tr data-report-date="2026-11-15"><th scope="row">Nov 15</th><td class="num">$438.14</td><td class="num">≈ $3</td><td class="num">2</td><td class="num">$500</td><td class="num">—</td><td class="num">—</td></tr>
-          <tr data-report-date="2026-11-16"><th scope="row">Nov 16</th><td class="num">$763.46</td><td class="num"><span title="Estimated using spend and CPC for each report">≈ $3.09</span></td><td class="num">5</td><td class="num">$1,250</td><td class="num">—</td><td class="num">—</td></tr>
-          <tr data-report-date="2026-11-17"><th scope="row">Nov 17</th><td class="num">$2,058.50</td><td class="num"><span title="Estimated from reports with CPC, excluding spend-only adjustments">≈ $3.73</span></td><td class="num">6</td><td class="num">$1,500</td><td class="num">—</td><td class="num">—</td></tr>
-          <tr data-report-date="2026-11-18"><th scope="row">Nov 18</th><td class="num">$338.39</td><td class="num">$4.05</td><td class="num">2</td><td class="num">$500</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr data-report-date="2026-11-10" data-report-platform="facebook"><th scope="row">Nov 10</th><td class="num">$2,004.42</td><td class="num"><span title="Estimated from 549 RedTrack clicks">≈ $3.65</span></td><td class="num">1</td><td class="num">$250</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr data-report-date="2026-11-15" data-report-platform="facebook"><th scope="row">Nov 15</th><td class="num">$438.14</td><td class="num">≈ $3</td><td class="num">2</td><td class="num">$500</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr data-report-date="2026-11-16" data-report-platform="facebook"><th scope="row">Nov 16</th><td class="num">$763.46</td><td class="num"><span title="Estimated using spend and CPC for each report">≈ $3.09</span></td><td class="num">5</td><td class="num">$1,250</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr data-report-date="2026-11-17" data-report-platform="facebook" data-report-cpc-spend="1744.65"><th scope="row">Nov 17</th><td class="num">$2,058.50</td><td class="num"><span title="Estimated from reports with CPC, excluding spend-only adjustments">≈ $3.73</span></td><td class="num">6</td><td class="num">$1,500</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr data-report-date="2026-11-18" data-report-platform="facebook"><th scope="row">Nov 18</th><td class="num">$338.39</td><td class="num">$4.05</td><td class="num">2</td><td class="num">$500</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr data-report-empty hidden><td colspan="7">No data for the selected filters</td></tr>
         </tbody>
         <tfoot><tr data-report-total aria-live="polite"><th scope="row">Total</th><td class="num">$5,602.91</td><td class="num">—</td><td class="num">16</td><td class="num">$4,000</td><td class="num">—</td><td class="num">—</td></tr></tfoot>
       </table></div>
@@ -1974,7 +1991,7 @@
           <tr data-report-purchases='{"2026-11-16":3,"2026-11-17":2}'><td class="mono"><span class="lvl-tag">388</span> FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD01-250)</td><td class="num">5</td></tr>
           <tr data-report-purchases='{"2026-11-10":1,"2026-11-15":1,"2026-11-16":1,"2026-11-17":2,"2026-11-18":1}'><td class="mono"><span class="lvl-tag">390</span> FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD02-250)</td><td class="num">6</td></tr>
           <tr data-report-purchases='{"2026-11-15":1,"2026-11-16":1,"2026-11-17":2,"2026-11-18":1}'><td class="mono"><span class="lvl-tag">391</span> FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD03-250)</td><td class="num">5</td></tr>
-          <tr data-report-empty hidden><td colspan="2">No purchases for the selected date</td></tr>
+          <tr data-report-empty hidden><td colspan="2">No purchases for the selected filters</td></tr>
         </tbody>
       </table></div>
       <div class="sec">Ad purchases</div>
@@ -1988,7 +2005,7 @@
           <tr data-report-purchases='{"2026-11-16":1}' data-report-unattributed><td>Ad attribution unknown</td><td class="num">1</td></tr>
           <tr data-report-purchases='{"2026-11-18":1}'><td class="mono">YBAD169_H1_C60_E39_868mv9h51</td><td class="num">1</td></tr>
           <tr data-report-purchases='{"2026-11-18":1}'><td class="mono">YBAD129_H2_C26_E10_atx00000x</td><td class="num">1</td></tr>
-          <tr data-report-empty hidden><td colspan="2">No purchases for the selected date</td></tr>
+          <tr data-report-empty hidden><td colspan="2">No purchases for the selected filters</td></tr>
         </tbody>
       </table></div>
     </div>
@@ -1997,13 +2014,14 @@
       <div class="tbl-wrap offer-test-report"><table>
         <thead><tr><th scope="col">Date</th><th scope="col" class="num">Spend</th><th scope="col" class="num">CPC</th><th scope="col" class="num">Purchases</th><th scope="col" class="num">Revenue</th><th scope="col" class="num" title="Revenue ÷ ad spend">ROAS</th><th scope="col" class="num" title="Revenue − ad spend">Net P/L</th></tr></thead>
         <tbody>
-          <tr data-report-date="2026-11-14"><th scope="row">Nov 14</th><td class="num">$907.00</td><td class="num">$0.58</td><td class="num">0</td><td class="num">$0</td><td class="num">—</td><td class="num">—</td></tr>
-          <tr data-report-date="2026-11-15"><th scope="row">Nov 15</th><td class="num">$292.46</td><td class="num">$0.19</td><td class="num">1</td><td class="num">$250</td><td class="num">—</td><td class="num">—</td></tr>
-          <tr data-report-date="2026-11-16"><th scope="row">Nov 16</th><td class="num">$552.06</td><td class="num">$0.28</td><td class="num">1</td><td class="num">$250</td><td class="num">—</td><td class="num">—</td></tr>
-          <tr data-report-date="2026-11-16"><th scope="row">Nov 16</th><td class="num">$1,313.39</td><td class="num"><span title="Estimated using spend and CPC for each report">≈ $1.71</span></td><td class="num">5</td><td class="num">$1,250</td><td class="num">—</td><td class="num">—</td></tr>
-          <tr data-report-date="2026-11-17"><th scope="row">Nov 17</th><td class="num">$250.00</td><td class="num">$0.53</td><td class="num">0</td><td class="num">$0</td><td class="num">—</td><td class="num">—</td></tr>
-          <tr data-report-date="2026-11-17"><th scope="row">Nov 17</th><td class="num">$3,226.58</td><td class="num"><span title="Estimated from reports with CPC, excluding spend-only adjustments">≈ $1.72</span></td><td class="num">13</td><td class="num">$3,250</td><td class="num">—</td><td class="num">—</td></tr>
-          <tr data-report-date="2026-11-18"><th scope="row">Nov 18</th><td class="num">$1,895.00</td><td class="num">$1.90</td><td class="num">3</td><td class="num">$750</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr data-report-date="2026-11-14" data-report-platform="newsbreak"><th scope="row">Nov 14</th><td class="num">$907.00</td><td class="num">$0.58</td><td class="num">0</td><td class="num">$0</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr data-report-date="2026-11-15" data-report-platform="newsbreak"><th scope="row">Nov 15</th><td class="num">$292.46</td><td class="num">$0.19</td><td class="num">1</td><td class="num">$250</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr data-report-date="2026-11-16" data-report-platform="newsbreak"><th scope="row">Nov 16</th><td class="num">$552.06</td><td class="num">$0.28</td><td class="num">1</td><td class="num">$250</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr data-report-date="2026-11-16" data-report-platform="facebook"><th scope="row">Nov 16</th><td class="num">$1,313.39</td><td class="num"><span title="Estimated using spend and CPC for each report">≈ $1.71</span></td><td class="num">5</td><td class="num">$1,250</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr data-report-date="2026-11-17" data-report-platform="newsbreak"><th scope="row">Nov 17</th><td class="num">$250.00</td><td class="num">$0.53</td><td class="num">0</td><td class="num">$0</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr data-report-date="2026-11-17" data-report-platform="facebook" data-report-cpc-spend="3225.98"><th scope="row">Nov 17</th><td class="num">$3,226.58</td><td class="num"><span title="Estimated from reports with CPC, excluding spend-only adjustments">≈ $1.72</span></td><td class="num">13</td><td class="num">$3,250</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr data-report-date="2026-11-18" data-report-platform="facebook"><th scope="row">Nov 18</th><td class="num">$1,895.00</td><td class="num">$1.90</td><td class="num">3</td><td class="num">$750</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr data-report-empty hidden><td colspan="7">No data for the selected filters</td></tr>
         </tbody>
         <tfoot><tr data-report-total aria-live="polite"><th scope="row">Total</th><td class="num">$8,436.49</td><td class="num">—</td><td class="num">23</td><td class="num">$5,750</td><td class="num">—</td><td class="num">—</td></tr></tfoot>
       </table></div>
@@ -2011,24 +2029,24 @@
       <div class="tbl-wrap offer-test-report"><table>
         <thead><tr><th scope="col">VSL</th><th scope="col" class="num">Purchases</th></tr></thead>
         <tbody data-report-attribution>
-          <tr data-report-purchases='{"2026-11-15":1,"2026-11-16":1,"2026-11-17":1}'><td class="mono"><span class="lvl-tag">403</span> FB-BH-BuyGoods-GlucoBase(MOD01-250)</td><td class="num">3</td></tr>
-          <tr data-report-purchases='{"2026-11-16":2,"2026-11-17":3}'><td class="mono"><span class="lvl-tag">404</span> FB-BH-BuyGoods-GlucoBase(MOD01-ML01-250)</td><td class="num">5</td></tr>
-          <tr data-report-purchases='{"2026-11-16":2,"2026-11-17":6,"2026-11-18":3}'><td class="mono"><span class="lvl-tag">405</span> FB-BH-BuyGoods-GlucoBase(MOD01-ML02-250)</td><td class="num">11</td></tr>
-          <tr data-report-purchases='{"2026-11-16":1,"2026-11-17":1}'><td class="mono"><span class="lvl-tag">406</span> FB-BH-BuyGoods-GlucoBase(MOD01-ML03-250)</td><td class="num">2</td></tr>
+          <tr data-report-purchases='{"2026-11-15":1,"2026-11-16":1,"2026-11-17":1}' data-report-platform-purchases='{"2026-11-16":{"newsbreak":1}}'><td class="mono"><span class="lvl-tag">403</span> FB-BH-BuyGoods-GlucoBase(MOD01-250)</td><td class="num">3</td></tr>
+          <tr data-report-purchases='{"2026-11-16":2,"2026-11-17":3}' data-report-platform-purchases='{"2026-11-16":{"facebook":2}}'><td class="mono"><span class="lvl-tag">404</span> FB-BH-BuyGoods-GlucoBase(MOD01-ML01-250)</td><td class="num">5</td></tr>
+          <tr data-report-purchases='{"2026-11-16":2,"2026-11-17":6,"2026-11-18":3}' data-report-platform-purchases='{"2026-11-16":{"facebook":2}}'><td class="mono"><span class="lvl-tag">405</span> FB-BH-BuyGoods-GlucoBase(MOD01-ML02-250)</td><td class="num">11</td></tr>
+          <tr data-report-purchases='{"2026-11-16":1,"2026-11-17":1}' data-report-platform-purchases='{"2026-11-16":{"facebook":1}}'><td class="mono"><span class="lvl-tag">406</span> FB-BH-BuyGoods-GlucoBase(MOD01-ML03-250)</td><td class="num">2</td></tr>
           <tr data-report-purchases='{"2026-11-17":2}'><td class="mono"><span class="lvl-tag">407</span> FB-BH-BuyGoods-GlucoBase(MOD01-ML04-250)</td><td class="num">2</td></tr>
-          <tr data-report-empty hidden><td colspan="2">No purchases for the selected date</td></tr>
+          <tr data-report-empty hidden><td colspan="2">No purchases for the selected filters</td></tr>
         </tbody>
       </table></div>
       <div class="sec">Ad purchases</div>
       <div class="tbl-wrap offer-test-report"><table>
         <thead><tr><th scope="col">Ad creative</th><th scope="col" class="num">Purchases</th></tr></thead>
         <tbody data-report-attribution>
-          <tr data-report-purchases='{"2026-11-15":1,"2026-11-16":1}'><td class="mono">GSAD06_C41_E15_868mueajh</td><td class="num">2</td></tr>
-          <tr data-report-purchases='{"2026-11-16":1}'><td class="mono">GSAD13_H2_C27_E73_868muw750</td><td class="num">1</td></tr>
-          <tr data-report-purchases='{"2026-11-16":1,"2026-11-17":5,"2026-11-18":1}'><td class="mono">GSAD11_H1_C72_E67_atx00000y</td><td class="num">7</td></tr>
-          <tr data-report-purchases='{"2026-11-16":1}'><td class="mono">GSAD7_H1_C72_E67_atx00000y</td><td class="num">1</td></tr>
-          <tr data-report-purchases='{"2026-11-16":1}'><td class="mono">GSAD7_H2_C72_E67_atx00000y</td><td class="num">1</td></tr>
-          <tr data-report-purchases='{"2026-11-16":1}' data-report-unattributed><td>User share (ad attribution unknown)</td><td class="num">1</td></tr>
+          <tr data-report-purchases='{"2026-11-15":1,"2026-11-16":1}' data-report-platform-purchases='{"2026-11-16":{"newsbreak":1}}'><td class="mono">GSAD06_C41_E15_868mueajh</td><td class="num">2</td></tr>
+          <tr data-report-purchases='{"2026-11-16":1}' data-report-platform-purchases='{"2026-11-16":{"facebook":1}}'><td class="mono">GSAD13_H2_C27_E73_868muw750</td><td class="num">1</td></tr>
+          <tr data-report-purchases='{"2026-11-16":1,"2026-11-17":5,"2026-11-18":1}' data-report-platform-purchases='{"2026-11-16":{"facebook":1}}'><td class="mono">GSAD11_H1_C72_E67_atx00000y</td><td class="num">7</td></tr>
+          <tr data-report-purchases='{"2026-11-16":1}' data-report-platform-purchases='{"2026-11-16":{"facebook":1}}'><td class="mono">GSAD7_H1_C72_E67_atx00000y</td><td class="num">1</td></tr>
+          <tr data-report-purchases='{"2026-11-16":1}' data-report-platform-purchases='{"2026-11-16":{"facebook":1}}'><td class="mono">GSAD7_H2_C72_E67_atx00000y</td><td class="num">1</td></tr>
+          <tr data-report-purchases='{"2026-11-16":1}' data-report-platform-purchases='{"2026-11-16":{"facebook":1}}' data-report-unattributed><td>User share (ad attribution unknown)</td><td class="num">1</td></tr>
           <tr data-report-purchases='{"2026-11-17":1}'><td class="mono">GSAD11_H2_C72_E67_atx00000y</td><td class="num">1</td></tr>
           <tr data-report-purchases='{"2026-11-17":1}'><td class="mono">GSAD8_H1_C72_E67_atx00000y</td><td class="num">1</td></tr>
           <tr data-report-purchases='{"2026-11-17":2,"2026-11-18":1}'><td class="mono">GSAD02_H1_C65_E49_868mttt4x</td><td class="num">3</td></tr>
@@ -2036,7 +2054,7 @@
           <tr data-report-purchases='{"2026-11-17":2}'><td class="mono">GSAD04_C41_E15_868mueajh</td><td class="num">2</td></tr>
           <tr data-report-purchases='{"2026-11-17":1}'><td class="mono">GSAD12_H1_C27_E73_868muw750</td><td class="num">1</td></tr>
           <tr data-report-purchases='{"2026-11-18":1}' data-report-unattributed><td>Ad attribution unknown</td><td class="num">1</td></tr>
-          <tr data-report-empty hidden><td colspan="2">No purchases for the selected date</td></tr>
+          <tr data-report-empty hidden><td colspan="2">No purchases for the selected filters</td></tr>
         </tbody>
       </table></div>
     </div>
@@ -2927,16 +2945,20 @@
   function activeReport(folder){
     return folder.querySelector(".tpanel:not([hidden])");
   }
-  function refreshReportDates(folder){
+  function refreshReportDates(folder,rows,platform,date){
     var select=folder.querySelector("[data-report-date-filter]");
     var dates=new Map();
-    activeReport(folder).querySelectorAll("[data-report-date]").forEach(function(row){
-      dates.set(row.dataset.reportDate,row.cells[0].textContent.trim());
+    rows.forEach(function(row){
+      if(!platform||row.dataset.reportPlatform===platform){
+        dates.set(row.dataset.reportDate,row.cells[0].textContent.trim());
+      }
     });
     select.length=1;
     Array.from(dates).sort(function(a,b){return b[0].localeCompare(a[0]);}).forEach(function(entry){
       select.add(new Option(entry[1],entry[0]));
     });
+    select.value=dates.has(date)?date:"";
+    return select.value;
   }
   function readCents(cell){
     return Math.round(Number(cell.textContent.replace(/[$,]/g,""))*100);
@@ -2958,33 +2980,110 @@
     if(count>=2) return 2;
     return 1;
   }
-  function applyReportDate(date){
+  var reportPlatforms={facebook:"Facebook",newsbreak:"NewsBreak"};
+  function summarizeReportDay(records,english){
+    var totals={spend:0,orders:0,revenue:0};
+    var platforms=new Set();
+    var cpcSpend=0, estimatedClicks=0, hasSpendWithoutCpc=false;
+    records.forEach(function(row){
+      var [spendCell,cpcCell,ordersCell,revenueCell]=Array.from(row.cells).slice(-6);
+      var spend=readCents(spendCell);
+      var cpc=Number(cpcCell.textContent.replace(/[≈$\s,]/g,""));
+      var spendWithCpc=row.dataset.reportCpcSpend?Math.round(Number(row.dataset.reportCpcSpend)*100):spend;
+      if(cpc>0){
+        cpcSpend+=spendWithCpc;
+        estimatedClicks+=spendWithCpc/(cpc*100);
+      }
+      if(spend>0&&(!(cpc>0)||spendWithCpc!==spend)) hasSpendWithoutCpc=true;
+      totals.spend+=spend;
+      totals.orders+=Number(ordersCell.textContent);
+      totals.revenue+=readCents(revenueCell);
+      platforms.add(row.dataset.reportPlatform);
+    });
+
+    var row=records[0];
+    if(records.length>1){
+      row=row.cloneNode(true);
+      delete row.dataset.reportDate;
+      delete row.dataset.reportPlatform;
+      delete row.dataset.reportCpcSpend;
+      row.setAttribute("data-report-merged-date","");
+      records[0].before(row);
+      if(!english){
+        row.cells[1].textContent=Object.keys(reportPlatforms).filter(function(platform){
+          return platforms.has(platform);
+        }).map(function(platform){return reportPlatforms[platform];}).join(" + ");
+      }
+      var [spendCell,cpcCell,ordersCell,revenueCell]=Array.from(row.cells).slice(-6);
+      spendCell.textContent=formatCurrency(totals.spend,2);
+      ordersCell.textContent=String(totals.orders);
+      revenueCell.textContent=formatCurrency(totals.revenue,totals.revenue%100?2:0);
+      cpcCell.textContent="—";
+      if(estimatedClicks>0){
+        var estimate=document.createElement("span");
+        estimate.textContent="≈ "+formatCurrency(cpcSpend/estimatedClicks,2);
+        var note=english?"Estimated from spend and CPC for the selected platforms":"按所选平台的花费和 CPC 推算";
+        if(hasSpendWithoutCpc) note+=english?", excluding spend without CPC":"，未纳入缺少 CPC 的花费";
+        estimate.title=note;
+        cpcCell.replaceChildren(estimate);
+      }
+    }
+    row.hidden=false;
+    var [roasCell,netCell]=Array.from(row.cells).slice(-2);
+    updateReportReturns(roasCell,netCell,totals.spend,totals.revenue);
+    return totals;
+  }
+
+  function applyReportFilters(date,platform){
     resultFolders.forEach(function(folder){
-      var select=folder.querySelector("[data-report-date-filter]");
-      select.value=date;
-      if(select.selectedIndex<0) select.value="";
-      var selectedDate=select.value, panel=activeReport(folder);
+      folder.querySelector("[data-report-platform-filter]").value=platform;
+      var panel=activeReport(folder);
+      var rows=Array.from(panel.querySelectorAll("[data-report-date]"));
+      var selectedDate=refreshReportDates(folder,rows,platform,date);
+      var spendBody=panel.querySelector("[data-report-total]").closest("table").tBodies[0];
+      var english=panel.id.startsWith("report-panel-en-");
+      var days=new Map(), purchasePlatforms=new Map();
       var spend=0, orders=0, revenue=0;
-      panel.querySelectorAll("[data-report-date]").forEach(function(row){
-        row.hidden=Boolean(selectedDate&&row.dataset.reportDate!==selectedDate);
-        var [spendCell,,ordersCell,revenueCell,roasCell,netCell]=Array.from(row.cells).slice(-6);
-        var rowSpend=readCents(spendCell), rowRevenue=readCents(revenueCell);
-        updateReportReturns(roasCell,netCell,rowSpend,rowRevenue);
-        if(row.hidden) return;
-        spend+=rowSpend;
-        orders+=Number(ordersCell.textContent);
-        revenue+=rowRevenue;
+
+      spendBody.querySelectorAll("[data-report-merged-date]").forEach(function(row){row.remove();});
+      rows.forEach(function(row){
+        var rowDate=row.dataset.reportDate, rowPlatform=row.dataset.reportPlatform;
+        if(Number(row.cells[row.cells.length-4].textContent)>0){
+          if(!purchasePlatforms.has(rowDate)) purchasePlatforms.set(rowDate,new Set());
+          purchasePlatforms.get(rowDate).add(rowPlatform);
+        }
+        row.hidden=true;
+        if((platform&&rowPlatform!==platform)||(selectedDate&&rowDate!==selectedDate)) return;
+        if(!days.has(rowDate)) days.set(rowDate,[]);
+        days.get(rowDate).push(row);
       });
+      days.forEach(function(records){
+        var day=summarizeReportDay(records,english);
+        spend+=day.spend;
+        orders+=day.orders;
+        revenue+=day.revenue;
+      });
+      spendBody.querySelector("[data-report-empty]").hidden=days.size>0;
+
       var [totalSpend,,totalOrders,totalRevenue,totalRoas,totalNet]=Array.from(panel.querySelector("[data-report-total]").cells).slice(-6);
       totalSpend.textContent=formatCurrency(spend,2);
-      totalRevenue.textContent=formatCurrency(revenue,0);
+      totalRevenue.textContent=formatCurrency(revenue,revenue%100?2:0);
       updateReportReturns(totalRoas,totalNet,spend,revenue);
       totalOrders.textContent=String(orders);
       panel.querySelectorAll("[data-report-attribution]").forEach(function(body){
         var hasPurchases=false;
         body.querySelectorAll("[data-report-purchases]").forEach(function(row){
           var purchases=JSON.parse(row.dataset.reportPurchases);
-          var count=selectedDate?(purchases[selectedDate]||0):Object.values(purchases).reduce(function(sum,n){return sum+n;},0);
+          var byPlatform=JSON.parse(row.dataset.reportPlatformPurchases||"{}");
+          var count=Object.keys(purchases).reduce(function(sum,day){
+            if(selectedDate&&day!==selectedDate) return sum;
+            if(!platform) return sum+purchases[day];
+            var knownPlatforms=purchasePlatforms.get(day);
+            if(knownPlatforms&&knownPlatforms.size===1){
+              return sum+(knownPlatforms.has(platform)?purchases[day]:0);
+            }
+            return sum+((byPlatform[day]||{})[platform]||0);
+          },0);
           row.hidden=count===0;
           row.lastElementChild.textContent=String(count);
           if(count>0&&!row.hasAttribute("data-report-unattributed")){
@@ -3004,20 +3103,20 @@
       activateFolderTab(tab);
       return;
     }
-    var date=tab.closest("[data-report-tabs]").querySelector("[data-report-date-filter]").value;
-    resultFolders.forEach(function(folder){
-      activateFolderTab(folder.querySelector('[data-report-offer="'+offer+'"]'));
-      refreshReportDates(folder);
+    var folder=tab.closest("[data-report-tabs]");
+    resultFolders.forEach(function(report){
+      activateFolderTab(report.querySelector('[data-report-offer="'+offer+'"]'));
     });
-    applyReportDate(date);
+    applyReportFilters(folder.querySelector("[data-report-date-filter]").value,folder.querySelector("[data-report-platform-filter]").value);
   }
   resultFolders.forEach(function(folder){
-    refreshReportDates(folder);
-    folder.querySelector("[data-report-date-filter]").addEventListener("change",function(event){
-      applyReportDate(event.target.value);
-    });
+    var date=folder.querySelector("[data-report-date-filter]");
+    var platform=folder.querySelector("[data-report-platform-filter]");
+    function onFilterChange(){applyReportFilters(date.value,platform.value);}
+    date.addEventListener("change",onFilterChange);
+    platform.addEventListener("change",onFilterChange);
   });
-  applyReportDate("");
+  applyReportFilters("","");
   document.addEventListener("keydown",function(e){
     var tab=e.target.closest&&e.target.closest("[data-report-tabs] button.ttab");
     if(!tab||!["ArrowLeft","ArrowRight","Home","End"].includes(e.key))return;
