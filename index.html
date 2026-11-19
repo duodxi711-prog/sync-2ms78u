@@ -623,7 +623,6 @@
   .workspace-title{margin:0 0 20px;font-size:clamp(24px,3vw,32px);line-height:1.25}
   .workspace-grid{display:grid;gap:20px;align-items:start}
   .workspace-grid>*{min-width:0}
-  .workspace-panel-title{margin:0 0 10px;font-size:16px;line-height:1.5}
   .workspace-resource,.workspace-library-panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius)}
   .workspace-resource{padding:16px 18px}
   .workspace-resource-head,.workspace-item-head,.workspace-dataset{
@@ -645,7 +644,16 @@
     white-space:pre-wrap;overflow-wrap:anywhere;user-select:text;
   }
   .workspace-library-panel{display:flex;flex-direction:column;overflow:hidden}
-  .workspace-library-controls{display:flex;flex-wrap:wrap;gap:6px;padding:12px 14px;border-bottom:1px solid var(--line);flex:none}
+  .workspace-library-controls{border-bottom:1px solid var(--line);flex:none}
+  .workspace-filter-row{
+    display:grid;grid-template-columns:5.1rem minmax(0,1fr);align-items:start;gap:8px;padding:10px 14px
+  }
+  .workspace-filter-row+.workspace-filter-row{border-top:1px solid var(--line2);background:#fafbfc}
+  .workspace-filter-label{display:flex;align-items:center;min-height:34px;color:var(--ink2);font-size:12px;font-weight:650}
+  .workspace-filter-options{display:flex;flex-wrap:wrap;gap:6px}
+  .workspace-filter-row[data-workspace-filter-group="type"] button[aria-pressed="true"]{
+    background:var(--line2);border-color:#c4ccd8;color:var(--ink);
+  }
   .workspace-library-controls button{
     padding:5px 10px;min-height:34px;background:var(--card);border:1px solid var(--line);border-radius:7px;
     color:var(--ink2);font:inherit;font-size:13px;line-height:1.3;cursor:pointer;
@@ -659,7 +667,7 @@
   .workspace-copy-group:not([hidden])~.workspace-copy-group{margin-top:16px}
   .workspace-copy-group h4{margin-bottom:8px}
   .workspace-copy-item{padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#fafbfc}
-  .workspace-copy-item+.workspace-copy-item{margin-top:8px}
+  .workspace-copy-item:not([hidden])~.workspace-copy-item{margin-top:8px}
   .workspace-item-head>span{color:var(--ink2);font-size:12px;font-weight:650}
   .workspace-copy-text{margin:4px 0 0;font-size:14px;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
   .workspace-copy-empty{margin:8px 0;color:var(--ink2);font-size:14px}
@@ -667,13 +675,14 @@
   @media (max-width:640px){
     .workspace-title{margin-bottom:14px}
     .workspace-resource{padding:13px}
-    .workspace-grid .cpy,.workspace-library-controls button{min-height:44px}
+    .workspace-filter-row{grid-template-columns:4.3rem minmax(0,1fr);padding:8px 12px}
+    .workspace-grid .cpy,.workspace-library-controls button,.workspace-filter-label{min-height:44px}
   }
   @media screen and (min-width:960px){
     main:has(>.view[data-view="workspace"].active){max-width:1580px;padding-bottom:22px}
     body:has(.view[data-view="workspace"].active)>footer{max-width:1580px;padding-bottom:16px}
-    .workspace-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-    .workspace-library-panel{max-height:max(300px,calc(100vh - 170px));max-height:max(300px,calc(100dvh - 170px))}
+    .workspace-grid{grid-template-columns:minmax(0,1fr) minmax(0,2fr)}
+    .workspace-library-panel{max-height:max(300px,calc(100vh - 140px));max-height:max(300px,calc(100dvh - 140px))}
     .workspace-library-scroll{overflow-y:auto;overscroll-behavior-y:contain;scrollbar-gutter:stable;scrollbar-width:thin;scrollbar-color:#aab1bd transparent}
   }
 
@@ -759,7 +768,7 @@
   <h2 class="workspace-title" id="workspace-heading"><span class="t-zh">工作台</span><span class="t-en">Workspace</span></h2>
   <div class="workspace-grid">
     <section class="workspace-general" aria-labelledby="workspace-general-heading">
-      <h3 class="workspace-panel-title" id="workspace-general-heading"><span class="t-zh">通用信息</span><span class="t-en">General Information</span></h3>
+      <h3 class="sr-only" id="workspace-general-heading"><span class="t-zh">通用信息</span><span class="t-en">General Information</span></h3>
       <article class="workspace-resource" aria-labelledby="facebook-parameters-heading">
         <div class="workspace-resource-head">
           <h4 id="facebook-parameters-heading"><span class="t-zh">Facebook URL 参数</span><span class="t-en">Facebook URL Parameters</span></h4>
@@ -773,20 +782,32 @@
       </article>
     </section>
     <section class="workspace-library" aria-labelledby="workspace-library-heading">
-      <h3 class="workspace-panel-title" id="workspace-library-heading"><span class="t-zh">文案库</span><span class="t-en">Ad Copy Library</span></h3>
+      <h3 class="sr-only" id="workspace-library-heading"><span class="t-zh">文案库</span><span class="t-en">Ad Copy Library</span></h3>
       <div class="workspace-library-panel">
-        <div class="workspace-library-controls" role="group" aria-labelledby="workspace-filter-label">
-          <span class="sr-only" id="workspace-filter-label"><span class="t-zh">按 Offer 类型筛选</span><span class="t-en">Filter by offer type</span></span>
-            <button type="button" data-workspace-copy-filter="all" aria-pressed="true"><span class="t-zh">全部</span><span class="t-en">All</span></button>
-            <button type="button" data-workspace-copy-filter="general" aria-pressed="false"><span class="t-zh">通用</span><span class="t-en">General</span></button>
-            <button type="button" data-workspace-copy-filter="weight-loss" aria-pressed="false"><span class="t-zh">减肥</span><span class="t-en">Weight Loss</span></button>
-            <button type="button" data-workspace-copy-filter="copd" aria-pressed="false">COPD</button>
-            <button type="button" data-workspace-copy-filter="blood-sugar" aria-pressed="false"><span class="t-zh">血糖</span><span class="t-en">Blood Sugar</span></button>
+        <div class="workspace-library-controls">
+          <div class="workspace-filter-row" data-workspace-filter-group="offer" role="group" aria-labelledby="workspace-filter-offer">
+            <span class="workspace-filter-label" id="workspace-filter-offer"><span class="t-zh">Offer 类型</span><span class="t-en">Offer type</span></span>
+            <div class="workspace-filter-options">
+              <button type="button" data-workspace-filter-value="all" aria-pressed="true"><span class="t-zh">全部</span><span class="t-en">All</span></button>
+              <button type="button" data-workspace-filter-value="general" aria-pressed="false"><span class="t-zh">通用</span><span class="t-en">General</span></button>
+              <button type="button" data-workspace-filter-value="weight-loss" aria-pressed="false"><span class="t-zh">减肥</span><span class="t-en">Weight Loss</span></button>
+              <button type="button" data-workspace-filter-value="copd" aria-pressed="false">COPD</button>
+              <button type="button" data-workspace-filter-value="blood-sugar" aria-pressed="false"><span class="t-zh">血糖</span><span class="t-en">Blood Sugar</span></button>
+            </div>
+          </div>
+          <div class="workspace-filter-row" data-workspace-filter-group="type" role="group" aria-labelledby="workspace-filter-type">
+            <span class="workspace-filter-label" id="workspace-filter-type"><span class="t-zh">文案类型</span><span class="t-en">Copy type</span></span>
+            <div class="workspace-filter-options">
+              <button type="button" data-workspace-filter-value="all" aria-pressed="true"><span class="t-zh">全部</span><span class="t-en">All</span></button>
+              <button type="button" data-workspace-filter-value="headline" aria-pressed="false"><span class="t-zh">标题</span><span class="t-en">Headlines</span></button>
+              <button type="button" data-workspace-filter-value="body" aria-pressed="false"><span class="t-zh">正文</span><span class="t-en">Primary Text</span></button>
+            </div>
+          </div>
         </div>
         <div class="workspace-library-scroll" tabindex="0" role="region" aria-labelledby="workspace-library-heading">
           <section class="workspace-copy-group" data-workspace-copy-group="general" aria-labelledby="workspace-all-headlines">
             <h4 id="workspace-all-headlines"><span class="t-zh">全品类通用</span><span class="t-en">General</span></h4>
-            <div class="workspace-copy-item">
+            <div class="workspace-copy-item" data-workspace-copy-type="headline">
               <div class="workspace-item-head">
                 <span id="general-headline-label"><span class="t-zh">标题</span><span class="t-en">Headline</span></span>
                 <button type="button" class="cpy" data-copy-target="general-headline" aria-live="polite" aria-describedby="general-headline-label"><span class="t-zh">复制</span><span class="t-en">Copy</span></button>
@@ -796,14 +817,14 @@
           </section>
           <section class="workspace-copy-group" data-workspace-copy-group="weight-loss" aria-labelledby="workspace-weight-loss">
             <h4 id="workspace-weight-loss"><span class="t-zh">减肥通用</span><span class="t-en">Weight Loss · General</span></h4>
-            <div class="workspace-copy-item">
+            <div class="workspace-copy-item" data-workspace-copy-type="headline">
               <div class="workspace-item-head">
                 <span id="weight-loss-headline-label"><span class="t-zh">标题</span><span class="t-en">Headline</span></span>
                 <button type="button" class="cpy" data-copy-target="weight-loss-headline" aria-live="polite" aria-describedby="weight-loss-headline-label"><span class="t-zh">复制</span><span class="t-en">Copy</span></button>
               </div>
               <p class="workspace-copy-text" id="weight-loss-headline" lang="en">Ready for a Slimmer You? Take the First Step ✨</p>
             </div>
-            <div class="workspace-copy-item">
+            <div class="workspace-copy-item" data-workspace-copy-type="body">
               <div class="workspace-item-head">
                 <span id="weight-loss-body-1-label"><span class="t-zh">正文 1</span><span class="t-en">Primary text 1</span></span>
                 <button type="button" class="cpy" data-copy-target="weight-loss-body-1" aria-live="polite" aria-describedby="weight-loss-body-1-label"><span class="t-zh">复制</span><span class="t-en">Copy</span></button>
@@ -813,7 +834,7 @@ You're not alone. Millions of adults over 40 hit the same wall — but what if t
 This short video breaks down a simple morning ritual that's helping people feel lighter and more energized. No extreme diets, no exhausting workouts.
 Tap below to see how it works — it only takes 2 minutes! 👇</p>
             </div>
-            <div class="workspace-copy-item">
+            <div class="workspace-copy-item" data-workspace-copy-type="body">
               <div class="workspace-item-head">
                 <span id="weight-loss-body-2-label"><span class="t-zh">正文 2</span><span class="t-en">Primary text 2</span></span>
                 <button type="button" class="cpy" data-copy-target="weight-loss-body-2" aria-live="polite" aria-describedby="weight-loss-body-2-label"><span class="t-zh">复制</span><span class="t-en">Copy</span></button>
@@ -824,7 +845,7 @@ It's not another supplement or shake. It's a simple habit that fits into any mor
 If you're 40+ and nothing seems to work, tap below to see what changed everything 👇</p>
             </div>
           </section>
-          <p class="workspace-copy-empty" role="status" hidden><span class="t-zh">这个分类暂时没有文案。</span><span class="t-en">No ad copy in this category yet.</span></p>
+          <p class="workspace-copy-empty" role="status" hidden><span class="t-zh">没有符合筛选条件的文案。</span><span class="t-en">No ad copy matches these filters.</span></p>
         </div>
       </div>
     </section>
@@ -3107,24 +3128,34 @@ If you're 40+ and nothing seems to work, tap below to see what changed everythin
     });
   }
 
-  var copyFilters=document.querySelectorAll("[data-workspace-copy-filter]");
+  var copyControls=document.querySelector(".workspace-library-controls");
   var copyGroups=document.querySelectorAll("[data-workspace-copy-group]");
   var copyScroll=document.querySelector(".workspace-library-scroll");
   var copyEmpty=document.querySelector(".workspace-copy-empty");
-  copyFilters.forEach(function(button){
-    button.addEventListener("click",function(){
-      var category=button.dataset.workspaceCopyFilter;
-      copyFilters.forEach(function(filter){
-        filter.setAttribute("aria-pressed",String(filter===button));
-      });
-      var visible=false;
-      copyGroups.forEach(function(group){
-        group.hidden=category!=="all"&&group.dataset.workspaceCopyGroup!==category;
-        if(!group.hidden) visible=true;
-      });
-      copyEmpty.hidden=visible;
-      copyScroll.scrollTop=0;
+  function selectedFilter(group){
+    return copyControls.querySelector('[data-workspace-filter-group="'+group+'"] button[aria-pressed="true"]').dataset.workspaceFilterValue;
+  }
+  copyControls.addEventListener("click",function(event){
+    var button=event.target.closest("button[data-workspace-filter-value]");
+    if(!button) return;
+
+    button.closest("[data-workspace-filter-group]").querySelectorAll("button").forEach(function(option){
+      option.setAttribute("aria-pressed",String(option===button));
     });
+    var category=selectedFilter("offer"), type=selectedFilter("type");
+    var visible=false;
+    copyGroups.forEach(function(group){
+      var categoryMatches=category==="all"||group.dataset.workspaceCopyGroup===category;
+      var groupVisible=false;
+      group.querySelectorAll("[data-workspace-copy-type]").forEach(function(item){
+        item.hidden=!(categoryMatches&&(type==="all"||item.dataset.workspaceCopyType===type));
+        if(!item.hidden) groupVisible=true;
+      });
+      group.hidden=!groupVisible;
+      if(groupVisible) visible=true;
+    });
+    copyEmpty.hidden=visible;
+    copyScroll.scrollTop=0;
   });
   document.querySelectorAll("button[data-copy-target]").forEach(function(b){
     var target=document.getElementById(b.dataset.copyTarget);
