@@ -632,17 +632,23 @@
   .workspace-grid>*{min-width:0}
   .workspace-resource,.workspace-library-panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius)}
   .workspace-resource{padding:16px 18px}
-  .workspace-resource-head,.workspace-item-head,.workspace-dataset{
+  .workspace-resource-head,.workspace-item-head,.workspace-dataset,.workspace-download{
     display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px
   }
   .workspace-resource-head{margin-bottom:12px}
   .workspace-resource h4{margin:0;font-size:14px;line-height:1.5}
-  .workspace-dataset{margin-top:12px}
+  .workspace-dataset,.workspace-download{margin-top:12px}
   .workspace-dataset>span{color:var(--ink2);font-size:13px}
   .workspace-grid .cpy{min-height:34px;padding:5px 10px;color:var(--accent);font-size:12px;font-weight:650}
+  .workspace-download-link{
+    display:inline-flex;align-items:center;min-height:34px;padding:5px 10px;
+    border:1px solid var(--line);border-radius:6px;background:var(--card);
+    color:var(--accent);font-size:12px;font-weight:650;text-decoration:none;
+  }
+  .workspace-download-link:hover{background:var(--accent-bg);border-color:#efc8c1}
   .workspace-grid .cpy.done{color:#13865f}
   .workspace-grid .cpy.fail{color:#8a5b00}
-  .workspace-grid .cpy:focus-visible,.workspace-library-controls button:focus-visible{
+  .workspace-grid .cpy:focus-visible,.workspace-download-link:focus-visible,.workspace-library-controls button:focus-visible{
     outline:2px solid var(--accent);outline-offset:2px
   }
   .workspace-resource code{
@@ -692,7 +698,7 @@
     .workspace-title{margin-bottom:14px}
     .workspace-resource{padding:13px}
     .workspace-filter-row{grid-template-columns:4.3rem minmax(0,1fr);padding:8px 12px}
-    .workspace-grid .cpy,.workspace-library-controls button,.workspace-filter-label{min-height:44px}
+    .workspace-grid .cpy,.workspace-download-link,.workspace-library-controls button,.workspace-filter-label{min-height:44px}
   }
   @media screen and (min-width:960px){
     main:has(>.view[data-view="workspace"].active){max-width:1580px;padding-bottom:22px}
@@ -795,6 +801,10 @@
       <article class="workspace-resource workspace-dataset">
         <h4>Dataset</h4>
         <span><span class="t-zh">待补充</span><span class="t-en">Pending</span></span>
+      </article>
+      <article class="workspace-resource workspace-download" aria-labelledby="weight-loss-catalog-heading">
+        <h4 id="weight-loss-catalog-heading"><span class="t-zh">减肥目录商品×10</span><span class="t-en">Weight Loss Catalog ×10</span></h4>
+        <a class="workspace-download-link" href="./downloads/Weight_Loss_Catalog_10.csv" download="Weight_Loss_Catalog_10.csv" aria-describedby="weight-loss-catalog-heading"><span class="t-zh">下载 CSV</span><span class="t-en">Download CSV</span></a>
       </article>
     </section>
     <section class="workspace-library" aria-labelledby="workspace-library-heading">
