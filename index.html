@@ -384,8 +384,8 @@
   .report-filter-label{color:var(--ink2);font-size:13px;font-weight:650;white-space:nowrap}
   .report-date,.report-platform{padding-left:16px;border-left:1px solid #e4e8ef}
   .report-filters .ttabs{
-    display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;gap:3px;
-    width:236px;height:var(--report-control-height);margin:0;padding:3px;
+    display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch;gap:3px;
+    width:288px;height:var(--report-control-height);margin:0;padding:3px;
     background:#f2f4f8;border:1px solid #e6e9f0;border-radius:10px;
   }
   [data-report-tabs] .ttab{
@@ -436,6 +436,8 @@
     .report-offer,.report-date,.report-platform{display:grid;grid-template-columns:3.1rem minmax(0,1fr)}
     .report-date,.report-platform{padding-left:0;border-left:0}
     .report-filters .ttabs,.report-date-control,.report-platform-control{width:100%}
+    [data-report-tabs] .ttab{padding:0 3px;font-size:12px}
+    [data-report-tabs] .ttab[aria-selected="true"]::before{content:none}
   }
   @media (forced-colors:active){
     [data-report-tabs] .ttab[aria-selected="true"]{border-color:Highlight;color:Highlight}
@@ -1498,7 +1500,8 @@ Tap below to watch the full breakdown. 👇</p>
           <div class="report-offer">
             <div class="report-filter-label">Offer</div>
             <div class="ttabs" role="tablist" aria-label="按 Offer 查看测试结果">
-          <button type="button" class="ttab on" id="report-tab-zh-yoburn" data-report-offer="yoburn" role="tab" aria-controls="report-panel-zh-yoburn" aria-selected="true" style="--mc:#5652a3;--z:20"><span class="av">YOBURN</span></button>
+          <button type="button" class="ttab on" id="report-tab-zh-all" data-report-offer="all" role="tab" aria-controls="report-panel-zh-all" aria-selected="true" style="--mc:#344357;--z:21"><span class="av">全部 Offer</span></button>
+          <button type="button" class="ttab" id="report-tab-zh-yoburn" data-report-offer="yoburn" role="tab" aria-controls="report-panel-zh-yoburn" aria-selected="false" tabindex="-1" style="--mc:#5652a3;--z:20"><span class="av">YOBURN</span></button>
           <button type="button" class="ttab" id="report-tab-zh-glucobase" data-report-offer="glucobase" role="tab" aria-controls="report-panel-zh-glucobase" aria-selected="false" tabindex="-1" style="--mc:#a62941;--z:19"><span class="av">GlucoBase</span></button>
             </div>
           </div>
@@ -1512,7 +1515,24 @@ Tap below to watch the full breakdown. 👇</p>
           </label>
         </div>
         <div class="tbody">
-    <div class="tpanel" id="report-panel-zh-yoburn" role="tabpanel" aria-labelledby="report-tab-zh-yoburn">
+    <div class="tpanel" id="report-panel-zh-all" role="tabpanel" aria-labelledby="report-tab-zh-all" data-report-overview>
+      <div class="sec">每日汇总（USD）</div>
+      <div class="tbl-wrap offer-test-report"><table>
+        <thead><tr><th scope="col">日期</th><th scope="col">平台</th><th scope="col" class="num">花费</th><th scope="col" class="num">CPC</th><th scope="col" class="num">出单</th><th scope="col" class="num">营业额</th><th scope="col" class="num" title="营业额 ÷ 广告花费">ROAS</th><th scope="col" class="num" title="营业额 − 广告花费">净盈亏</th></tr></thead>
+        <tbody>
+          <tr data-report-empty><td colspan="8">所选条件下没有投放记录</td></tr>
+        </tbody>
+        <tfoot><tr data-report-total aria-live="polite"><th scope="row" colspan="2">总计</th><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr></tfoot>
+      </table></div>
+      <div data-report-offer-breakdown hidden>
+        <div class="sec">当日各 Offer 盈亏（USD）</div>
+        <div class="tbl-wrap offer-test-report"><table>
+          <thead><tr><th scope="col">Offer</th><th scope="col">平台</th><th scope="col" class="num">花费</th><th scope="col" class="num">CPC</th><th scope="col" class="num">出单</th><th scope="col" class="num">营业额</th><th scope="col" class="num" title="营业额 ÷ 广告花费">ROAS</th><th scope="col" class="num" title="营业额 − 广告花费">净盈亏</th></tr></thead>
+          <tbody></tbody>
+        </table></div>
+      </div>
+    </div>
+    <div class="tpanel" id="report-panel-zh-yoburn" role="tabpanel" aria-labelledby="report-tab-zh-yoburn" hidden>
       <div class="sec">每日花费（USD）</div>
       <div class="tbl-wrap offer-test-report"><table>
         <thead><tr><th scope="col">日期</th><th scope="col">平台</th><th scope="col" class="num">花费</th><th scope="col" class="num">CPC</th><th scope="col" class="num">出单</th><th scope="col" class="num">营业额</th><th scope="col" class="num" title="营业额 ÷ 广告花费">ROAS</th><th scope="col" class="num" title="营业额 − 广告花费">净盈亏</th></tr></thead>
@@ -2510,7 +2530,8 @@ Tap below to watch the full breakdown. 👇</p>
           <div class="report-offer">
             <div class="report-filter-label">Offer</div>
             <div class="ttabs" role="tablist" aria-label="Test results by offer">
-          <button type="button" class="ttab on" id="report-tab-en-yoburn" data-report-offer="yoburn" role="tab" aria-controls="report-panel-en-yoburn" aria-selected="true" style="--mc:#5652a3;--z:20"><span class="av">YOBURN</span></button>
+          <button type="button" class="ttab on" id="report-tab-en-all" data-report-offer="all" role="tab" aria-controls="report-panel-en-all" aria-selected="true" style="--mc:#344357;--z:21"><span class="av">All Offers</span></button>
+          <button type="button" class="ttab" id="report-tab-en-yoburn" data-report-offer="yoburn" role="tab" aria-controls="report-panel-en-yoburn" aria-selected="false" tabindex="-1" style="--mc:#5652a3;--z:20"><span class="av">YOBURN</span></button>
           <button type="button" class="ttab" id="report-tab-en-glucobase" data-report-offer="glucobase" role="tab" aria-controls="report-panel-en-glucobase" aria-selected="false" tabindex="-1" style="--mc:#a62941;--z:19"><span class="av">GlucoBase</span></button>
             </div>
           </div>
@@ -2524,7 +2545,24 @@ Tap below to watch the full breakdown. 👇</p>
           </label>
         </div>
         <div class="tbody">
-    <div class="tpanel" id="report-panel-en-yoburn" role="tabpanel" aria-labelledby="report-tab-en-yoburn">
+    <div class="tpanel" id="report-panel-en-all" role="tabpanel" aria-labelledby="report-tab-en-all" data-report-overview>
+      <div class="sec">Daily summary (USD)</div>
+      <div class="tbl-wrap offer-test-report"><table>
+        <thead><tr><th scope="col">Date</th><th scope="col" class="num">Spend</th><th scope="col" class="num">CPC</th><th scope="col" class="num">Purchases</th><th scope="col" class="num">Revenue</th><th scope="col" class="num" title="Revenue ÷ ad spend">ROAS</th><th scope="col" class="num" title="Revenue − ad spend">Net P/L</th></tr></thead>
+        <tbody>
+          <tr data-report-empty><td colspan="7">No data for the selected filters</td></tr>
+        </tbody>
+        <tfoot><tr data-report-total aria-live="polite"><th scope="row">Total</th><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr></tfoot>
+      </table></div>
+      <div data-report-offer-breakdown hidden>
+        <div class="sec">Daily P/L by offer (USD)</div>
+        <div class="tbl-wrap offer-test-report"><table>
+          <thead><tr><th scope="col">Offer</th><th scope="col" class="num">Spend</th><th scope="col" class="num">CPC</th><th scope="col" class="num">Purchases</th><th scope="col" class="num">Revenue</th><th scope="col" class="num" title="Revenue ÷ ad spend">ROAS</th><th scope="col" class="num" title="Revenue − ad spend">Net P/L</th></tr></thead>
+          <tbody></tbody>
+        </table></div>
+      </div>
+    </div>
+    <div class="tpanel" id="report-panel-en-yoburn" role="tabpanel" aria-labelledby="report-tab-en-yoburn" hidden>
       <div class="sec">Daily spend (USD)</div>
       <div class="tbl-wrap offer-test-report"><table>
         <thead><tr><th scope="col">Date</th><th scope="col" class="num">Spend</th><th scope="col" class="num">CPC</th><th scope="col" class="num">Purchases</th><th scope="col" class="num">Revenue</th><th scope="col" class="num" title="Revenue ÷ ad spend">ROAS</th><th scope="col" class="num" title="Revenue − ad spend">Net P/L</th></tr></thead>
@@ -3618,7 +3656,7 @@ Tap below to watch the full breakdown. 👇</p>
     return 1;
   }
   var reportPlatforms={facebook:"Facebook",newsbreak:"NewsBreak"};
-  function summarizeReportDay(records,english){
+  function summarizeReportDay(records,english,destination,offerLabel){
     var totals={spend:0,orders:0,revenue:0};
     var platforms=new Set();
     var cpcSpend=0, estimatedClicks=0, hasSpendWithoutCpc=false;
@@ -3639,13 +3677,17 @@ Tap below to watch the full breakdown. 👇</p>
     });
 
     var row=records[0];
-    if(records.length>1){
+    if(destination||records.length>1){
       row=row.cloneNode(true);
       delete row.dataset.reportDate;
       delete row.dataset.reportPlatform;
       delete row.dataset.reportCpcSpend;
       row.setAttribute("data-report-merged-date","");
-      records[0].before(row);
+      if(destination) destination.appendChild(row);
+      else records[0].before(row);
+    }
+    if(offerLabel) row.cells[0].textContent=offerLabel;
+    if(records.length>1){
       if(!english){
         row.cells[1].textContent=Object.keys(reportPlatforms).filter(function(platform){
           return platforms.has(platform);
@@ -3659,7 +3701,7 @@ Tap below to watch the full breakdown. 👇</p>
       if(estimatedClicks>0){
         var estimate=document.createElement("span");
         estimate.textContent="≈ "+formatCurrency(cpcSpend/estimatedClicks,2);
-        var note=english?"Estimated from spend and CPC for the selected platforms":"按所选平台的花费和 CPC 推算";
+        var note=english?"Estimated from spend and CPC for the included records":"按纳入统计的投放花费和 CPC 推算";
         if(hasSpendWithoutCpc) note+=english?", excluding spend without CPC":"，未纳入缺少 CPC 的花费";
         estimate.title=note;
         cpcCell.replaceChildren(estimate);
@@ -3671,36 +3713,58 @@ Tap below to watch the full breakdown. 👇</p>
     return totals;
   }
 
+  function renderOfferBreakdown(panel,records,english){
+    var breakdown=panel.querySelector("[data-report-offer-breakdown]");
+    var body=breakdown.querySelector("tbody");
+    var byOffer=new Map();
+    records.forEach(function(row){
+      var offerPanel=row.closest("[role=tabpanel]");
+      if(!byOffer.has(offerPanel)) byOffer.set(offerPanel,[]);
+      byOffer.get(offerPanel).push(row);
+    });
+    body.replaceChildren();
+    byOffer.forEach(function(offerRows,offerPanel){
+      var label=document.getElementById(offerPanel.getAttribute("aria-labelledby")).textContent.trim();
+      summarizeReportDay(offerRows,english,body,label);
+    });
+    breakdown.hidden=!byOffer.size;
+  }
+
   function applyReportFilters(date,platform){
     resultFolders.forEach(function(folder){
       folder.querySelector("[data-report-platform-filter]").value=platform;
       var panel=activeReport(folder);
-      var rows=Array.from(panel.querySelectorAll("[data-report-date]"));
+      var overview=panel.hasAttribute("data-report-overview");
+      var rows=Array.from((overview?folder:panel).querySelectorAll("[data-report-date]"));
       var selectedDate=refreshReportDates(folder,rows,platform,date);
       var spendBody=panel.querySelector("[data-report-total]").closest("table").tBodies[0];
       var english=panel.id.startsWith("report-panel-en-");
       var days=new Map(), purchasePlatforms=new Map();
       var spend=0, orders=0, revenue=0;
+      var dailyRows=overview?document.createDocumentFragment():null;
 
       spendBody.querySelectorAll("[data-report-merged-date]").forEach(function(row){row.remove();});
       rows.forEach(function(row){
         var rowDate=row.dataset.reportDate, rowPlatform=row.dataset.reportPlatform;
-        if(Number(row.cells[row.cells.length-4].textContent)>0){
+        if(!overview&&Number(row.cells[row.cells.length-4].textContent)>0){
           if(!purchasePlatforms.has(rowDate)) purchasePlatforms.set(rowDate,new Set());
           purchasePlatforms.get(rowDate).add(rowPlatform);
         }
-        row.hidden=true;
+        if(!overview) row.hidden=true;
         if((platform&&rowPlatform!==platform)||(selectedDate&&rowDate!==selectedDate)) return;
         if(!days.has(rowDate)) days.set(rowDate,[]);
         days.get(rowDate).push(row);
       });
-      days.forEach(function(records){
-        var day=summarizeReportDay(records,english);
+      Array.from(days.keys()).sort().forEach(function(dayDate){
+        var day=summarizeReportDay(days.get(dayDate),english,dailyRows);
         spend+=day.spend;
         orders+=day.orders;
         revenue+=day.revenue;
       });
-      spendBody.querySelector("[data-report-empty]").hidden=days.size>0;
+      var empty=spendBody.querySelector("[data-report-empty]");
+      if(dailyRows) empty.before(dailyRows);
+      empty.hidden=days.size>0;
+      if(overview) renderOfferBreakdown(panel,days.get(selectedDate)||[],english);
 
       var [totalSpend,,totalOrders,totalRevenue,totalRoas,totalNet]=Array.from(panel.querySelector("[data-report-total]").cells).slice(-6);
       totalSpend.textContent=formatCurrency(spend,2);
