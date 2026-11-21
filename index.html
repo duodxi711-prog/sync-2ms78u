@@ -450,28 +450,34 @@
   [data-report-tabs] .sec{margin-top:18px;font-size:14px;font-weight:700}
   [data-report-tabs] [hidden]{display:none!important}
   [data-report-tabs] [data-report-empty] td{color:var(--ink2)}
-  .report-spend-chart{margin:0 0 16px;padding:14px 16px 10px;background:var(--card);border:1px solid var(--report-line);border-radius:var(--radius)}
-  .report-spend-chart figcaption{margin-bottom:15px;font-size:14px;font-weight:700}
-  .report-spend-plot{position:relative;height:188px;margin:0 13px 28px 58px}
-  .report-spend-plot svg,.report-spend-points{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-  .report-spend-grid{stroke:var(--report-line);stroke-width:1;vector-effect:non-scaling-stroke}
-  .report-spend-area{fill:var(--accent-bg);fill-opacity:.72}
-  .report-spend-line{fill:none;stroke:var(--accent);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
-  .report-spend-tick{position:absolute;color:var(--ink2);font-size:11px;line-height:1.2;white-space:nowrap;font-variant-numeric:tabular-nums;pointer-events:none}
-  .report-spend-tick-y{right:calc(100% + 9px);top:var(--y);transform:translateY(-50%)}
-  .report-spend-tick-x{left:var(--x);top:calc(100% + 8px);transform:translateX(-50%)}
-  .report-spend-point{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%);width:22px;height:22px;padding:0;border:0;border-radius:50%;background:transparent;cursor:pointer}
-  .report-spend-point::before{content:"";position:absolute;inset:7px;border:2px solid var(--accent);border-radius:50%;background:var(--card)}
-  .report-spend-point:hover,.report-spend-point:focus-visible{z-index:2}
-  .report-spend-point:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
-  .report-spend-tooltip{display:none;position:absolute;left:50%;bottom:100%;transform:translateX(-50%);padding:4px 8px;border-radius:6px;background:var(--ink);color:white;font-size:12px;line-height:1.4;white-space:nowrap;pointer-events:none}
-  .report-spend-point:hover .report-spend-tooltip,.report-spend-point:focus-visible .report-spend-tooltip{display:block}
-  .report-spend-point[data-edge="start"] .report-spend-tooltip{left:0;transform:none}
-  .report-spend-point[data-edge="end"] .report-spend-tooltip{left:auto;right:0;transform:none}
+  .report-net-chart{margin:0 0 16px;padding:14px 16px 10px;background:var(--card);border:1px solid var(--report-line);border-radius:var(--radius)}
+  .report-net-chart figcaption{margin-bottom:15px;font-size:14px;font-weight:700}
+  .report-net-plot{position:relative;height:188px;margin:0 13px 28px 64px}
+  .report-net-plot svg,.report-net-points{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+  .report-net-grid{stroke:var(--report-line);stroke-width:1;vector-effect:non-scaling-stroke}
+  .report-net-zero{stroke:#53637b;stroke-width:1.5;stroke-dasharray:5 4;vector-effect:non-scaling-stroke}
+  .report-net-line{fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+  .report-net-profit{stroke:#08704f}
+  .report-net-loss{stroke:#a62941}
+  .report-net-flat{stroke:#53637b}
+  .report-net-tick{position:absolute;color:var(--ink2);font-size:11px;line-height:1.2;white-space:nowrap;font-variant-numeric:tabular-nums;pointer-events:none}
+  .report-net-tick-y{right:calc(100% + 9px);top:var(--y);transform:translateY(-50%)}
+  .report-net-tick-zero{color:var(--ink);font-weight:750}
+  .report-net-tick-x{left:var(--x);top:calc(100% + 8px);transform:translateX(-50%)}
+  .report-net-point{--point-color:#53637b;position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%);width:22px;height:22px;padding:0;border:0;border-radius:50%;background:transparent;cursor:pointer}
+  .report-net-point[data-sign="profit"]{--point-color:#08704f}
+  .report-net-point[data-sign="loss"]{--point-color:#a62941}
+  .report-net-point::before{content:"";position:absolute;inset:7px;border:2px solid var(--point-color);border-radius:50%;background:var(--card)}
+  .report-net-point:hover,.report-net-point:focus-visible{z-index:2}
+  .report-net-point:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+  .report-net-tooltip{display:none;position:absolute;left:50%;bottom:100%;transform:translateX(-50%);padding:4px 8px;border-radius:6px;background:var(--ink);color:white;font-size:12px;line-height:1.4;white-space:nowrap;pointer-events:none}
+  .report-net-point:hover .report-net-tooltip,.report-net-point:focus-visible .report-net-tooltip{display:block}
+  .report-net-point[data-edge="start"] .report-net-tooltip{left:0;transform:none}
+  .report-net-point[data-edge="end"] .report-net-tooltip{left:auto;right:0;transform:none}
   @media (max-width:600px){
-    .report-spend-chart{padding-inline:12px}
-    .report-spend-plot{height:156px;margin-left:49px}
-    .report-spend-tick-x:not([data-compact]){display:none}
+    .report-net-chart{padding-inline:12px}
+    .report-net-plot{height:156px;margin-left:57px}
+    .report-net-tick-x:not([data-compact]){display:none}
   }
   .tpanel{padding:2px 2px 0}
   .tp-h{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px}
@@ -1537,9 +1543,9 @@ Tap below to watch the full breakdown. 👇</p>
             <span class="report-platform-control"><select data-report-platform-filter><option value="">全平台</option><option value="facebook" title="Facebook">FB</option><option value="newsbreak" title="NewsBreak">NB</option></select></span>
           </label>
         </div>
-        <figure class="report-spend-chart" data-report-spend-chart hidden>
-          <figcaption>每日花费趋势（USD）</figcaption>
-          <div class="report-spend-plot"></div>
+        <figure class="report-net-chart" data-report-net-chart hidden>
+          <figcaption>每日净盈亏（USD）</figcaption>
+          <div class="report-net-plot"></div>
         </figure>
         <div class="tbody">
     <div class="tpanel" id="report-panel-zh-all" role="tabpanel" aria-labelledby="report-tab-zh-all" data-report-overview>
@@ -2571,9 +2577,9 @@ Tap below to watch the full breakdown. 👇</p>
             <span class="report-platform-control"><select data-report-platform-filter><option value="">All platforms</option><option value="facebook" title="Facebook">FB</option><option value="newsbreak" title="NewsBreak">NB</option></select></span>
           </label>
         </div>
-        <figure class="report-spend-chart" data-report-spend-chart hidden>
-          <figcaption>Daily spend trend (USD)</figcaption>
-          <div class="report-spend-plot"></div>
+        <figure class="report-net-chart" data-report-net-chart hidden>
+          <figcaption>Daily net P/L (USD)</figcaption>
+          <div class="report-net-plot"></div>
         </figure>
         <div class="tbody">
     <div class="tpanel" id="report-panel-en-all" role="tabpanel" aria-labelledby="report-tab-en-all" data-report-overview>
@@ -3761,16 +3767,16 @@ Tap below to watch the full breakdown. 👇</p>
     breakdown.hidden=!byOffer.size;
   }
 
-  function spendAxisStep(maxSpend){
-    var target=Math.max(100,maxSpend/4);
+  function netAxisStep(range){
+    var target=Math.max(100,range/4);
     var magnitude=Math.pow(10,Math.floor(Math.log10(target)));
     var steps=[1,2,2.5,5,10];
     return steps.find(function(step){return step*magnitude>=target;})*magnitude;
   }
 
-  function renderSpendChart(folder,series,english){
-    var chart=folder.querySelector("[data-report-spend-chart]");
-    var plot=chart.querySelector(".report-spend-plot");
+  function renderNetChart(folder,series,english){
+    var chart=folder.querySelector("[data-report-net-chart]");
+    var plot=chart.querySelector(".report-net-plot");
     chart.hidden=!series.length;
     plot.replaceChildren();
     if(!series.length) return;
@@ -3778,12 +3784,20 @@ Tap below to watch the full breakdown. 👇</p>
     var last=series.length-1;
     var start=Date.parse(series[0].date);
     var range=Date.parse(series[last].date)-start;
-    var maxSpend=series.reduce(function(peak,day){return Math.max(peak,day.spend);},0);
-    var step=spendAxisStep(maxSpend);
-    var ceiling=Math.max(step,Math.ceil(maxSpend/step)*step);
-    var points=series.map(function(day){
-      return {day:day,x:range?100*(Date.parse(day.date)-start)/range:50,y:100-100*day.spend/ceiling};
+    var minNet=0, maxNet=0;
+    series.forEach(function(day){
+      minNet=Math.min(minNet,day.net);
+      maxNet=Math.max(maxNet,day.net);
     });
+    var step=netAxisStep(maxNet-minNet);
+    var ceiling=Math.max(step,Math.ceil(maxNet/step)*step);
+    var floor=Math.min(-step,Math.floor(minNet/step)*step);
+    function yAt(net){return 100*(ceiling-net)/(ceiling-floor);}
+    var zeroY=yAt(0);
+    var points=series.map(function(day){
+      return {day:day,x:range?100*(Date.parse(day.date)-start)/range:50,y:yAt(day.net)};
+    });
+    function netSign(net){return net>0?"profit":net<0?"loss":"flat";}
     var ns="http://www.w3.org/2000/svg";
     function svg(tag,attrs){
       var node=document.createElementNS(ns,tag);
@@ -3792,7 +3806,7 @@ Tap below to watch the full breakdown. 👇</p>
     }
     function tick(text,axis,position){
       var label=document.createElement("span");
-      label.className="report-spend-tick report-spend-tick-"+axis;
+      label.className="report-net-tick report-net-tick-"+axis;
       label.setAttribute("aria-hidden","true");
       label.style.setProperty("--"+axis,position+"%");
       label.textContent=text;
@@ -3801,18 +3815,28 @@ Tap below to watch the full breakdown. 👇</p>
     }
     var graph=svg("svg",{viewBox:"0 0 100 100",preserveAspectRatio:"none","aria-hidden":"true"});
     plot.appendChild(graph);
-    for(var value=0;value<=ceiling;value+=step){
-      var y=100-100*value/ceiling;
-      graph.appendChild(svg("line",{x1:0,x2:100,y1:y,y2:y,class:"report-spend-grid"}));
-      tick(formatCurrency(value,0),"y",y);
+    for(var value=floor;value<=ceiling;value+=step){
+      var y=yAt(value);
+      graph.appendChild(svg("line",{x1:0,x2:100,y1:y,y2:y,class:value===0?"report-net-zero":"report-net-grid"}));
+      var axisLabel=tick(formatCurrency(value,0),"y",y);
+      if(value===0) axisLabel.classList.add("report-net-tick-zero");
     }
-    if(last){
-      var path=points.map(function(point){return point.x+" "+point.y;}).join(" L");
-      graph.appendChild(svg("path",{d:"M"+path+" L100 100 L0 100 Z",class:"report-spend-area"}));
-      graph.appendChild(svg("path",{d:"M"+path,class:"report-spend-line"}));
+    function drawSegment(from,to,sign){
+      graph.appendChild(svg("path",{d:"M"+from.x+" "+from.y+" L"+to.x+" "+to.y,class:"report-net-line report-net-"+sign}));
+    }
+    for(var index=1;index<points.length;index++){
+      var from=points[index-1], to=points[index];
+      var fromNet=from.day.net, toNet=to.day.net;
+      if(fromNet*toNet<0){
+        var crossing={x:from.x+(to.x-from.x)*fromNet/(fromNet-toNet),y:zeroY};
+        drawSegment(from,crossing,netSign(fromNet));
+        drawSegment(crossing,to,netSign(toNet));
+      }else{
+        drawSegment(from,to,netSign(fromNet||toNet));
+      }
     }
     var markers=document.createElement("div");
-    markers.className="report-spend-points";
+    markers.className="report-net-points";
     plot.appendChild(markers);
     var previous=-Infinity, compact=-Infinity;
     points.forEach(function(point,index){
@@ -3828,15 +3852,16 @@ Tap below to watch the full breakdown. 👇</p>
       }
       var marker=document.createElement("button");
       marker.type="button";
-      marker.className="report-spend-point";
+      marker.className="report-net-point";
       marker.style.setProperty("--x",point.x+"%");
       marker.style.setProperty("--y",point.y+"%");
       if(point.x<25) marker.dataset.edge="start";
       else if(point.x>75) marker.dataset.edge="end";
-      var description=day.label+" · "+formatCurrency(day.spend,2);
+      marker.dataset.sign=netSign(day.net);
+      var description=day.label+" · "+(day.net>0?"+":"")+formatCurrency(day.net,2);
       marker.setAttribute("aria-label",description+(english?" — view daily results":"，查看当日结果"));
       var tooltip=document.createElement("span");
-      tooltip.className="report-spend-tooltip";
+      tooltip.className="report-net-tooltip";
       tooltip.setAttribute("aria-hidden","true");
       tooltip.textContent=description;
       marker.appendChild(tooltip);
@@ -3857,7 +3882,7 @@ Tap below to watch the full breakdown. 👇</p>
       var selectedDate=refreshReportDates(folder,rows,platform,date);
       var spendBody=panel.querySelector("[data-report-total]").closest("table").tBodies[0];
       var english=panel.id.startsWith("report-panel-en-");
-      var days=new Map(), purchasePlatforms=new Map(), spendSeries=[];
+      var days=new Map(), purchasePlatforms=new Map(), netSeries=[];
       var spend=0, orders=0, revenue=0;
       var dailyRows=overview?document.createDocumentFragment():null;
 
@@ -3876,7 +3901,7 @@ Tap below to watch the full breakdown. 👇</p>
       Array.from(days.keys()).sort().forEach(function(dayDate){
         var records=days.get(dayDate);
         var day=summarizeReportDay(records,english,dailyRows);
-        spendSeries.push({date:dayDate,label:records[0].cells[0].textContent.trim(),spend:day.spend});
+        netSeries.push({date:dayDate,label:records[0].cells[0].textContent.trim(),net:day.revenue-day.spend});
         spend+=day.spend;
         orders+=day.orders;
         revenue+=day.revenue;
@@ -3885,7 +3910,7 @@ Tap below to watch the full breakdown. 👇</p>
       if(dailyRows) empty.before(dailyRows);
       empty.hidden=days.size>0;
       if(overview) renderOfferBreakdown(panel,days.get(selectedDate)||[],english);
-      renderSpendChart(folder,spendSeries,english);
+      renderNetChart(folder,netSeries,english);
 
       var [totalSpend,,totalOrders,totalRevenue,totalRoas,totalNet]=Array.from(panel.querySelector("[data-report-total]").cells).slice(-6);
       totalSpend.textContent=formatCurrency(spend,2);
