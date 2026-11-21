@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-site-locked>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -760,8 +760,105 @@
     nav.tabs a.active{border-color:Highlight}
   }
 </style>
+
+<style>
+  html[data-site-locked] body{display:block}
+  html[data-site-locked] body>header.top,
+  html[data-site-locked] body>main,
+  html[data-site-locked] body>footer,
+  html:not([data-site-locked]) #site-access,
+  #site-access [hidden]{display:none!important}
+  #site-access{min-height:100vh;min-height:100dvh;display:grid;place-items:center;padding:24px}
+  .site-access-card{width:min(100%,390px);padding:30px;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 12px 32px #1c22300d}
+  .site-access-brand{margin:0 0 12px;color:var(--accent);font:700 34px/1.1 Georgia,serif;letter-spacing:-.04em}
+  .site-access-card h1{font-size:20px;line-height:1.4;margin:0 0 6px}
+  .site-access-hint{margin:0 0 18px;color:var(--ink2);font-size:14px}
+  .site-access-card label{display:block;margin-bottom:5px;font-size:14px;font-weight:600}
+  #site-access-input,#site-access-submit{width:100%;min-height:44px;border-radius:8px;font:inherit}
+  #site-access-input{padding:8px 11px;border:1px solid #a9b2c0;background:#fff;color:var(--ink)}
+  #site-access-input[aria-invalid="true"]{border-color:var(--accent)}
+  #site-access-submit{margin-top:12px;padding:8px 12px;border:0;background:var(--accent);color:#fff;font-weight:600;cursor:pointer}
+  #site-access-submit:disabled{opacity:.6;cursor:default}
+  #site-access :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  .site-access-error{margin:8px 0 0;color:#a52516;font-size:14px}
+</style>
+<script>
+(function(){
+  var root=document.documentElement;
+  var salt="143a1c0bdea3d51f3507a28dd0a54328";
+  var verifier="25cb7db99e0ac47fed8f9c2c71e70c3d50e167fe49845f239f26fd09af6b7fa6";
+  var sessionKey="adrelay-site-access";
+  try{
+    if(sessionStorage.getItem(sessionKey)===verifier){
+      root.removeAttribute("data-site-locked");
+      return;
+    }
+  }catch(e){}
+
+  document.addEventListener("DOMContentLoaded",function(){
+    var form=document.getElementById("site-access-form");
+    var input=document.getElementById("site-access-input");
+    var button=document.getElementById("site-access-submit");
+    var error=document.getElementById("site-access-error");
+    var unavailable=document.getElementById("site-access-unavailable");
+    if(!window.crypto||!window.crypto.subtle){
+      unavailable.hidden=false;
+      return;
+    }
+    button.disabled=false;
+    input.addEventListener("input",function(){
+      error.hidden=true;
+      input.removeAttribute("aria-invalid");
+    });
+    form.addEventListener("submit",async function(event){
+      event.preventDefault();
+      if(button.disabled) return;
+      var passphrase=input.value.trim();
+      if(!passphrase) return;
+      button.disabled=true;
+      try{
+        var encoded=new TextEncoder().encode(salt+":"+passphrase);
+        var hash=await window.crypto.subtle.digest("SHA-256",encoded);
+        var digest=Array.from(new Uint8Array(hash),function(byte){return byte.toString(16).padStart(2,"0");}).join("");
+        if(digest!==verifier){
+          error.hidden=false;
+          input.setAttribute("aria-invalid","true");
+          input.focus();
+          input.select();
+          return;
+        }
+        try{sessionStorage.setItem(sessionKey,verifier);}catch(e){}
+        input.value="";
+        root.removeAttribute("data-site-locked");
+        document.querySelector("header.top .brand-home")?.focus({preventScroll:true});
+        window.dispatchEvent(new Event("adrelay:site-unlocked"));
+      }catch(e){
+        unavailable.hidden=false;
+      }finally{
+        button.disabled=false;
+      }
+    });
+  });
+})();
+</script>
 </head>
 <body>
+
+<section id="site-access" aria-labelledby="site-access-title">
+  <div class="site-access-card">
+    <p class="site-access-brand">AdRelay</p>
+    <h1 id="site-access-title"><span class="t-zh">团队访问</span><span class="t-en">Team access</span></h1>
+    <p class="site-access-hint"><span class="t-zh">输入团队口令，进入工作区。</span><span class="t-en">Enter the team passphrase to open the workspace.</span></p>
+    <form id="site-access-form">
+      <label for="site-access-input"><span class="t-zh">团队口令</span><span class="t-en">Team passphrase</span></label>
+      <input id="site-access-input" type="password" required autocomplete="current-password" autocapitalize="none" spellcheck="false" aria-describedby="site-access-error site-access-unavailable">
+      <p id="site-access-error" class="site-access-error" role="alert" hidden><span class="t-zh">口令不正确，请重试。</span><span class="t-en">Incorrect passphrase. Try again.</span></p>
+      <p id="site-access-unavailable" class="site-access-error" role="alert" hidden><span class="t-zh">当前浏览器无法验证口令。请通过 HTTPS 打开此页。</span><span class="t-en">This browser cannot verify the passphrase. Open the HTTPS link.</span></p>
+      <button id="site-access-submit" type="submit" disabled><span class="t-zh">进入</span><span class="t-en">Enter</span></button>
+      <noscript><p class="site-access-error"><span class="t-zh">请启用 JavaScript 后重试。</span><span class="t-en">Enable JavaScript and try again.</span></p></noscript>
+    </form>
+  </div>
+</section>
 
 <header class="top">
   <div class="top-inner">
@@ -3265,10 +3362,13 @@ Tap below to watch the full breakdown. 👇</p>
     function fallback(txt){try{var ta=document.createElement("textarea");ta.value=txt;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();document.execCommand("copy");document.body.removeChild(ta);}catch(e){}}
   }
   document.querySelectorAll(".langsw button").forEach(function(b){b.addEventListener("click",function(){setTimeout(render,0);});});
-  function onView(){ if(location.hash==="#tasks") load(); }
+  function onView(){
+    if(location.hash==="#tasks"&&!document.documentElement.hasAttribute("data-site-locked")) load();
+  }
   window.addEventListener("hashchange",onView);
+  window.addEventListener("adrelay:site-unlocked",onView);
   setInterval(function(){
-    if(location.hash==="#tasks"&&!st.busy&&!document.hidden&&me()) load(true);
+    if(location.hash==="#tasks"&&!document.documentElement.hasAttribute("data-site-locked")&&!st.busy&&!document.hidden&&me()) load(true);
   },20000);
   render(); onView();
 })();
@@ -3342,6 +3442,7 @@ Tap below to watch the full breakdown. 👇</p>
     b.addEventListener("click",function(){setLang(b.getAttribute("data-lang"),true);});
   });
   window.addEventListener("hashchange",show);
+  window.addEventListener("adrelay:site-unlocked",show);
   show();
 })();
 </script>
