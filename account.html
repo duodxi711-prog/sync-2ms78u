@@ -37,7 +37,6 @@
       background: var(--card); border: 1px solid var(--line); border-radius: 18px;
       box-shadow: 0 16px 48px var(--shadow), 0 3px 8px var(--shadow);
     }
-    main:has(#members:not([hidden])) { width: min(100%, 43rem); }
     .account-header { display: grid; position: relative; justify-items: center; padding-top: 33px; }
     .language-control { position: absolute; top: 0; right: 0; }
     .language-control select { min-height: 34px; padding: 4px 8px; background: var(--field); font-size: 13px; }
@@ -81,16 +80,24 @@
     #auth-nav button[aria-pressed="true"] { color: var(--alert); border-color: var(--selected-border); background: var(--selected); font-weight: 650; }
     form { display: grid; gap: 13px; }
     #auth-submit { min-height: 44px; margin-top: 3px; }
+    .verification-card {
+      margin-top: 18px; padding: 16px; border: 1px solid var(--selected-border);
+      border-radius: 12px; background: var(--selected);
+    }
+    .verification-card p, #pending-hint { color: var(--muted); }
+    .verification-card h2:focus { outline: none; }
+    #checking-email-link { margin-top: 18px; color: var(--muted); }
+    #membership-status[data-pending] { margin-bottom: 5px; font-weight: 700; color: var(--alert); }
     #profile { margin-top: 18px; }
     #identity { color: var(--muted); overflow-wrap: anywhere; }
     #membership-status:empty, #message:empty { display: none; }
-    #message { margin: 14px 0 0; color: var(--muted); overflow-wrap: anywhere; }
+    #message { margin: 14px 0; color: var(--muted); overflow-wrap: anywhere; }
     #message[data-error] { color: var(--alert); }
     .team-entry { margin: 18px 0 0; padding-top: 12px; border-top: 1px solid var(--line); text-align: center; }
     .team-entry a { color: var(--muted); font-size: 13px; text-underline-offset: 3px; }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-  <script src="./account.js?v=7" defer></script>
+  <script src="./account.js?v=8" defer></script>
 </head>
 <body>
   <div class="account-layout">
@@ -107,6 +114,12 @@
         <button type="button" data-mode="signup" aria-pressed="false" data-text="signup">注册</button>
         <button type="button" data-mode="reset" aria-pressed="false" data-text="reset">找回密码</button>
       </nav>
+      <section class="verification-card" id="check-email" aria-labelledby="check-email-title" hidden>
+        <h2 id="check-email-title" data-text="checkEmail" tabindex="-1">请验证你的邮箱</h2>
+        <p data-text="checkEmailHint">注册已提交。请打开邮箱里的验证邮件，点击链接完成验证。验证后，申请会提交给管理员审核。</p>
+        <button type="button" id="back-to-signin" data-text="backToSignin">返回登录</button>
+      </section>
+      <p id="checking-email-link" data-text="checkingLink" role="status" hidden>正在确认邮箱验证结果…</p>
       <form id="auth-form">
         <label id="name-field" hidden><span data-text="name">姓名</span><input name="name" autocomplete="name" maxlength="80"></label>
         <label id="email-field"><span data-text="email">邮箱</span><input name="email" type="email" autocomplete="email" required></label>
@@ -117,7 +130,8 @@
       <section id="profile" hidden>
         <h2 data-text="account">我的账号</h2>
         <p id="identity"></p>
-        <p id="membership-status"></p>
+        <p id="membership-status" role="status"></p>
+        <p id="pending-hint" data-text="pendingHint" hidden>管理员开通后，你就可以进入 AdRelay。</p>
         <div class="actions">
           <a id="enter-adrelay" class="primary" data-text="enter" href="./?access=account#workspace" hidden>进入 AdRelay</a>
           <button id="reload-account" type="button" data-text="refresh">刷新状态</button>
