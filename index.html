@@ -941,6 +941,9 @@
     color:var(--ink2);font-size:12px;font-variant-numeric:tabular-nums;
   }
   .settings-version>span:last-child{font-weight:650}
+  .settings-account{border-top:1px solid var(--line2);padding:12px 18px}
+  .settings-account[hidden],.settings-account [hidden]{display:none!important}
+  .settings-account .settings-trigger{color:var(--accent)}
   @media screen and (min-width:960px){
     .site-settings{inset:auto auto 18px 234px;margin:0}
   }
@@ -1063,6 +1066,10 @@
         </button>
       </div>
     </div>
+  </div>
+  <div class="settings-account" id="settings-account" hidden>
+    <button type="button" class="settings-trigger" id="settings-logout"><span class="t-zh">退出登录</span><span class="t-en">Sign out</span></button>
+    <p class="site-access-error" id="settings-logout-error" role="alert" hidden><span class="t-zh">暂时无法退出，请重试。</span><span class="t-en">Unable to sign out. Please try again.</span></p>
   </div>
   <div class="settings-version">
     <span><span class="t-zh">当前版本</span><span class="t-en">Version</span></span>
@@ -4287,15 +4294,23 @@ Tap below to watch the full breakdown. 👇</p>
   const checking=document.getElementById("admin-access-checking");
   const denied=document.getElementById("admin-access-denied");
   const unavailable=document.getElementById("admin-access-error");
-  document.getElementById("admin-return-account").href="./account.html?lang="+root.dataset.lang;
+  const settings=document.getElementById("site-settings");
+  const accountSection=document.getElementById("settings-account");
+  const logout=document.getElementById("settings-logout");
+  const logoutError=document.getElementById("settings-logout-error");
+  const accountUrl=()=> "./account.html?lang="+root.dataset.lang;
+  document.getElementById("admin-return-account").href=accountUrl();
   let verifiedUser=null;
   let requested=0;
+  let signedOut=false;
   function showAccess(state){
     const allowed=state==="allowed";
     const wasLocked=root.hasAttribute("data-site-locked");
     checking.hidden=state!=="checking";
     denied.hidden=state!=="denied";
     unavailable.hidden=state!=="unavailable";
+    accountSection.hidden=!allowed;
+    if(!allowed&&settings.open) settings.close();
     root.toggleAttribute("data-site-locked",!allowed);
     window.dispatchEvent(new CustomEvent("adrelay:admin-access",{detail:allowed}));
     if(allowed&&wasLocked) window.dispatchEvent(new Event("adrelay:site-unlocked"));
@@ -4310,7 +4325,32 @@ Tap below to watch the full breakdown. 👇</p>
       return;
     }
     const client=window.supabase.createClient("https://sovltgzuzgsijebbtyms.supabase.co","sb_publishable_3pcN0anu9HAIL2DD0gIQSQ_N3-JOgpZ");
+    logout.addEventListener("click",async function(){
+      logout.disabled=true;
+      logoutError.hidden=true;
+      signedOut=false;
+      try{
+        const {error}=await client.auth.signOut({scope:"local"});
+        if(error&&!signedOut) throw error;
+      }catch(error){
+        if(!signedOut){
+          logoutError.hidden=false;
+          logout.disabled=false;
+          return;
+        }
+      }
+      requested++;
+      verifiedUser=null;
+      showAccess("denied");
+      try{
+        sessionStorage.removeItem("adrelay-site-access");
+        sessionStorage.removeItem("adrelay-workspace-access");
+      }catch(error){}
+      location.replace(accountUrl());
+    });
+
     client.auth.onAuthStateChange(function(event,session){
+      if(event==="SIGNED_OUT") signedOut=true;
       const revision=++requested;
       const userId=session?.user.id;
       if(!userId||event==="PASSWORD_RECOVERY"){
