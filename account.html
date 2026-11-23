@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>AdRelay · 账号</title>
+  <style>
+    :root { color-scheme: light; --bg: #f6f7f9; --card: #fff; --ink: #1c2230; --muted: #596174; --line: #dce0e7; --accent: #bd251c; --alert: #a12620; }
+    html[data-theme="dark"] { color-scheme: dark; --bg: #10151e; --card: #1a2330; --ink: #eef3fa; --muted: #c5d0df; --line: #354255; --accent: #a93028; --alert: #ff9d9c; }
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    body { margin: 0; padding: 24px; background: var(--bg); color: var(--ink); font: 15px/1.55 system-ui, sans-serif; }
+    main { max-width: 460px; margin: 5vh auto; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: clamp(18px, 5vw, 32px); }
+    main:has(#members:not([hidden])) { max-width: 730px; }
+    header, .member, .approval, .actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    header { justify-content: space-between; }
+    h1, h2, p { margin: 0 0 12px; }
+    h1 { font-size: 24px; }
+    h2 { font-size: 18px; }
+    label { display: grid; gap: 4px; font-weight: 600; min-width: 0; }
+    input, button, select { min-height: 40px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); color: var(--ink); font: inherit; }
+    input { width: 100%; }
+    button { cursor: pointer; }
+    button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+    button:disabled { opacity: .55; cursor: default; }
+    button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--alert); outline-offset: 2px; }
+    form { display: grid; gap: 12px; }
+    section + section, nav, .actions, #message:not(:empty) { margin-top: 16px; }
+    nav { margin-bottom: 16px; }
+    nav button[aria-pressed="true"] { border-color: var(--alert); font-weight: 700; }
+    #message { overflow-wrap: anywhere; }
+    #message[data-error] { color: var(--alert); }
+    .member { justify-content: space-between; padding: 12px 0; border-top: 1px solid var(--line); }
+    .member div:first-child { min-width: 0; }
+    .member small { display: block; color: var(--muted); overflow-wrap: anywhere; }
+    .approval input { width: 8rem; }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="./account.js" defer></script>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>AdRelay</h1>
+      <label>
+        <span data-text="language">语言</span>
+        <select id="language"><option value="zh">中文</option><option value="en">English</option></select>
+      </label>
+    </header>
+    <nav id="auth-nav" class="actions" aria-label="Account">
+      <button type="button" data-mode="signin" aria-pressed="true" data-text="signin">登录</button>
+      <button type="button" data-mode="signup" aria-pressed="false" data-text="signup">注册</button>
+      <button type="button" data-mode="reset" aria-pressed="false" data-text="reset">找回密码</button>
+    </nav>
+    <form id="auth-form">
+      <label id="name-field" hidden><span data-text="name">姓名</span><input name="name" autocomplete="name" maxlength="80"></label>
+      <label id="email-field"><span data-text="email">邮箱</span><input name="email" type="email" autocomplete="email" required></label>
+      <label id="password-field"><span data-text="password">密码</span><input name="password" type="password" autocomplete="current-password" required></label>
+      <button class="primary" type="submit" id="auth-submit" disabled>登录</button>
+    </form>
+    <section id="profile" hidden>
+      <h2 data-text="account">我的账号</h2>
+      <p id="identity"></p>
+      <p id="membership-status"></p>
+      <div class="actions">
+        <button id="reload-account" type="button" data-text="refresh">刷新状态</button>
+        <button id="logout" type="button" data-text="logout">退出登录</button>
+      </div>
+    </section>
+    <section id="members" hidden aria-labelledby="members-title">
+      <h2 id="members-title" data-text="members">员工审核</h2>
+      <div id="roster"></div>
+    </section>
+    <p id="message" role="status" aria-live="polite"></p>
+  </main>
+  <noscript>请启用 JavaScript。 / Please enable JavaScript.</noscript>
+</body>
+</html>
