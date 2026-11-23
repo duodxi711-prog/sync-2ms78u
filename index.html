@@ -811,7 +811,19 @@
   html:not([data-account-role]) :is(#daily-nav-link,.view[data-view="daily"]),
   html:not([data-account-role="admin"]) :is(#management-nav-link,.view[data-view="management"]),
   [data-running-slot]:empty,[data-running-public-tiers][hidden],[data-running-admin-error][hidden],
-  [data-report-source-label][hidden],[data-report-live-error][hidden]{display:none!important}
+  [data-report-source-label][hidden],[data-report-live-error][hidden],
+  html:not([data-account-role="admin"]) [data-report-export],
+  html[data-account-role="admin"] #daily-write{display:none!important}
+  .report-export-bar{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:12px 0}
+  .report-export-bar label{display:flex;align-items:center;gap:8px;color:var(--ink2);font-size:13px;font-weight:650}
+  .report-export-bar :is(select,button){min-height:38px;padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:inherit;font-size:13px}
+  .report-export-bar button{color:var(--accent);font-weight:650;cursor:pointer}
+  .report-export-bar button:not(:disabled):hover{border-color:var(--accent)}
+  .report-export-bar button:disabled{opacity:.5;cursor:default}
+  .report-export-bar :focus-visible{outline:2px solid var(--focus-ring,var(--accent));outline-offset:2px}
+  #daily-export .report-export-bar{margin-bottom:0}
+  #daily-export label{display:flex}
+  #daily-export select{width:auto}
   .business-view [hidden]{display:none!important}
   .business-view :is(.daily-content,.management-card){min-width:0}
   .daily-content{display:grid;gap:14px}
@@ -1143,7 +1155,7 @@
   <p id="reporting-load-error" class="site-access-error" role="status" hidden><span class="t-zh">员工名单加载失败，切换页面后可重试。</span><span class="t-en">The employee list did not load. Reopen this tab to try again.</span></p>
   <section id="daily-reports" aria-labelledby="reporting-title" hidden>
     <div class="daily-content">
-      <section aria-labelledby="daily-write-title">
+      <section id="daily-write" aria-labelledby="daily-write-title">
         <h2 id="daily-write-title" data-daily-text="write">填写投放数据</h2>
         <p class="daily-note" data-daily-text="saveHint">同一天、同一个 Offer 和平台只记一笔。再次保存会更新这笔数据。</p>
         <form id="daily-form">
@@ -1171,12 +1183,24 @@
           <label><span data-daily-text="from">开始日期</span><input type="date" name="from" required></label>
           <label><span data-daily-text="to">结束日期</span><input type="date" name="to" required></label>
           <label><span>Offer</span><input name="offer" list="daily-offers" maxlength="80"></label>
+          <label id="daily-member-filter" hidden>
+            <span data-daily-text="member">员工</span>
+            <select id="daily-member"></select>
+          </label>
           <button type="submit" data-daily-text="apply">查询</button>
         </form>
-        <label id="daily-member-filter" hidden>
-          <span data-daily-text="member">员工</span>
-          <select id="daily-member"></select>
-        </label>
+        <div id="daily-export" hidden>
+          <div class="report-export-bar">
+            <label><span data-daily-text="summaryMode">汇总方式</span>
+              <select id="daily-export-mode">
+                <option value="day" data-daily-text="byDay">按日</option>
+                <option value="total" data-daily-text="total">总计</option>
+              </select>
+            </label>
+            <button id="daily-export-button" type="button" data-daily-text="exportCsv">导出 CSV</button>
+          </div>
+          <p id="daily-export-status" role="status" aria-live="polite"></p>
+        </div>
         <div class="daily-table"><table aria-labelledby="daily-details-title" id="daily-details"></table></div>
         <div class="daily-pagination" id="daily-pagination" hidden>
           <button type="button" id="daily-prev" data-daily-text="previous">上一页</button>
@@ -1773,6 +1797,15 @@ Tap below to watch the full breakdown. 👇</p>
               <option value=""></option><option value="daily"></option>
             </select></span>
           </label>
+        </div>
+        <div class="report-export-bar" data-report-export>
+          <label><span class="t-zh">汇总方式</span><span class="t-en">Summarize by</span>
+            <select data-report-export-mode>
+              <option value="day">按日</option>
+              <option value="total">总计</option>
+            </select>
+          </label>
+          <button type="button" data-report-export-button disabled><span class="t-zh">导出 CSV</span><span class="t-en">Export CSV</span></button>
         </div>
         <p class="site-access-error" role="status" data-report-live-error hidden><span class="t-zh">日报数据加载失败。当前显示历史记录，重新打开测试结果可重试。</span><span class="t-en">Daily submissions could not be loaded. Historical data is shown. Reopen Test Results to retry.</span></p>
         <figure class="report-net-chart" data-report-net-chart hidden>
@@ -2753,6 +2786,15 @@ Tap below to watch the full breakdown. 👇</p>
               <option value=""></option><option value="daily"></option>
             </select></span>
           </label>
+        </div>
+        <div class="report-export-bar" data-report-export>
+          <label><span class="t-zh">汇总方式</span><span class="t-en">Summarize by</span>
+            <select data-report-export-mode>
+              <option value="day">Day</option>
+              <option value="total">Total</option>
+            </select>
+          </label>
+          <button type="button" data-report-export-button disabled><span class="t-zh">导出 CSV</span><span class="t-en">Export CSV</span></button>
         </div>
         <p class="site-access-error" role="status" data-report-live-error hidden><span class="t-zh">日报数据加载失败。当前显示历史记录，重新打开测试结果可重试。</span><span class="t-en">Daily submissions could not be loaded. Historical data is shown. Reopen Test Results to retry.</span></p>
         <figure class="report-net-chart" data-report-net-chart hidden>
@@ -4167,7 +4209,7 @@ Tap below to watch the full breakdown. 👇</p>
     row.hidden=false;
     var [roasCell,netCell]=Array.from(row.cells).slice(-2);
     updateReportReturns(roasCell,netCell,totals.spend,totals.revenue);
-    return totals;
+    return {...totals,cpcSpend,estimatedClicks};
   }
 
   function renderOfferBreakdown(panel,records,english){
@@ -4293,6 +4335,32 @@ Tap below to watch the full breakdown. 👇</p>
     });
   }
 
+  var exportData=new WeakMap(), liveResultsReady=false;
+  function updateResultExport(){
+    resultFolders.forEach(function(folder){
+      var model=exportData.get(folder);
+      folder.querySelector("[data-report-export-button]").disabled=!liveResultsReady||!model?.series.length||typeof window.downloadAdRelayCsv!=="function";
+    });
+  }
+  function exportTestResults(folder){
+    var model=exportData.get(folder);
+    if(document.documentElement.dataset.accountRole!=="admin"||!liveResultsReady||!model?.series.length) return;
+    var english=model.english, isTotal=folder.querySelector("[data-report-export-mode]").value==="total";
+    var headings=english
+      ? [...(isTotal?["Start date","End date"]:["Date"]),"Offer","Platform","Source","Spend (USD)","CPC (USD)","Sales","Revenue (USD)","ROAS","Net P/L (USD)"]
+      : [...(isTotal?["开始日期","结束日期"]:["日期"]),"Offer","平台","来源","花费（USD）","CPC（USD）","出单","营业额（USD）","ROAS","净盈亏（USD）"];
+    var platform=reportPlatforms[model.platform]||(english?"All platforms":"全平台");
+    var source=model.source==="daily"?(english?"Daily submissions":"日报填报"):(english?"Combined":"合并");
+    var breakdown=isTotal?[model.totals]:model.series;
+    var rows=breakdown.map(function(row){
+      var dates=isTotal?[model.series[0].date,model.series.at(-1).date]:[row.date];
+      var cpc=row.estimatedClicks>0?Number((row.cpcSpend/row.estimatedClicks/100).toFixed(4)):null;
+      var roas=row.spend>0?Number((row.revenue/row.spend).toFixed(4)):null;
+      return [...dates,model.offer,platform,source,row.spend/100,cpc,row.orders,row.revenue/100,roas,(row.revenue-row.spend)/100];
+    });
+    window.downloadAdRelayCsv("adrelay-test-results-"+(isTotal?"total":"daily")+".csv",headings,rows);
+  }
+
   function applyReportFilters(date,platform){
     resultFolders.forEach(function(folder){
       folder.querySelector("[data-report-platform-filter]").value=platform;
@@ -4308,7 +4376,7 @@ Tap below to watch the full breakdown. 👇</p>
       var spendBody=panel.querySelector("[data-report-total]").closest("table").tBodies[0];
       var english=panel.id.startsWith("report-panel-en-");
       var days=new Map(), purchasePlatforms=new Map(), netSeries=[];
-      var spend=0, orders=0, revenue=0;
+      var totals={spend:0,orders:0,revenue:0,cpcSpend:0,estimatedClicks:0};
       var dailyRows=overview?document.createDocumentFragment():null;
 
       spendBody.querySelectorAll("[data-report-merged-date]").forEach(function(row){row.remove();});
@@ -4326,10 +4394,8 @@ Tap below to watch the full breakdown. 👇</p>
       Array.from(days.keys()).sort().forEach(function(dayDate){
         var records=days.get(dayDate);
         var day=summarizeReportDay(records,english,dailyRows);
-        netSeries.push({date:dayDate,label:records[0].cells[0].textContent.trim(),net:day.revenue-day.spend});
-        spend+=day.spend;
-        orders+=day.orders;
-        revenue+=day.revenue;
+        netSeries.push({...day,date:dayDate,label:records[0].cells[0].textContent.trim(),net:day.revenue-day.spend});
+        for(var key of Object.keys(totals)) totals[key]+=day[key];
       });
       var empty=spendBody.querySelector("[data-report-empty]");
       if(dailyRows) empty.before(dailyRows);
@@ -4338,6 +4404,11 @@ Tap below to watch the full breakdown. 👇</p>
       renderNetChart(folder,netSeries,english);
 
       var [totalSpend,,totalOrders,totalRevenue,totalRoas,totalNet]=Array.from(panel.querySelector("[data-report-total]").cells).slice(-6);
+      var {spend,orders,revenue}=totals;
+      exportData.set(folder,{
+        english,series:netSeries,totals,platform,source:groupedSource,
+        offer:document.getElementById(panel.getAttribute("aria-labelledby")).textContent.trim()
+      });
       totalSpend.textContent=formatCurrency(spend,2);
       totalRevenue.textContent=formatCurrency(revenue,revenue%100?2:0);
       updateReportReturns(totalRoas,totalNet,spend,revenue);
@@ -4364,6 +4435,7 @@ Tap below to watch the full breakdown. 👇</p>
         body.querySelector("[data-report-empty]").hidden=hasPurchases;
       });
     });
+    updateResultExport();
   }
   function activateTab(tab){
     var offer=tab.dataset.reportOffer;
@@ -4382,6 +4454,7 @@ Tap below to watch the full breakdown. 👇</p>
     var date=folder.querySelector("[data-report-date-filter]");
     var platform=folder.querySelector("[data-report-platform-filter]");
     function onFilterChange(){applyReportFilters(date.value,platform.value);}
+    folder.querySelector("[data-report-export-button]").addEventListener("click",function(){exportTestResults(folder);});
     date.addEventListener("change",onFilterChange);
     platform.addEventListener("change",onFilterChange);
     folder.querySelector("[data-report-source]").addEventListener("change",function(){
@@ -4390,6 +4463,11 @@ Tap below to watch the full breakdown. 👇</p>
     });
   });
   window.addEventListener("adrelay:live-results",function(event){
+    liveResultsReady=event.detail.state==="ready";
+    if(event.detail.state==="loading"){
+      updateResultExport();
+      return;
+    }
     var folder=resultFolders.find(function(item){return item.getClientRects().length;})||resultFolders[0];
     var selectedDate=folder.querySelector("[data-report-date-filter]").value;
     var platform=folder.querySelector("[data-report-platform-filter]").value;
@@ -4431,8 +4509,8 @@ Tap below to watch the full breakdown. 👇</p>
   });
 })();
 </script>
-<script src="./daily-reports.js?v=4" defer></script>
-<script src="./business-panels.js?v=2" defer></script>
+<script src="./daily-reports.js?v=5" defer></script>
+<script src="./business-panels.js?v=3" defer></script>
 <script>
 document.addEventListener("DOMContentLoaded",function(){
   const root=document.documentElement;
