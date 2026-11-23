@@ -28,6 +28,7 @@
   window.createAdRelayDailyReports = function(client) {
     const root = document.getElementById("daily-reports");
     if (!root || !client) return null;
+    const collapsible = root.tagName === "DETAILS";
     const get = id => document.getElementById(id);
     const form = get("daily-form");
     const filter = get("daily-filter");
@@ -151,7 +152,7 @@
     }
 
     async function load() {
-      if (!active || !root.open) return;
+      if (!active || (collapsible && !root.open)) return;
       const current = ++request;
       results = null;
       listStatus = { key: "loading" };
@@ -241,7 +242,7 @@
     member.addEventListener("change", () => { page = 0; load(); });
     get("daily-prev").addEventListener("click", () => { page--; load(); });
     get("daily-next").addEventListener("click", () => { page++; load(); });
-    root.addEventListener("toggle", () => { if (root.open) load(); });
+    if (collapsible) root.addEventListener("toggle", () => { if (root.open) load(); });
 
     return {
       sync(profile, locale, roster) {
@@ -251,7 +252,7 @@
         active = next;
         if (switched) {
           request++;
-          root.open = false;
+          if (collapsible) root.open = false;
           page = 0;
           results = null;
           saveStatus = null;
@@ -260,6 +261,7 @@
         }
         updateMemberOptions(active?.role === "admin" ? roster : []);
         render();
+        if (switched && !collapsible && active) load();
       }
     };
   };
