@@ -810,7 +810,8 @@
   .account-entry-link{display:inline-block;margin-top:12px;color:var(--accent);font-weight:650}
   html:not([data-account-role]) :is(#daily-nav-link,.view[data-view="daily"]),
   html:not([data-account-role="admin"]) :is(#management-nav-link,.view[data-view="management"]),
-  html[data-account-role="employee"] :is(#tabs a:not(#daily-nav-link),#tabs .methods,main>.view:not([data-view="daily"])){display:none!important}
+  [data-running-slot]:empty,[data-running-public-tiers][hidden],[data-running-admin-error][hidden],
+  [data-report-source-label][hidden],[data-report-live-error][hidden]{display:none!important}
   .business-view [hidden]{display:none!important}
   .business-view :is(.daily-content,.management-card){min-width:0}
   .daily-content{display:grid;gap:14px}
@@ -1164,19 +1165,14 @@
         </form>
         <p id="daily-save-status" role="status"></p>
       </section>
-      <section aria-labelledby="daily-totals-title">
-        <h2 id="daily-totals-title" data-daily-text="totals">团队填报汇总</h2>
-        <p class="daily-note" data-daily-text="scope">此处汇总通过日报表单录入的数据。</p>
+      <section aria-labelledby="daily-details-title">
+        <h2 id="daily-details-title" data-daily-text="mine">我的日报</h2>
         <form id="daily-filter" class="daily-filters">
           <label><span data-daily-text="from">开始日期</span><input type="date" name="from" required></label>
           <label><span data-daily-text="to">结束日期</span><input type="date" name="to" required></label>
           <label><span>Offer</span><input name="offer" list="daily-offers" maxlength="80"></label>
           <button type="submit" data-daily-text="apply">查询</button>
         </form>
-        <div class="daily-table"><table aria-labelledby="daily-totals-title" id="daily-totals"></table></div>
-      </section>
-      <section aria-labelledby="daily-details-title">
-        <h2 id="daily-details-title" data-daily-text="mine">我的日报</h2>
         <label id="daily-member-filter" hidden>
           <span data-daily-text="member">员工</span>
           <select id="daily-member"></select>
@@ -1382,6 +1378,7 @@ Tap below to watch the full breakdown. 👇</p>
 <!-- ======================= Running ======================= -->
 <section class="view" data-view="running">
   <h2>Running 安排</h2>
+  <p class="site-access-error" role="status" data-running-admin-error hidden><span class="t-zh">成员历史明细加载失败，请切换页面后重试。</span><span class="t-en">Historical member details could not be loaded. Reopen Running to retry.</span></p>
   <p style="color:var(--ink2)">上面是进行中的测试任务，下面是每日实际投放记录（最新一天在最上面）。点 offer 可跳到 Offer 清单查看 VSL 和素材。 <span class="cat">更新：2026-11-20</span></p>
   <h3 class="rsec"><span class="rsec-dot task"></span>测试任务</h3>
   <details class="day task" data-date="2026-11-20" data-end="2026-11-22" data-test="yoburn-2026-11-20">
@@ -1710,22 +1707,13 @@ Tap below to watch the full breakdown. 👇</p>
   <a class="report-link" href="#results">查看 Offer 测试结果 <span aria-hidden="true">→</span></a>
   <details class="day first" data-date="2026-11-11" data-end="2026-11-11">
   <summary class="day-h"><span class="dchev"></span><span class="dd">11月11日</span><span class="dw">周三</span><span class="dk plan">每日投放</span></summary>
-  <div class="mgrid">
-  <div class="mcard" style="--mc:#7c3aed"><div class="mh"><span class="av">GZ</span><span class="mc-n">1 个 offer</span></div><div class="ent"><a class="ochip" href="#offer-vapobrain"><i class="ci" data-ci="brain"></i>VapoBrain</a><div class="eres pend">结果待更新</div></div></div>
-  <div class="mcard" style="--mc:#2f6fe4"><div class="mh"><span class="av">ZAY</span><span class="mc-n">2 个 offer</span></div><div class="ent"><a class="ochip" href="#offer-yoburn"><i class="ci" data-ci="weight"></i>YOBURN</a><div class="eres pend">结果待更新</div></div><div class="ent"><a class="ochip" href="#offer-neurotamine"><i class="ci" data-ci="brain"></i>NeuroTamine</a><div class="eres pend">结果待更新</div></div></div>
-  <div class="mcard" style="--mc:#d63384"><div class="mh"><span class="av">ZXQY</span><span class="mc-n">1 个 offer</span></div><div class="ent"><a class="ochip" href="#offer-neurotamine"><i class="ci" data-ci="brain"></i>NeuroTamine</a><div class="eres pend">结果待更新</div></div></div>
-  <div class="mcard empty" style="--mc:#0f9a7a"><div class="mh"><span class="av">DZC</span></div><div class="none">当日无记录</div></div>
-  </div>
+  <div data-running-slot="zh-2026-11-11"></div>
   </details>
   <details class="day" data-date="2026-11-10" data-end="2026-11-10">
   <summary class="day-h"><span class="dchev"></span><span class="dd">11月10日</span><span class="dw">周二</span><span class="dk plan">每日投放</span><span class="dsum"><!--S:yoburn-1110-->测试已结束 · 花费 $2,004.42 · 出单 1 · Revenue $250<!--/S:yoburn-1110--></span><a class="dbtn" href="#results-yoburn-1110">详情</a></summary>
-  <div class="dnote">突发调整：YOBURN 素材平分测试，42 条全部测到 · 总预算 $2,500，按素材数量分配（每条约 $59.5）。素材位置：团队文件-素材盘-请分类 / 减肥类 / YoBurn02-Ads，按 PACK 子文件夹存放。VSL（按实际测试）：GZ 测全部 4 条；ZAY 测 389、390、391；ZXQY 测 391、388，50/50 分流。</div>
-  <div class="mgrid">
-  <div class="mcard" style="--mc:#7c3aed"><div class="mh"><span class="av">GZ</span><span class="mc-n">2 个 offer</span></div><div class="ent"><a class="ochip" href="#offer-yoburn"><i class="ci" data-ci="weight"></i>YOBURN</a><div class="emeta"><span>VSL</span>4</div><div class="vminis"><div class="vmini"><span class="vid">388</span><div class="mono">FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD01-250)</div></div><div class="vmini"><span class="vid">389</span><div class="mono">FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD1.1-250)</div></div><div class="vmini"><span class="vid">390</span><div class="mono">FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD02-250)</div></div><div class="vmini"><span class="vid">391</span><div class="mono">FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD03-250)</div></div></div><div class="emeta"><span>预算</span><b>$952.50</b></div><div class="emeta"><span>素材</span>16 条</div><div class="adchips"><span class="adchip">YBAD78<small>H1/H2</small></span><span class="adchip">YBAD80<small>H1/H2</small></span><span class="adchip">YBAD82<small>H1/H2</small></span><span class="adchip">YBAD84<small>H1/H2</small></span><span class="adchip">YBAD86<small>H1/H2</small></span><span class="adchip">YBAD88<small>H1</small></span><span class="adchip">YBAD90<small>H1/H2</small></span><span class="adchip">YBAD93<small>H1</small></span><span class="adchip">YBAD98<small>H1</small></span><span class="adchip">YBAD105<small>H1</small></span></div><details class="files"><summary>查看文件名</summary><ul><li class="mono">YBAD78_H1_C07_E08_868mn4qcd.mp4</li><li class="mono">YBAD78_H2_C07_E08_868mn4qcd.mp4</li><li class="mono">YBAD80_H1_C07_E08_868mn4qcd.mp4</li><li class="mono">YBAD80_H2_C07_E08_868mn4qcd.mp4</li><li class="mono">YBAD82_H1_C07_E08_868mn4qcd.mp4</li><li class="mono">YBAD82_H2_C07_E08_868mn4qcd.mp4</li><li class="mono">YBAD84_H1_C63_E58_868mn4qch.mp4</li><li class="mono">YBAD84_H2_C63_E58_868mn4qch.mp4</li><li class="mono">YBAD86_H1_C63_E58_868mn4qch.mp4</li><li class="mono">YBAD86_H2_C63_E58_868mn4qch.mp4</li><li class="mono">YBAD88_H1_C45_E6_868mn4qcm.mp4</li><li class="mono">YBAD90_H1_C45_E6_868mn4qcm.mp4</li><li class="mono">YBAD90_H2_C45_E6_868mn4qcm.mp4</li><li class="mono">YBAD93_H1_C58_E41_868mr8gj3.mp4</li><li class="mono">YBAD98_H1_C45_E76_868mr8gjf.mp4</li><li class="mono">YBAD105_H1_C61_E12_868mr8gjx.mp4</li></ul></details></div><div class="ent"><a class="ochip" href="#offer-lungvicks"><i class="ci" data-ci="lungs"></i>LungVicks</a><div class="eres"><span class="rv"><span>花费</span><b>$51.22</b></span></div></div></div>
-  <div class="mcard" style="--mc:#2f6fe4"><div class="mh"><span class="av">ZAY</span><span class="mc-n">2 个 offer</span></div><div class="ent"><a class="ochip" href="#offer-yoburn"><i class="ci" data-ci="weight"></i>YOBURN</a><div class="emeta"><span>VSL</span>3</div><div class="vminis"><div class="vmini"><span class="vid">389</span><div class="mono">FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD1.1-250)</div></div><div class="vmini"><span class="vid">390</span><div class="mono">FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD02-250)</div></div><div class="vmini"><span class="vid">391</span><div class="mono">FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD03-250)</div></div></div><div class="emeta"><span>预算</span><b>$952.50</b></div><div class="emeta"><span>素材</span>16 条</div><div class="adchips"><span class="adchip">YBAD79<small>H1/H2</small></span><span class="adchip">YBAD83<small>H1/H2</small></span><span class="adchip">YBAD87<small>H1/H2</small></span><span class="adchip">YBAD88<small>H2</small></span><span class="adchip">YBAD91<small>H1/H2</small></span><span class="adchip">YBAD92<small>H1/H2</small></span><span class="adchip">YBAD94<small>H1</small></span><span class="adchip">YBAD96<small>H1</small></span><span class="adchip">YBAD99</span><span class="adchip">YBAD101</span><span class="adchip">YBAD106<small>H1</small></span></div><details class="files"><summary>查看文件名</summary><ul><li class="mono">YBAD79_H1_C07_E08_868mn4qcd.mp4</li><li class="mono">YBAD79_H2_C07_E08_868mn4qcd.mp4</li><li class="mono">YBAD83_H1_C63_E58_868mn4qch.mp4</li><li class="mono">YBAD83_H2_C63_E58_868mn4qch.mp4</li><li class="mono">YBAD87_H1_C63_E58_868mn4qch.mp4</li><li class="mono">YBAD87_H2_C63_E58_868mn4qch.mp4</li><li class="mono">YBAD88_H2_C45_E6_868mn4qcm.mp4</li><li class="mono">YBAD91_H1_C45_E6_868mn4qcm.mp4</li><li class="mono">YBAD91_H2_C45_E6_868mn4qcm.mp4</li><li class="mono">YBAD92_H1_C45_E6_868mn4qcm.mp4</li><li class="mono">YBAD92_H2_C45_E6_868mn4qcm.mp4</li><li class="mono">YBAD94_H1_C58_E41_868mr8gj3.mp4</li><li class="mono">YBAD96_H1_C45_E76_868mr8gjf.mp4</li><li class="mono">YBAD99_C41_E15_868mr8gjk.mp4</li><li class="mono">YBAD101_C41_E15_868mr8gjk.mp4</li><li class="mono">YBAD106_H1_C61_E12_868mr8gjx.mp4</li></ul></details></div><div class="ent"><a class="ochip" href="#offer-neurotamine"><i class="ci" data-ci="brain"></i>NeuroTamine</a><div class="eres"><span class="rv"><span>花费</span><b class="muted">未知</b></span></div></div></div>
-  <div class="mcard" style="--mc:#d63384"><div class="mh"><span class="av">ZXQY</span><span class="mc-n">2 个 offer</span></div><div class="ent"><a class="ochip" href="#offer-yoburn"><i class="ci" data-ci="weight"></i>YOBURN</a><div class="emeta"><span>VSL</span>2 · 50/50</div><div class="vminis"><div class="vmini"><span class="vid">391</span><div class="mono">FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD03-250)</div></div><div class="vmini"><span class="vid">388</span><div class="mono">FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD01-250)</div></div></div><div class="emeta"><span>预算</span><b>$595</b></div><div class="emeta"><span>素材</span>10 条</div><div class="adchips"><span class="adchip">YBAD81<small>H1/H2</small></span><span class="adchip">YBAD85<small>H1/H2</small></span><span class="adchip">YBAD89<small>H1/H2</small></span><span class="adchip">YBAD95<small>H1</small></span><span class="adchip">YBAD97<small>H1</small></span><span class="adchip">YBAD100</span><span class="adchip">YBAD107<small>H1</small></span></div><details class="files"><summary>查看文件名</summary><ul><li class="mono">YBAD81_H1_C07_E08_868mn4qcd.mp4</li><li class="mono">YBAD81_H2_C07_E08_868mn4qcd.mp4</li><li class="mono">YBAD85_H1_C63_E58_868mn4qch.mp4</li><li class="mono">YBAD85_H2_C63_E58_868mn4qch.mp4</li><li class="mono">YBAD89_H1_C45_E6_868mn4qcm.mp4</li><li class="mono">YBAD89_H2_C45_E6_868mn4qcm.mp4</li><li class="mono">YBAD95_H1_C58_E41_868mr8gj3.mp4</li><li class="mono">YBAD97_H1_C45_E76_868mr8gjf.mp4</li><li class="mono">YBAD100_C41_E15_868mr8gjk.mp4</li><li class="mono">YBAD107_H1_C61_E12_868mr8gjx.mp4</li></ul></details></div><div class="ent"><a class="ochip" href="#offer-neurotamine"><i class="ci" data-ci="brain"></i>NeuroTamine</a><div class="eres"><span class="rv"><span>花费</span><b>$13.26</b></span></div></div></div>
-  <div class="mcard empty" style="--mc:#0f9a7a"><div class="mh"><span class="av">DZC</span></div><div class="none">当日无记录</div></div>
-  </div>
+  <div class="dnote">突发调整：YOBURN 素材平分测试，42 条全部测到 · 总预算 $2,500，按素材数量分配（每条约 $59.5）。素材位置：团队文件-素材盘-请分类 / 减肥类 / YoBurn02-Ads，按 PACK 子文件夹存放。</div>
+  <div data-running-slot="zh-vsl-assignment"></div>
+  <div data-running-slot="zh-2026-11-10"></div>
   <details class="rdetail" data-results="yoburn-1110"><summary>测试结果详情</summary><div class="rdetail-body"><!--R:yoburn-1110-->
   <div class="rhero">
   <div class="rh-top"><span class="rh-t">YOBURN 素材测试</span><span class="rh-s">11月10日启动</span><span class="rh-end">测试已结束</span><span class="rh-cut">数据截至 11月11日 15:05（北京时间）</span></div>
@@ -1735,14 +1723,7 @@ Tap below to watch the full breakdown. 👇</p>
   <div class="rstat"><div class="l">Revenue</div><div class="v pos">$250</div></div>
   <div class="rstat"><div class="l">素材结果</div><div class="v">42</div><div class="s">已分级 16 / 42</div></div>
   </div></div>
-  <h3>成员结果</h3><div class="rgrid">
-  <div class="rcard" style="--mc:#7c3aed"><div class="mh"><span class="av">GZ</span><span class="mc-n">16 条素材 · VSL 388, 389, 390, 391</span></div>
-  <div class="rkv"><div><span>已花费</span><b>$502.68</b></div><div><span>出单</span><b class="">0</b></div><div><span>Revenue</span><b class="">$0</b></div></div></div>
-  <div class="rcard" style="--mc:#2f6fe4"><div class="mh"><span class="av">ZAY</span><span class="mc-n">16 条素材 · VSL 389, 390, 391</span></div>
-  <div class="rkv"><div><span>已花费</span><b>$1,000</b></div><div><span>出单</span><b class="">1</b></div><div><span>Revenue</span><b class="pos">$250</b></div></div></div>
-  <div class="rcard" style="--mc:#d63384"><div class="mh"><span class="av">ZXQY</span><span class="mc-n">10 条素材 · VSL 391, 388</span></div>
-  <div class="rkv"><div><span>已花费</span><b>$501.74</b></div><div><span>出单</span><b class="">0</b></div><div><span>Revenue</span><b class="">$0</b></div></div></div>
-  </div>
+  <div data-running-slot="zh-members"></div>
   <div class="note">Revenue 为收入金额（出单 × payout $250），与花费分开计算，不是净利润。</div>
   <h3>VSL 结果</h3><div class="tbl-wrap vsltbl"><table><thead><tr><th>VSL</th><th class="num">点击</th><th class="num">LP 浏览</th><th class="num">IC</th><th class="num">点击→IC</th><th class="num">出单</th></tr></thead><tbody>
   <tr><td><b class="mono">388</b> <span class="cat">MOD01</span></td><td class="num">84</td><td class="num">82</td><td class="num">3</td><td class="num"><b>3.6%</b></td><td class="num">0</td></tr>
@@ -1751,74 +1732,18 @@ Tap below to watch the full breakdown. 👇</p>
   <tr><td><b class="mono">391</b> <span class="cat">MOD03</span></td><td class="num">169</td><td class="num">170</td><td class="num">7</td><td class="num"><b>4.1%</b></td><td class="num">0</td></tr>
   </tbody></table></div>
   <div class="note">数据来自 RedTrack 报表，日期 2026-11-10，三人报表时区一致（Pacific/Pitcairn）。各 VSL 为三人数据合计。</div>
-  <h3>素材分级</h3><div class="tiers">
-  <div class="tier good"><div class="tier-h"><span class="tdot"></span>出单<span class="tn">1</span></div><div class="tchips"><span class="tchip"><b>YBAD91_H2</b><small>ZAY</small></span></div></div>
-  <div class="tier mid"><div class="tier-h"><span class="tdot"></span>可继续测<span class="tn">8</span></div><div class="tchips"><span class="tchip"><b>YBAD95_H1</b><small>ZXQY</small></span><span class="tchip"><b>YBAD89_H2</b><small>ZXQY</small></span><span class="tchip"><b>YBAD94_H1</b><small>ZAY</small></span><span class="tchip"><b>YBAD99</b><small>ZAY</small></span><span class="tchip"><b>YBAD92_H2</b><small>ZAY</small></span><span class="tchip"><b>YBAD79_H1</b><small>ZAY</small></span><span class="tchip"><b>YBAD96_H1</b><small>ZAY</small></span><span class="tchip"><b>YBAD79_H2</b><small>ZAY</small></span></div></div>
-  <div class="tier bad"><div class="tier-h"><span class="tdot"></span>建议放弃<span class="tn">7</span></div><div class="tchips"><span class="tchip"><b>YBAD85_H2</b><small>ZXQY</small></span><span class="tchip"><b>YBAD85_H1</b><small>ZXQY</small></span><span class="tchip"><b>YBAD81_H1</b><small>ZXQY</small></span><span class="tchip"><b>YBAD83_H2</b><small>ZAY</small></span><span class="tchip"><b>YBAD101</b><small>ZAY</small></span><span class="tchip"><b>YBAD91_H1</b><small>ZAY</small></span><span class="tchip"><b>YBAD83_H1</b><small>ZAY</small></span></div></div>
-  </div>
-  <h3>素材结果</h3>
-  <div class="rrules"><b>判断参考（M03 Vince）</b><span>花费 ≥ $60 仍无 IC → 暂停</span><span>CPC ≥ $5 → 暂停</span><span>3 天只有 1 单 → 淘汰</span><span>2 单及以上 → 进入预放量</span></div>
-  <div class="crgroup" style="--mc:#7c3aed"><div class="crg-h"><span class="av">GZ</span><span class="cat">16 条素材</span></div>
-  <div class="tbl-wrap crtbl"><table><thead><tr><th>素材</th><th class="num">点击</th><th class="num">IC</th><th class="num">点击→IC</th><th class="num">出单</th><th>分级 / 原因</th></tr></thead><tbody>
-  <tr><td class="mono code" title="YBAD78_H1_C07_E08_868mn4qcd.mp4">YBAD78_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">待分级</span></td></tr>
-  <tr><td class="mono code" title="YBAD78_H2_C07_E08_868mn4qcd.mp4">YBAD78_H2</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">待分级</span></td></tr>
-  <tr><td class="mono code" title="YBAD80_H1_C07_E08_868mn4qcd.mp4">YBAD80_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">待分级</span></td></tr>
-  <tr><td class="mono code" title="YBAD80_H2_C07_E08_868mn4qcd.mp4">YBAD80_H2</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">待分级</span></td></tr>
-  <tr><td class="mono code" title="YBAD82_H1_C07_E08_868mn4qcd.mp4">YBAD82_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">待分级</span></td></tr>
-  <tr><td class="mono code" title="YBAD82_H2_C07_E08_868mn4qcd.mp4">YBAD82_H2</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">待分级</span></td></tr>
-  <tr><td class="mono code" title="YBAD84_H1_C63_E58_868mn4qch.mp4">YBAD84_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">待分级</span></td></tr>
-  <tr><td class="mono code" title="YBAD84_H2_C63_E58_868mn4qch.mp4">YBAD84_H2</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">待分级</span></td></tr>
-  <tr><td class="mono code" title="YBAD86_H1_C63_E58_868mn4qch.mp4">YBAD86_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">待分级</span></td></tr>
-  <tr><td class="mono code" title="YBAD86_H2_C63_E58_868mn4qch.mp4">YBAD86_H2</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">待分级</span></td></tr>
-  <tr><td class="mono code" title="YBAD88_H1_C45_E6_868mn4qcm.mp4">YBAD88_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">待分级</span></td></tr>
-  <tr><td class="mono code" title="YBAD90_H1_C45_E6_868mn4qcm.mp4">YBAD90_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">待分级</span></td></tr>
-  <tr><td class="mono code" title="YBAD90_H2_C45_E6_868mn4qcm.mp4">YBAD90_H2</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">待分级</span></td></tr>
-  <tr><td class="mono code" title="YBAD93_H1_C58_E41_868mr8gj3.mp4">YBAD93_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">待分级</span></td></tr>
-  <tr><td class="mono code" title="YBAD98_H1_C45_E76_868mr8gjf.mp4">YBAD98_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">待分级</span></td></tr>
-  <tr><td class="mono code" title="YBAD105_H1_C61_E12_868mr8gjx.mp4">YBAD105_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">待分级</span></td></tr>
-  </tbody></table></div></div>
-  <div class="crgroup" style="--mc:#2f6fe4"><div class="crg-h"><span class="av">ZAY</span><span class="cat">16 条素材</span></div>
-  <div class="tbl-wrap crtbl"><table><thead><tr><th>素材</th><th class="num">点击</th><th class="num">IC</th><th class="num">点击→IC</th><th class="num">出单</th><th>分级 / 原因</th></tr></thead><tbody>
-  <tr class="t-sold"><td class="mono code" title="YBAD91_H2_C45_E6_868mn4qcm.mp4">YBAD91_H2</td><td class="num">36</td><td class="num">5</td><td class="num">13.9%</td><td class="num">1</td><td><span class="flag good">出单</span> <span class="why">准 winner：唯一出单的素材，贡献了全部 IC 的近 4 成，转化率是其他素材的 2 倍以上</span></td></tr>
-  <tr class="t-keep"><td class="mono code" title="YBAD94_H1_C58_E41_868mr8gj3.mp4">YBAD94_H1</td><td class="num">22</td><td class="num">2</td><td class="num">9.1%</td><td class="num"><span class="cat">—</span></td><td><span class="flag mid">可继续测</span> <span class="why">第二梯队里最强的</span></td></tr>
-  <tr class="t-keep"><td class="mono code" title="YBAD99_C41_E15_868mr8gjk.mp4">YBAD99</td><td class="num">26</td><td class="num">2</td><td class="num">7.7%</td><td class="num"><span class="cat">—</span></td><td><span class="flag mid">可继续测</span> <span class="why">两个 IC 来自两个不同的广告，比较稳</span></td></tr>
-  <tr class="t-keep"><td class="mono code" title="YBAD92_H2_C45_E6_868mn4qcm.mp4">YBAD92_H2</td><td class="num">16</td><td class="num">1</td><td class="num">6.3%</td><td class="num"><span class="cat">—</span></td><td><span class="flag mid">可继续测</span> <span class="why">样本少，先看看</span></td></tr>
-  <tr class="t-keep"><td class="mono code" title="YBAD79_H1_C07_E08_868mn4qcd.mp4">YBAD79_H1</td><td class="num">20</td><td class="num">1</td><td class="num">5.0%</td><td class="num"><span class="cat">—</span></td><td><span class="flag mid">可继续测</span> <span class="why">偏弱</span></td></tr>
-  <tr class="t-keep"><td class="mono code" title="YBAD96_H1_C45_E76_868mr8gjf.mp4">YBAD96_H1</td><td class="num">23</td><td class="num">1</td><td class="num">4.3%</td><td class="num"><span class="cat">—</span></td><td><span class="flag mid">可继续测</span> <span class="why">偏弱</span></td></tr>
-  <tr class="t-keep"><td class="mono code" title="YBAD79_H2_C07_E08_868mn4qcd.mp4">YBAD79_H2</td><td class="num">33</td><td class="num">1</td><td class="num">3.0%</td><td class="num"><span class="cat">—</span></td><td><span class="flag mid">可继续测</span> <span class="why">点击不少，但转化率低，在这一批里排最后</span></td></tr>
-  <tr class="t-drop"><td class="mono code" title="YBAD83_H2_C63_E58_868mn4qch.mp4">YBAD83_H2</td><td class="num">28</td><td class="num">0</td><td class="num">0.0%</td><td class="num"><span class="cat">—</span></td><td><span class="flag bad">建议放弃</span> <span class="why">流量不少，但没人结账</span></td></tr>
-  <tr class="t-drop"><td class="mono code" title="YBAD101_C41_E15_868mr8gjk.mp4">YBAD101</td><td class="num">27</td><td class="num">0</td><td class="num">0.0%</td><td class="num"><span class="cat">—</span></td><td><span class="flag bad">建议放弃</span> <span class="why">流量不少，但没人结账</span></td></tr>
-  <tr class="t-drop"><td class="mono code" title="YBAD91_H1_C45_E6_868mn4qcm.mp4">YBAD91_H1</td><td class="num">19</td><td class="num">0</td><td class="num">0.0%</td><td class="num"><span class="cat">—</span></td><td><span class="flag bad">建议放弃</span> <span class="why">跟 winner 是同一个产品，只是钩子不同，这个版本完全不转化</span></td></tr>
-  <tr class="t-drop"><td class="mono code" title="YBAD83_H1_C63_E58_868mn4qch.mp4">YBAD83_H1</td><td class="num">11</td><td class="num">0</td><td class="num">0.0%</td><td class="num"><span class="cat">—</span></td><td><span class="flag bad">建议放弃</span> <span class="why">跟 83_H2 一样没有转化</span></td></tr>
-  <tr><td class="mono code" title="YBAD87_H1_C63_E58_868mn4qch.mp4">YBAD87_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">待分级</span></td></tr>
-  <tr><td class="mono code" title="YBAD87_H2_C63_E58_868mn4qch.mp4">YBAD87_H2</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">待分级</span></td></tr>
-  <tr><td class="mono code" title="YBAD88_H2_C45_E6_868mn4qcm.mp4">YBAD88_H2</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">待分级</span></td></tr>
-  <tr><td class="mono code" title="YBAD92_H1_C45_E6_868mn4qcm.mp4">YBAD92_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">待分级</span></td></tr>
-  <tr><td class="mono code" title="YBAD106_H1_C61_E12_868mr8gjx.mp4">YBAD106_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">待分级</span></td></tr>
-  </tbody></table></div></div>
-  <div class="crgroup" style="--mc:#d63384"><div class="crg-h"><span class="av">ZXQY</span><span class="cat">10 条素材</span></div>
-  <div class="tbl-wrap crtbl"><table><thead><tr><th>素材</th><th class="num">点击</th><th class="num">IC</th><th class="num">点击→IC</th><th class="num">出单</th><th>分级 / 原因</th></tr></thead><tbody>
-  <tr class="t-keep"><td class="mono code" title="YBAD89_H2_C45_E6_868mn4qcm.mp4">YBAD89_H2</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag mid">可继续测</span></td></tr>
-  <tr class="t-keep"><td class="mono code" title="YBAD95_H1_C58_E41_868mr8gj3.mp4">YBAD95_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag mid">可继续测</span></td></tr>
-  <tr class="t-drop"><td class="mono code" title="YBAD81_H1_C07_E08_868mn4qcd.mp4">YBAD81_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag bad">建议放弃</span></td></tr>
-  <tr class="t-drop"><td class="mono code" title="YBAD85_H1_C63_E58_868mn4qch.mp4">YBAD85_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag bad">建议放弃</span></td></tr>
-  <tr class="t-drop"><td class="mono code" title="YBAD85_H2_C63_E58_868mn4qch.mp4">YBAD85_H2</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag bad">建议放弃</span></td></tr>
-  <tr><td class="mono code" title="YBAD81_H2_C07_E08_868mn4qcd.mp4">YBAD81_H2</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">待分级</span></td></tr>
-  <tr><td class="mono code" title="YBAD89_H1_C45_E6_868mn4qcm.mp4">YBAD89_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">待分级</span></td></tr>
-  <tr><td class="mono code" title="YBAD97_H1_C45_E76_868mr8gjf.mp4">YBAD97_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">待分级</span></td></tr>
-  <tr><td class="mono code" title="YBAD100_C41_E15_868mr8gjk.mp4">YBAD100</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">待分级</span></td></tr>
-  <tr><td class="mono code" title="YBAD107_H1_C61_E12_868mr8gjx.mp4">YBAD107_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">待分级</span></td></tr>
-  </tbody></table></div></div>
+  <h3>素材分级</h3><div data-running-public-tiers><div class="tiers">
+  <div class="tier good"><div class="tier-h"><span class="tdot"></span>出单<span class="tn">1</span></div><div class="tchips"><span class="tchip"><b>YBAD91_H2</b></span></div></div>
+  <div class="tier mid"><div class="tier-h"><span class="tdot"></span>可继续测<span class="tn">8</span></div><div class="tchips"><span class="tchip"><b>YBAD95_H1</b></span><span class="tchip"><b>YBAD89_H2</b></span><span class="tchip"><b>YBAD94_H1</b></span><span class="tchip"><b>YBAD99</b></span><span class="tchip"><b>YBAD92_H2</b></span><span class="tchip"><b>YBAD79_H1</b></span><span class="tchip"><b>YBAD96_H1</b></span><span class="tchip"><b>YBAD79_H2</b></span></div></div>
+  <div class="tier bad"><div class="tier-h"><span class="tdot"></span>建议放弃<span class="tn">7</span></div><div class="tchips"><span class="tchip"><b>YBAD85_H2</b></span><span class="tchip"><b>YBAD85_H1</b></span><span class="tchip"><b>YBAD81_H1</b></span><span class="tchip"><b>YBAD83_H2</b></span><span class="tchip"><b>YBAD101</b></span><span class="tchip"><b>YBAD91_H1</b></span><span class="tchip"><b>YBAD83_H1</b></span></div></div>
+  </div></div>
+  <div data-running-slot="zh-tiers"></div>
+  <div data-running-slot="zh-creatives"></div>
 <!--/R:yoburn-1110--></div></details>
   </details>
   <details class="day" data-date="2026-11-09" data-end="2026-11-09">
   <summary class="day-h"><span class="dchev"></span><span class="dd">11月9日</span><span class="dw">周一</span><span class="dk result">每日投放</span><span class="dsum">合计花费 $478.94+ · 出单 1</span></summary>
-  <div class="mgrid">
-  <div class="mcard" style="--mc:#7c3aed"><div class="mh"><span class="av">GZ</span><span class="mc-n">1 个 offer</span></div><div class="ent"><a class="ochip" href="#offer-lungvicks"><i class="ci" data-ci="lungs"></i>LungVicks</a><div class="emeta"><span>方法</span>自己的方式</div><div class="eres"><span class="rv"><span>花费</span><b>$240+</b></span><span class="rv"><span>出单</span><b class="zero">0</b></span></div></div></div>
-  <div class="mcard" style="--mc:#2f6fe4"><div class="mh"><span class="av">ZAY</span><span class="mc-n">1 个 offer</span></div><div class="ent"><a class="ochip" href="#offer-neurotamine"><i class="ci" data-ci="brain"></i>NeuroTamine</a><div class="emeta"><span>方法</span><a class="ml-m03" href="#m03">Vince 的 1-10-1 方式</a></div><div class="eres"><span class="rv"><span>花费</span><b>$238.94</b></span><span class="rv"><span>出单</span><b class="good">1</b></span></div></div></div>
-  <div class="mcard empty" style="--mc:#d63384"><div class="mh"><span class="av">ZXQY</span></div><div class="none">当日无记录</div></div>
-  <div class="mcard empty" style="--mc:#0f9a7a"><div class="mh"><span class="av">DZC</span></div><div class="none">当日无记录</div></div>
-  </div>
+  <div data-running-slot="zh-2026-11-09"></div>
   </details>
 </section>
 
@@ -1842,7 +1767,14 @@ Tap below to watch the full breakdown. 👇</p>
             <span class="report-filter-label">平台</span>
             <span class="report-platform-control"><select data-report-platform-filter><option value="">全平台</option><option value="facebook" title="Facebook">FB</option><option value="newsbreak" title="NewsBreak">NB</option></select></span>
           </label>
+          <label class="report-platform" data-report-source-label hidden>
+            <span class="report-filter-label"><span class="t-zh">来源</span><span class="t-en">Source</span></span>
+            <span class="report-platform-control"><select data-report-source>
+              <option value=""></option><option value="daily"></option>
+            </select></span>
+          </label>
         </div>
+        <p class="site-access-error" role="status" data-report-live-error hidden><span class="t-zh">日报数据加载失败。当前显示历史记录，重新打开测试结果可重试。</span><span class="t-en">Daily submissions could not be loaded. Historical data is shown. Reopen Test Results to retry.</span></p>
         <figure class="report-net-chart" data-report-net-chart hidden>
           <figcaption>每日净盈亏（USD）</figcaption>
           <div class="report-net-plot"></div>
@@ -1890,7 +1822,7 @@ Tap below to watch the full breakdown. 👇</p>
           <tr data-report-purchases='{"2026-11-16":3,"2026-11-17":2,"2026-11-18":1,"2026-11-19":3}'><td class="mono"><span class="lvl-tag">388</span> FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD01-250)</td><td class="num">9</td></tr>
           <tr data-report-purchases='{"2026-11-10":1,"2026-11-15":1,"2026-11-16":1,"2026-11-17":2,"2026-11-18":2,"2026-11-19":1}'><td class="mono"><span class="lvl-tag">390</span> FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD02-250)</td><td class="num">8</td></tr>
           <tr data-report-purchases='{"2026-11-15":1,"2026-11-16":1,"2026-11-17":2,"2026-11-18":1,"2026-11-19":2,"2026-11-20":3,"2026-11-21":1}'><td class="mono"><span class="lvl-tag">391</span> FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD03-250)</td><td class="num">11</td></tr>
-          <tr data-report-empty hidden><td colspan="2">所选条件下无出单</td></tr>
+          <tr data-report-empty hidden><td colspan="2">所选条件下暂无归因记录</td></tr>
         </tbody>
       </table></div>
       <div class="sec">出单 Ads</div>
@@ -1907,7 +1839,7 @@ Tap below to watch the full breakdown. 👇</p>
           <tr data-report-purchases='{"2026-11-18":1}'><td class="mono">YBAD178_H1_C65_E49_868mv9h53</td><td class="num">1</td></tr>
           <tr data-report-purchases='{"2026-11-19":1}'><td class="mono">YBAD196_H2_C26_E10_atx00001a</td><td class="num">1</td></tr>
           <tr data-report-purchases='{"2026-11-19":4,"2026-11-20":3,"2026-11-21":1}'><td>winner AD（WeCom Group）</td><td class="num">8</td></tr>
-          <tr data-report-empty hidden><td colspan="2">所选条件下无出单</td></tr>
+          <tr data-report-empty hidden><td colspan="2">所选条件下暂无归因记录</td></tr>
         </tbody>
       </table></div>
     </div>
@@ -1940,7 +1872,7 @@ Tap below to watch the full breakdown. 👇</p>
           <tr data-report-purchases='{"2026-11-16":2,"2026-11-17":6,"2026-11-18":3,"2026-11-19":7,"2026-11-20":16,"2026-11-21":34,"2026-11-22":16}' data-report-platform-purchases='{"2026-11-16":{"facebook":2}}'><td class="mono"><span class="lvl-tag">405</span> FB-BH-BuyGoods-GlucoBase(MOD01-ML02-250)</td><td class="num">84</td></tr>
           <tr data-report-purchases='{"2026-11-16":1,"2026-11-17":1,"2026-11-18":1}' data-report-platform-purchases='{"2026-11-16":{"facebook":1}}'><td class="mono"><span class="lvl-tag">406</span> FB-BH-BuyGoods-GlucoBase(MOD01-ML03-250)</td><td class="num">3</td></tr>
           <tr data-report-purchases='{"2026-11-17":2,"2026-11-18":1}'><td class="mono"><span class="lvl-tag">407</span> FB-BH-BuyGoods-GlucoBase(MOD01-ML04-250)</td><td class="num">3</td></tr>
-          <tr data-report-empty hidden><td colspan="2">所选条件下无出单</td></tr>
+          <tr data-report-empty hidden><td colspan="2">所选条件下暂无归因记录</td></tr>
         </tbody>
       </table></div>
       <div class="sec">出单 Ads</div>
@@ -1965,7 +1897,7 @@ Tap below to watch the full breakdown. 👇</p>
           <tr data-report-purchases='{"2026-11-22":1}'><td class="mono">GSAD18_H2_C27_E26_atx00002m</td><td class="num">1</td></tr>
           <tr data-report-purchases='{"2026-11-22":1}'><td class="mono">GSAD21_H2_C27_E26_atx00002m</td><td class="num">1</td></tr>
           <tr data-report-purchases='{"2026-11-16":1,"2026-11-18":1}' data-report-platform-purchases='{"2026-11-16":{"facebook":1}}' data-report-unattributed><td title="11 月 16 日的 1 单来自用户分享">广告归因未知</td><td class="num">2</td></tr>
-          <tr data-report-empty hidden><td colspan="2">所选条件下无出单</td></tr>
+          <tr data-report-empty hidden><td colspan="2">所选条件下暂无归因记录</td></tr>
         </tbody>
       </table></div>
     </div>
@@ -2426,6 +2358,7 @@ Tap below to watch the full breakdown. 👇</p>
 <!-- ======================= Running ======================= -->
 <section class="view" data-view="running">
   <h2>Running</h2>
+  <p class="site-access-error" role="status" data-running-admin-error hidden><span class="t-zh">成员历史明细加载失败，请切换页面后重试。</span><span class="t-en">Historical member details could not be loaded. Reopen Running to retry.</span></p>
   <p style="color:var(--ink2)">Test tasks in progress are at the top; daily runs are below, newest day first. Click an offer to see its VSLs and creatives in the Offer List. <span class="cat">Updated: 2026-11-20</span></p>
   <h3 class="rsec"><span class="rsec-dot task"></span>Test tasks</h3>
   <details class="day task" data-date="2026-11-20" data-end="2026-11-22" data-test="yoburn-2026-11-20">
@@ -2754,22 +2687,13 @@ Tap below to watch the full breakdown. 👇</p>
   <a class="report-link" href="#results">View offer test results <span aria-hidden="true">→</span></a>
   <details class="day first" data-date="2026-11-11" data-end="2026-11-11">
   <summary class="day-h"><span class="dchev"></span><span class="dd">Nov 11</span><span class="dw">Wed</span><span class="dk plan">Daily run</span></summary>
-  <div class="mgrid">
-  <div class="mcard" style="--mc:#7c3aed"><div class="mh"><span class="av">GZ</span><span class="mc-n">1 offer</span></div><div class="ent"><a class="ochip" href="#offer-vapobrain"><i class="ci" data-ci="brain"></i>VapoBrain</a><div class="eres pend">Results pending</div></div></div>
-  <div class="mcard" style="--mc:#2f6fe4"><div class="mh"><span class="av">ZAY</span><span class="mc-n">2 offers</span></div><div class="ent"><a class="ochip" href="#offer-yoburn"><i class="ci" data-ci="weight"></i>YOBURN</a><div class="eres pend">Results pending</div></div><div class="ent"><a class="ochip" href="#offer-neurotamine"><i class="ci" data-ci="brain"></i>NeuroTamine</a><div class="eres pend">Results pending</div></div></div>
-  <div class="mcard" style="--mc:#d63384"><div class="mh"><span class="av">ZXQY</span><span class="mc-n">1 offer</span></div><div class="ent"><a class="ochip" href="#offer-neurotamine"><i class="ci" data-ci="brain"></i>NeuroTamine</a><div class="eres pend">Results pending</div></div></div>
-  <div class="mcard empty" style="--mc:#0f9a7a"><div class="mh"><span class="av">DZC</span></div><div class="none">No record</div></div>
-  </div>
+  <div data-running-slot="en-2026-11-11"></div>
   </details>
   <details class="day" data-date="2026-11-10" data-end="2026-11-10">
   <summary class="day-h"><span class="dchev"></span><span class="dd">Nov 10</span><span class="dw">Tue</span><span class="dk plan">Daily run</span><span class="dsum"><!--S:yoburn-1110-->Test finished · Spend $2,004.42 · 1 sale · Revenue $250<!--/S:yoburn-1110--></span><a class="dbtn" href="#results-yoburn-1110">Details</a></summary>
-  <div class="dnote">Change of plan: YOBURN creatives split so all 42 get tested · total budget $2,500, allocated by number of creatives (~$59.5 each). Location: 团队文件-素材盘-请分类 / 减肥类 / YoBurn02-Ads, in PACK subfolders. VSLs (as actually run): GZ tested all 4; ZAY tested 389, 390, 391; ZXQY tested 391 and 388, split 50/50.</div>
-  <div class="mgrid">
-  <div class="mcard" style="--mc:#7c3aed"><div class="mh"><span class="av">GZ</span><span class="mc-n">2 offers</span></div><div class="ent"><a class="ochip" href="#offer-yoburn"><i class="ci" data-ci="weight"></i>YOBURN</a><div class="emeta"><span>VSL</span>4</div><div class="vminis"><div class="vmini"><span class="vid">388</span><div class="mono">FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD01-250)</div></div><div class="vmini"><span class="vid">389</span><div class="mono">FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD1.1-250)</div></div><div class="vmini"><span class="vid">390</span><div class="mono">FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD02-250)</div></div><div class="vmini"><span class="vid">391</span><div class="mono">FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD03-250)</div></div></div><div class="emeta"><span>Budget</span><b>$952.50</b></div><div class="emeta"><span>Creatives</span>16</div><div class="adchips"><span class="adchip">YBAD78<small>H1/H2</small></span><span class="adchip">YBAD80<small>H1/H2</small></span><span class="adchip">YBAD82<small>H1/H2</small></span><span class="adchip">YBAD84<small>H1/H2</small></span><span class="adchip">YBAD86<small>H1/H2</small></span><span class="adchip">YBAD88<small>H1</small></span><span class="adchip">YBAD90<small>H1/H2</small></span><span class="adchip">YBAD93<small>H1</small></span><span class="adchip">YBAD98<small>H1</small></span><span class="adchip">YBAD105<small>H1</small></span></div><details class="files"><summary>Show file names</summary><ul><li class="mono">YBAD78_H1_C07_E08_868mn4qcd.mp4</li><li class="mono">YBAD78_H2_C07_E08_868mn4qcd.mp4</li><li class="mono">YBAD80_H1_C07_E08_868mn4qcd.mp4</li><li class="mono">YBAD80_H2_C07_E08_868mn4qcd.mp4</li><li class="mono">YBAD82_H1_C07_E08_868mn4qcd.mp4</li><li class="mono">YBAD82_H2_C07_E08_868mn4qcd.mp4</li><li class="mono">YBAD84_H1_C63_E58_868mn4qch.mp4</li><li class="mono">YBAD84_H2_C63_E58_868mn4qch.mp4</li><li class="mono">YBAD86_H1_C63_E58_868mn4qch.mp4</li><li class="mono">YBAD86_H2_C63_E58_868mn4qch.mp4</li><li class="mono">YBAD88_H1_C45_E6_868mn4qcm.mp4</li><li class="mono">YBAD90_H1_C45_E6_868mn4qcm.mp4</li><li class="mono">YBAD90_H2_C45_E6_868mn4qcm.mp4</li><li class="mono">YBAD93_H1_C58_E41_868mr8gj3.mp4</li><li class="mono">YBAD98_H1_C45_E76_868mr8gjf.mp4</li><li class="mono">YBAD105_H1_C61_E12_868mr8gjx.mp4</li></ul></details></div><div class="ent"><a class="ochip" href="#offer-lungvicks"><i class="ci" data-ci="lungs"></i>LungVicks</a><div class="eres"><span class="rv"><span>Spend</span><b>$51.22</b></span></div></div></div>
-  <div class="mcard" style="--mc:#2f6fe4"><div class="mh"><span class="av">ZAY</span><span class="mc-n">2 offers</span></div><div class="ent"><a class="ochip" href="#offer-yoburn"><i class="ci" data-ci="weight"></i>YOBURN</a><div class="emeta"><span>VSL</span>3</div><div class="vminis"><div class="vmini"><span class="vid">389</span><div class="mono">FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD1.1-250)</div></div><div class="vmini"><span class="vid">390</span><div class="mono">FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD02-250)</div></div><div class="vmini"><span class="vid">391</span><div class="mono">FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD03-250)</div></div></div><div class="emeta"><span>Budget</span><b>$952.50</b></div><div class="emeta"><span>Creatives</span>16</div><div class="adchips"><span class="adchip">YBAD79<small>H1/H2</small></span><span class="adchip">YBAD83<small>H1/H2</small></span><span class="adchip">YBAD87<small>H1/H2</small></span><span class="adchip">YBAD88<small>H2</small></span><span class="adchip">YBAD91<small>H1/H2</small></span><span class="adchip">YBAD92<small>H1/H2</small></span><span class="adchip">YBAD94<small>H1</small></span><span class="adchip">YBAD96<small>H1</small></span><span class="adchip">YBAD99</span><span class="adchip">YBAD101</span><span class="adchip">YBAD106<small>H1</small></span></div><details class="files"><summary>Show file names</summary><ul><li class="mono">YBAD79_H1_C07_E08_868mn4qcd.mp4</li><li class="mono">YBAD79_H2_C07_E08_868mn4qcd.mp4</li><li class="mono">YBAD83_H1_C63_E58_868mn4qch.mp4</li><li class="mono">YBAD83_H2_C63_E58_868mn4qch.mp4</li><li class="mono">YBAD87_H1_C63_E58_868mn4qch.mp4</li><li class="mono">YBAD87_H2_C63_E58_868mn4qch.mp4</li><li class="mono">YBAD88_H2_C45_E6_868mn4qcm.mp4</li><li class="mono">YBAD91_H1_C45_E6_868mn4qcm.mp4</li><li class="mono">YBAD91_H2_C45_E6_868mn4qcm.mp4</li><li class="mono">YBAD92_H1_C45_E6_868mn4qcm.mp4</li><li class="mono">YBAD92_H2_C45_E6_868mn4qcm.mp4</li><li class="mono">YBAD94_H1_C58_E41_868mr8gj3.mp4</li><li class="mono">YBAD96_H1_C45_E76_868mr8gjf.mp4</li><li class="mono">YBAD99_C41_E15_868mr8gjk.mp4</li><li class="mono">YBAD101_C41_E15_868mr8gjk.mp4</li><li class="mono">YBAD106_H1_C61_E12_868mr8gjx.mp4</li></ul></details></div><div class="ent"><a class="ochip" href="#offer-neurotamine"><i class="ci" data-ci="brain"></i>NeuroTamine</a><div class="eres"><span class="rv"><span>Spend</span><b class="muted">Unknown</b></span></div></div></div>
-  <div class="mcard" style="--mc:#d63384"><div class="mh"><span class="av">ZXQY</span><span class="mc-n">2 offers</span></div><div class="ent"><a class="ochip" href="#offer-yoburn"><i class="ci" data-ci="weight"></i>YOBURN</a><div class="emeta"><span>VSL</span>2 · 50/50</div><div class="vminis"><div class="vmini"><span class="vid">391</span><div class="mono">FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD03-250)</div></div><div class="vmini"><span class="vid">388</span><div class="mono">FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD01-250)</div></div></div><div class="emeta"><span>Budget</span><b>$595</b></div><div class="emeta"><span>Creatives</span>10</div><div class="adchips"><span class="adchip">YBAD81<small>H1/H2</small></span><span class="adchip">YBAD85<small>H1/H2</small></span><span class="adchip">YBAD89<small>H1/H2</small></span><span class="adchip">YBAD95<small>H1</small></span><span class="adchip">YBAD97<small>H1</small></span><span class="adchip">YBAD100</span><span class="adchip">YBAD107<small>H1</small></span></div><details class="files"><summary>Show file names</summary><ul><li class="mono">YBAD81_H1_C07_E08_868mn4qcd.mp4</li><li class="mono">YBAD81_H2_C07_E08_868mn4qcd.mp4</li><li class="mono">YBAD85_H1_C63_E58_868mn4qch.mp4</li><li class="mono">YBAD85_H2_C63_E58_868mn4qch.mp4</li><li class="mono">YBAD89_H1_C45_E6_868mn4qcm.mp4</li><li class="mono">YBAD89_H2_C45_E6_868mn4qcm.mp4</li><li class="mono">YBAD95_H1_C58_E41_868mr8gj3.mp4</li><li class="mono">YBAD97_H1_C45_E76_868mr8gjf.mp4</li><li class="mono">YBAD100_C41_E15_868mr8gjk.mp4</li><li class="mono">YBAD107_H1_C61_E12_868mr8gjx.mp4</li></ul></details></div><div class="ent"><a class="ochip" href="#offer-neurotamine"><i class="ci" data-ci="brain"></i>NeuroTamine</a><div class="eres"><span class="rv"><span>Spend</span><b>$13.26</b></span></div></div></div>
-  <div class="mcard empty" style="--mc:#0f9a7a"><div class="mh"><span class="av">DZC</span></div><div class="none">No record</div></div>
-  </div>
+  <div class="dnote">Change of plan: YOBURN creatives split so all 42 get tested · total budget $2,500, allocated by number of creatives (~$59.5 each). Location: 团队文件-素材盘-请分类 / 减肥类 / YoBurn02-Ads, in PACK subfolders.</div>
+  <div data-running-slot="en-vsl-assignment"></div>
+  <div data-running-slot="en-2026-11-10"></div>
   <details class="rdetail" data-results="yoburn-1110"><summary>Test result details</summary><div class="rdetail-body"><!--R:yoburn-1110-->
   <div class="rhero">
   <div class="rh-top"><span class="rh-t">YOBURN creative test</span><span class="rh-s">Started Nov 10</span><span class="rh-end">Test finished</span><span class="rh-cut">Data as of Nov 11, 15:05 (Beijing time)</span></div>
@@ -2779,14 +2703,7 @@ Tap below to watch the full breakdown. 👇</p>
   <div class="rstat"><div class="l">Revenue</div><div class="v pos">$250</div></div>
   <div class="rstat"><div class="l">Creative results</div><div class="v">42</div><div class="s">16 / 42 graded</div></div>
   </div></div>
-  <h3>Results by member</h3><div class="rgrid">
-  <div class="rcard" style="--mc:#7c3aed"><div class="mh"><span class="av">GZ</span><span class="mc-n">16 creatives · VSL 388, 389, 390, 391</span></div>
-  <div class="rkv"><div><span>Spent</span><b>$502.68</b></div><div><span>Sales</span><b class="">0</b></div><div><span>Revenue</span><b class="">$0</b></div></div></div>
-  <div class="rcard" style="--mc:#2f6fe4"><div class="mh"><span class="av">ZAY</span><span class="mc-n">16 creatives · VSL 389, 390, 391</span></div>
-  <div class="rkv"><div><span>Spent</span><b>$1,000</b></div><div><span>Sales</span><b class="">1</b></div><div><span>Revenue</span><b class="pos">$250</b></div></div></div>
-  <div class="rcard" style="--mc:#d63384"><div class="mh"><span class="av">ZXQY</span><span class="mc-n">10 creatives · VSL 391, 388</span></div>
-  <div class="rkv"><div><span>Spent</span><b>$501.74</b></div><div><span>Sales</span><b class="">0</b></div><div><span>Revenue</span><b class="">$0</b></div></div></div>
-  </div>
+  <div data-running-slot="en-members"></div>
   <div class="note">Revenue = sales × $250 payout, tracked separately from spend (not net profit).</div>
   <h3>VSL results</h3><div class="tbl-wrap vsltbl"><table><thead><tr><th>VSL</th><th class="num">Clicks</th><th class="num">LP views</th><th class="num">IC</th><th class="num">Click→IC</th><th class="num">Sales</th></tr></thead><tbody>
   <tr><td><b class="mono">388</b> <span class="cat">MOD01</span></td><td class="num">84</td><td class="num">82</td><td class="num">3</td><td class="num"><b>3.6%</b></td><td class="num">0</td></tr>
@@ -2795,74 +2712,18 @@ Tap below to watch the full breakdown. 👇</p>
   <tr><td><b class="mono">391</b> <span class="cat">MOD03</span></td><td class="num">169</td><td class="num">170</td><td class="num">7</td><td class="num"><b>4.1%</b></td><td class="num">0</td></tr>
   </tbody></table></div>
   <div class="note">From RedTrack reports, date 2026-11-10, all three in the same time zone (Pacific/Pitcairn). Each VSL row combines all three members.</div>
-  <h3>Creative tiers</h3><div class="tiers">
-  <div class="tier good"><div class="tier-h"><span class="tdot"></span>Sold<span class="tn">1</span></div><div class="tchips"><span class="tchip"><b>YBAD91_H2</b><small>ZAY</small></span></div></div>
-  <div class="tier mid"><div class="tier-h"><span class="tdot"></span>Keep testing<span class="tn">8</span></div><div class="tchips"><span class="tchip"><b>YBAD95_H1</b><small>ZXQY</small></span><span class="tchip"><b>YBAD89_H2</b><small>ZXQY</small></span><span class="tchip"><b>YBAD94_H1</b><small>ZAY</small></span><span class="tchip"><b>YBAD99</b><small>ZAY</small></span><span class="tchip"><b>YBAD92_H2</b><small>ZAY</small></span><span class="tchip"><b>YBAD79_H1</b><small>ZAY</small></span><span class="tchip"><b>YBAD96_H1</b><small>ZAY</small></span><span class="tchip"><b>YBAD79_H2</b><small>ZAY</small></span></div></div>
-  <div class="tier bad"><div class="tier-h"><span class="tdot"></span>Drop<span class="tn">7</span></div><div class="tchips"><span class="tchip"><b>YBAD85_H2</b><small>ZXQY</small></span><span class="tchip"><b>YBAD85_H1</b><small>ZXQY</small></span><span class="tchip"><b>YBAD81_H1</b><small>ZXQY</small></span><span class="tchip"><b>YBAD83_H2</b><small>ZAY</small></span><span class="tchip"><b>YBAD101</b><small>ZAY</small></span><span class="tchip"><b>YBAD91_H1</b><small>ZAY</small></span><span class="tchip"><b>YBAD83_H1</b><small>ZAY</small></span></div></div>
-  </div>
-  <h3>Creative results</h3>
-  <div class="rrules"><b>Reference (M03 Vince)</b><span>Spend ≥ $60 with no IC → pause</span><span>CPC ≥ $5 → pause</span><span>Only 1 sale in 3 days → cut</span><span>2+ sales → move to pre-scale</span></div>
-  <div class="crgroup" style="--mc:#7c3aed"><div class="crg-h"><span class="av">GZ</span><span class="cat">16 creatives</span></div>
-  <div class="tbl-wrap crtbl"><table><thead><tr><th>Creative</th><th class="num">Clicks</th><th class="num">IC</th><th class="num">Click→IC</th><th class="num">Sales</th><th>Tier / reason</th></tr></thead><tbody>
-  <tr><td class="mono code" title="YBAD78_H1_C07_E08_868mn4qcd.mp4">YBAD78_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">Not graded</span></td></tr>
-  <tr><td class="mono code" title="YBAD78_H2_C07_E08_868mn4qcd.mp4">YBAD78_H2</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">Not graded</span></td></tr>
-  <tr><td class="mono code" title="YBAD80_H1_C07_E08_868mn4qcd.mp4">YBAD80_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">Not graded</span></td></tr>
-  <tr><td class="mono code" title="YBAD80_H2_C07_E08_868mn4qcd.mp4">YBAD80_H2</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">Not graded</span></td></tr>
-  <tr><td class="mono code" title="YBAD82_H1_C07_E08_868mn4qcd.mp4">YBAD82_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">Not graded</span></td></tr>
-  <tr><td class="mono code" title="YBAD82_H2_C07_E08_868mn4qcd.mp4">YBAD82_H2</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">Not graded</span></td></tr>
-  <tr><td class="mono code" title="YBAD84_H1_C63_E58_868mn4qch.mp4">YBAD84_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">Not graded</span></td></tr>
-  <tr><td class="mono code" title="YBAD84_H2_C63_E58_868mn4qch.mp4">YBAD84_H2</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">Not graded</span></td></tr>
-  <tr><td class="mono code" title="YBAD86_H1_C63_E58_868mn4qch.mp4">YBAD86_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">Not graded</span></td></tr>
-  <tr><td class="mono code" title="YBAD86_H2_C63_E58_868mn4qch.mp4">YBAD86_H2</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">Not graded</span></td></tr>
-  <tr><td class="mono code" title="YBAD88_H1_C45_E6_868mn4qcm.mp4">YBAD88_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">Not graded</span></td></tr>
-  <tr><td class="mono code" title="YBAD90_H1_C45_E6_868mn4qcm.mp4">YBAD90_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">Not graded</span></td></tr>
-  <tr><td class="mono code" title="YBAD90_H2_C45_E6_868mn4qcm.mp4">YBAD90_H2</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">Not graded</span></td></tr>
-  <tr><td class="mono code" title="YBAD93_H1_C58_E41_868mr8gj3.mp4">YBAD93_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">Not graded</span></td></tr>
-  <tr><td class="mono code" title="YBAD98_H1_C45_E76_868mr8gjf.mp4">YBAD98_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">Not graded</span></td></tr>
-  <tr><td class="mono code" title="YBAD105_H1_C61_E12_868mr8gjx.mp4">YBAD105_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">Not graded</span></td></tr>
-  </tbody></table></div></div>
-  <div class="crgroup" style="--mc:#2f6fe4"><div class="crg-h"><span class="av">ZAY</span><span class="cat">16 creatives</span></div>
-  <div class="tbl-wrap crtbl"><table><thead><tr><th>Creative</th><th class="num">Clicks</th><th class="num">IC</th><th class="num">Click→IC</th><th class="num">Sales</th><th>Tier / reason</th></tr></thead><tbody>
-  <tr class="t-sold"><td class="mono code" title="YBAD91_H2_C45_E6_868mn4qcm.mp4">YBAD91_H2</td><td class="num">36</td><td class="num">5</td><td class="num">13.9%</td><td class="num">1</td><td><span class="flag good">Sold</span> <span class="why">Near-winner: the only creative with a sale, ~40% of all ICs, conversion rate 2x+ the others</span></td></tr>
-  <tr class="t-keep"><td class="mono code" title="YBAD94_H1_C58_E41_868mr8gj3.mp4">YBAD94_H1</td><td class="num">22</td><td class="num">2</td><td class="num">9.1%</td><td class="num"><span class="cat">—</span></td><td><span class="flag mid">Keep testing</span> <span class="why">Strongest of the second tier</span></td></tr>
-  <tr class="t-keep"><td class="mono code" title="YBAD99_C41_E15_868mr8gjk.mp4">YBAD99</td><td class="num">26</td><td class="num">2</td><td class="num">7.7%</td><td class="num"><span class="cat">—</span></td><td><span class="flag mid">Keep testing</span> <span class="why">2 ICs from 2 different ads — fairly stable</span></td></tr>
-  <tr class="t-keep"><td class="mono code" title="YBAD92_H2_C45_E6_868mn4qcm.mp4">YBAD92_H2</td><td class="num">16</td><td class="num">1</td><td class="num">6.3%</td><td class="num"><span class="cat">—</span></td><td><span class="flag mid">Keep testing</span> <span class="why">Small sample, keep watching</span></td></tr>
-  <tr class="t-keep"><td class="mono code" title="YBAD79_H1_C07_E08_868mn4qcd.mp4">YBAD79_H1</td><td class="num">20</td><td class="num">1</td><td class="num">5.0%</td><td class="num"><span class="cat">—</span></td><td><span class="flag mid">Keep testing</span> <span class="why">Weak</span></td></tr>
-  <tr class="t-keep"><td class="mono code" title="YBAD96_H1_C45_E76_868mr8gjf.mp4">YBAD96_H1</td><td class="num">23</td><td class="num">1</td><td class="num">4.3%</td><td class="num"><span class="cat">—</span></td><td><span class="flag mid">Keep testing</span> <span class="why">Weak</span></td></tr>
-  <tr class="t-keep"><td class="mono code" title="YBAD79_H2_C07_E08_868mn4qcd.mp4">YBAD79_H2</td><td class="num">33</td><td class="num">1</td><td class="num">3.0%</td><td class="num"><span class="cat">—</span></td><td><span class="flag mid">Keep testing</span> <span class="why">Decent clicks but low conversion — last in this group</span></td></tr>
-  <tr class="t-drop"><td class="mono code" title="YBAD83_H2_C63_E58_868mn4qch.mp4">YBAD83_H2</td><td class="num">28</td><td class="num">0</td><td class="num">0.0%</td><td class="num"><span class="cat">—</span></td><td><span class="flag bad">Drop</span> <span class="why">Decent traffic, but no one checked out</span></td></tr>
-  <tr class="t-drop"><td class="mono code" title="YBAD101_C41_E15_868mr8gjk.mp4">YBAD101</td><td class="num">27</td><td class="num">0</td><td class="num">0.0%</td><td class="num"><span class="cat">—</span></td><td><span class="flag bad">Drop</span> <span class="why">Decent traffic, but no one checked out</span></td></tr>
-  <tr class="t-drop"><td class="mono code" title="YBAD91_H1_C45_E6_868mn4qcm.mp4">YBAD91_H1</td><td class="num">19</td><td class="num">0</td><td class="num">0.0%</td><td class="num"><span class="cat">—</span></td><td><span class="flag bad">Drop</span> <span class="why">Same product as the winner with a different hook — this version doesn't convert at all</span></td></tr>
-  <tr class="t-drop"><td class="mono code" title="YBAD83_H1_C63_E58_868mn4qch.mp4">YBAD83_H1</td><td class="num">11</td><td class="num">0</td><td class="num">0.0%</td><td class="num"><span class="cat">—</span></td><td><span class="flag bad">Drop</span> <span class="why">No conversions, same as 83_H2</span></td></tr>
-  <tr><td class="mono code" title="YBAD87_H1_C63_E58_868mn4qch.mp4">YBAD87_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">Not graded</span></td></tr>
-  <tr><td class="mono code" title="YBAD87_H2_C63_E58_868mn4qch.mp4">YBAD87_H2</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">Not graded</span></td></tr>
-  <tr><td class="mono code" title="YBAD88_H2_C45_E6_868mn4qcm.mp4">YBAD88_H2</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">Not graded</span></td></tr>
-  <tr><td class="mono code" title="YBAD92_H1_C45_E6_868mn4qcm.mp4">YBAD92_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">Not graded</span></td></tr>
-  <tr><td class="mono code" title="YBAD106_H1_C61_E12_868mr8gjx.mp4">YBAD106_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">Not graded</span></td></tr>
-  </tbody></table></div></div>
-  <div class="crgroup" style="--mc:#d63384"><div class="crg-h"><span class="av">ZXQY</span><span class="cat">10 creatives</span></div>
-  <div class="tbl-wrap crtbl"><table><thead><tr><th>Creative</th><th class="num">Clicks</th><th class="num">IC</th><th class="num">Click→IC</th><th class="num">Sales</th><th>Tier / reason</th></tr></thead><tbody>
-  <tr class="t-keep"><td class="mono code" title="YBAD89_H2_C45_E6_868mn4qcm.mp4">YBAD89_H2</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag mid">Keep testing</span></td></tr>
-  <tr class="t-keep"><td class="mono code" title="YBAD95_H1_C58_E41_868mr8gj3.mp4">YBAD95_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag mid">Keep testing</span></td></tr>
-  <tr class="t-drop"><td class="mono code" title="YBAD81_H1_C07_E08_868mn4qcd.mp4">YBAD81_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag bad">Drop</span></td></tr>
-  <tr class="t-drop"><td class="mono code" title="YBAD85_H1_C63_E58_868mn4qch.mp4">YBAD85_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag bad">Drop</span></td></tr>
-  <tr class="t-drop"><td class="mono code" title="YBAD85_H2_C63_E58_868mn4qch.mp4">YBAD85_H2</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag bad">Drop</span></td></tr>
-  <tr><td class="mono code" title="YBAD81_H2_C07_E08_868mn4qcd.mp4">YBAD81_H2</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">Not graded</span></td></tr>
-  <tr><td class="mono code" title="YBAD89_H1_C45_E6_868mn4qcm.mp4">YBAD89_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">Not graded</span></td></tr>
-  <tr><td class="mono code" title="YBAD97_H1_C45_E76_868mr8gjf.mp4">YBAD97_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">Not graded</span></td></tr>
-  <tr><td class="mono code" title="YBAD100_C41_E15_868mr8gjk.mp4">YBAD100</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">Not graded</span></td></tr>
-  <tr><td class="mono code" title="YBAD107_H1_C61_E12_868mr8gjx.mp4">YBAD107_H1</td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td class="num"><span class="cat">—</span></td><td><span class="flag none">Not graded</span></td></tr>
-  </tbody></table></div></div>
+  <h3>Creative tiers</h3><div data-running-public-tiers><div class="tiers">
+  <div class="tier good"><div class="tier-h"><span class="tdot"></span>Sold<span class="tn">1</span></div><div class="tchips"><span class="tchip"><b>YBAD91_H2</b></span></div></div>
+  <div class="tier mid"><div class="tier-h"><span class="tdot"></span>Keep testing<span class="tn">8</span></div><div class="tchips"><span class="tchip"><b>YBAD95_H1</b></span><span class="tchip"><b>YBAD89_H2</b></span><span class="tchip"><b>YBAD94_H1</b></span><span class="tchip"><b>YBAD99</b></span><span class="tchip"><b>YBAD92_H2</b></span><span class="tchip"><b>YBAD79_H1</b></span><span class="tchip"><b>YBAD96_H1</b></span><span class="tchip"><b>YBAD79_H2</b></span></div></div>
+  <div class="tier bad"><div class="tier-h"><span class="tdot"></span>Drop<span class="tn">7</span></div><div class="tchips"><span class="tchip"><b>YBAD85_H2</b></span><span class="tchip"><b>YBAD85_H1</b></span><span class="tchip"><b>YBAD81_H1</b></span><span class="tchip"><b>YBAD83_H2</b></span><span class="tchip"><b>YBAD101</b></span><span class="tchip"><b>YBAD91_H1</b></span><span class="tchip"><b>YBAD83_H1</b></span></div></div>
+  </div></div>
+  <div data-running-slot="en-tiers"></div>
+  <div data-running-slot="en-creatives"></div>
 <!--/R:yoburn-1110--></div></details>
   </details>
   <details class="day" data-date="2026-11-09" data-end="2026-11-09">
   <summary class="day-h"><span class="dchev"></span><span class="dd">Nov 9</span><span class="dw">Mon</span><span class="dk result">Daily run</span><span class="dsum">Total spend $478.94+ · 1 sale</span></summary>
-  <div class="mgrid">
-  <div class="mcard" style="--mc:#7c3aed"><div class="mh"><span class="av">GZ</span><span class="mc-n">1 offer</span></div><div class="ent"><a class="ochip" href="#offer-lungvicks"><i class="ci" data-ci="lungs"></i>LungVicks</a><div class="emeta"><span>Method</span>Own method</div><div class="eres"><span class="rv"><span>Spend</span><b>$240+</b></span><span class="rv"><span>Sales</span><b class="zero">0</b></span></div></div></div>
-  <div class="mcard" style="--mc:#2f6fe4"><div class="mh"><span class="av">ZAY</span><span class="mc-n">1 offer</span></div><div class="ent"><a class="ochip" href="#offer-neurotamine"><i class="ci" data-ci="brain"></i>NeuroTamine</a><div class="emeta"><span>Method</span><a class="ml-m03" href="#m03">Vince's 1-10-1 setup</a></div><div class="eres"><span class="rv"><span>Spend</span><b>$238.94</b></span><span class="rv"><span>Sales</span><b class="good">1</b></span></div></div></div>
-  <div class="mcard empty" style="--mc:#d63384"><div class="mh"><span class="av">ZXQY</span></div><div class="none">No record</div></div>
-  <div class="mcard empty" style="--mc:#0f9a7a"><div class="mh"><span class="av">DZC</span></div><div class="none">No record</div></div>
-  </div>
+  <div data-running-slot="en-2026-11-09"></div>
   </details>
 </section>
 
@@ -2886,7 +2747,14 @@ Tap below to watch the full breakdown. 👇</p>
             <span class="report-filter-label">Platform</span>
             <span class="report-platform-control"><select data-report-platform-filter><option value="">All platforms</option><option value="facebook" title="Facebook">FB</option><option value="newsbreak" title="NewsBreak">NB</option></select></span>
           </label>
+          <label class="report-platform" data-report-source-label hidden>
+            <span class="report-filter-label"><span class="t-zh">来源</span><span class="t-en">Source</span></span>
+            <span class="report-platform-control"><select data-report-source>
+              <option value=""></option><option value="daily"></option>
+            </select></span>
+          </label>
         </div>
+        <p class="site-access-error" role="status" data-report-live-error hidden><span class="t-zh">日报数据加载失败。当前显示历史记录，重新打开测试结果可重试。</span><span class="t-en">Daily submissions could not be loaded. Historical data is shown. Reopen Test Results to retry.</span></p>
         <figure class="report-net-chart" data-report-net-chart hidden>
           <figcaption>Daily net P/L (USD)</figcaption>
           <div class="report-net-plot"></div>
@@ -2934,7 +2802,7 @@ Tap below to watch the full breakdown. 👇</p>
           <tr data-report-purchases='{"2026-11-16":3,"2026-11-17":2,"2026-11-18":1,"2026-11-19":3}'><td class="mono"><span class="lvl-tag">388</span> FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD01-250)</td><td class="num">9</td></tr>
           <tr data-report-purchases='{"2026-11-10":1,"2026-11-15":1,"2026-11-16":1,"2026-11-17":2,"2026-11-18":2,"2026-11-19":1}'><td class="mono"><span class="lvl-tag">390</span> FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD02-250)</td><td class="num">8</td></tr>
           <tr data-report-purchases='{"2026-11-15":1,"2026-11-16":1,"2026-11-17":2,"2026-11-18":1,"2026-11-19":2,"2026-11-20":3,"2026-11-21":1}'><td class="mono"><span class="lvl-tag">391</span> FB-BH-BuyGoods-YoBurn-YogurtTrick(MOD03-250)</td><td class="num">11</td></tr>
-          <tr data-report-empty hidden><td colspan="2">No purchases for the selected filters</td></tr>
+          <tr data-report-empty hidden><td colspan="2">No attribution data for the selected filters</td></tr>
         </tbody>
       </table></div>
       <div class="sec">Ad purchases</div>
@@ -2951,7 +2819,7 @@ Tap below to watch the full breakdown. 👇</p>
           <tr data-report-purchases='{"2026-11-18":1}'><td class="mono">YBAD178_H1_C65_E49_868mv9h53</td><td class="num">1</td></tr>
           <tr data-report-purchases='{"2026-11-19":1}'><td class="mono">YBAD196_H2_C26_E10_atx00001a</td><td class="num">1</td></tr>
           <tr data-report-purchases='{"2026-11-19":4,"2026-11-20":3,"2026-11-21":1}'><td>winner AD（WeCom Group）</td><td class="num">8</td></tr>
-          <tr data-report-empty hidden><td colspan="2">No purchases for the selected filters</td></tr>
+          <tr data-report-empty hidden><td colspan="2">No attribution data for the selected filters</td></tr>
         </tbody>
       </table></div>
     </div>
@@ -2984,7 +2852,7 @@ Tap below to watch the full breakdown. 👇</p>
           <tr data-report-purchases='{"2026-11-16":2,"2026-11-17":6,"2026-11-18":3,"2026-11-19":7,"2026-11-20":16,"2026-11-21":34,"2026-11-22":16}' data-report-platform-purchases='{"2026-11-16":{"facebook":2}}'><td class="mono"><span class="lvl-tag">405</span> FB-BH-BuyGoods-GlucoBase(MOD01-ML02-250)</td><td class="num">84</td></tr>
           <tr data-report-purchases='{"2026-11-16":1,"2026-11-17":1,"2026-11-18":1}' data-report-platform-purchases='{"2026-11-16":{"facebook":1}}'><td class="mono"><span class="lvl-tag">406</span> FB-BH-BuyGoods-GlucoBase(MOD01-ML03-250)</td><td class="num">3</td></tr>
           <tr data-report-purchases='{"2026-11-17":2,"2026-11-18":1}'><td class="mono"><span class="lvl-tag">407</span> FB-BH-BuyGoods-GlucoBase(MOD01-ML04-250)</td><td class="num">3</td></tr>
-          <tr data-report-empty hidden><td colspan="2">No purchases for the selected filters</td></tr>
+          <tr data-report-empty hidden><td colspan="2">No attribution data for the selected filters</td></tr>
         </tbody>
       </table></div>
       <div class="sec">Ad purchases</div>
@@ -3009,7 +2877,7 @@ Tap below to watch the full breakdown. 👇</p>
           <tr data-report-purchases='{"2026-11-22":1}'><td class="mono">GSAD18_H2_C27_E26_atx00002m</td><td class="num">1</td></tr>
           <tr data-report-purchases='{"2026-11-22":1}'><td class="mono">GSAD21_H2_C27_E26_atx00002m</td><td class="num">1</td></tr>
           <tr data-report-purchases='{"2026-11-16":1,"2026-11-18":1}' data-report-platform-purchases='{"2026-11-16":{"facebook":1}}' data-report-unattributed><td title="One purchase on Nov 16 came from a user share">Ad attribution unknown</td><td class="num">2</td></tr>
-          <tr data-report-empty hidden><td colspan="2">No purchases for the selected filters</td></tr>
+          <tr data-report-empty hidden><td colspan="2">No attribution data for the selected filters</td></tr>
         </tbody>
       </table></div>
     </div>
@@ -3564,12 +3432,12 @@ Tap below to watch the full breakdown. 👇</p>
         tasks:function(m){return m+" 的任务";},switchMe:"切换",refresh:"刷新",updated:"更新于",
         filters:"按日期筛选任务",all:"全部",today:"今日任务",older:"旧任务",date:"日期",cr:"素材",note:"备注",
         expandOffer:"展开",collapseOffer:"收起",empty:"目前没有分给你的任务。",emptyToday:"今天没有分配任务。",emptyOlder:"没有旧任务。",
-        netErr:"连接失败，请检查网络后重试。",copyPath:"复制云盘路径",copied:"已复制路径",expandAll:"展开所有文件夹",collapseAll:"收起所有文件夹"},
+        missingCode:"账号还没有成员代号，请联系管理员。",netErr:"连接失败，请检查网络后重试。",copyPath:"复制云盘路径",copied:"已复制路径",expandAll:"展开所有文件夹",collapseAll:"收起所有文件夹"},
     en:{title:"My Tasks",ask:"Who are you?",askHint:"Enter the initials of your name",enter:"Enter",unknown:"No such member — check your initials.",ph:"Initials",
         tasks:function(m){return m+"'s tasks";},switchMe:"Switch",refresh:"Refresh",updated:"Updated",
         filters:"Filter tasks by date",all:"All",today:"Today",older:"Past tasks",date:"Date",cr:"Creative",note:"Note",
         expandOffer:"Expand",collapseOffer:"Collapse",empty:"No tasks assigned to you yet.",emptyToday:"No tasks scheduled for today.",emptyOlder:"No past tasks.",
-        netErr:"Connection failed, please check your network and retry.",copyPath:"Copy drive path",copied:"Path copied",expandAll:"Expand all folders",collapseAll:"Collapse all folders"}
+        missingCode:"Ask an administrator to set your member code.",netErr:"Connection failed, please check your network and retry.",copyPath:"Copy drive path",copied:"Path copied",expandAll:"Expand all folders",collapseAll:"Collapse all folders"}
   };
   var st={tasks:[],filter:"today",msg:"",msgCls:"",busy:false,updated:null,open:{},expandedOffers:new Map([["VisiVra",false]])};
   function lang(){return document.documentElement.getAttribute("data-lang")==="en"?"en":"zh";}
@@ -3577,7 +3445,8 @@ Tap below to watch the full breakdown. 👇</p>
   function get(k){try{return localStorage.getItem(k)||"";}catch(e){return "";}}
   function set(k,v){try{ if(v) localStorage.setItem(k,v); else localStorage.removeItem(k);}catch(e){}}
   function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
-  function me(){return get("tk-me");}
+  var employee=null, taskClient=null, taskRequest=0;
+  function me(){return employee ? employee.member_code : get("tk-me");}
   function rpc(fn,args){
     var h={"apikey":SB_KEY,"Content-Type":"application/json"}; if(SB_KEY.indexOf("sb_")!==0) h["Authorization"]="Bearer "+SB_KEY;
     return fetch(SB_URL+"/rest/v1/rpc/"+fn,{method:"POST",headers:h,body:JSON.stringify(Object.assign({p_code:me()},args))})
@@ -3603,6 +3472,21 @@ Tap below to watch the full breakdown. 👇</p>
   function load(quiet){
     var member=me();
     if(!member) return render();
+    if(employee){
+      const request=++taskRequest;
+      if(!quiet){st.busy=true;render();}
+      return taskClient.from("tasks")
+        .select("id,offer,claimed_by,folder,creative,created_at,claimed_at,note,vsl")
+        .eq("claimed_by",member).order("offer").order("id")
+        .then(function(result){
+          if(request!==taskRequest) return;
+          if(result.error) throw result.error;
+          var scheduled=member==="CQZ"?publishedTasks(member):[];
+          var recorded=new Set(result.data.map(function(row){return row.offer+"|"+row.creative;}));
+          st.tasks=result.data.concat(scheduled.filter(function(row){return !recorded.has(row.offer+"|"+row.creative);}));
+          st.busy=false;st.updated=new Date();st.msg="";render();
+        }).catch(function(error){if(request===taskRequest) fail(error);});
+    }
     if(member==="CQZ"){
       st.tasks=publishedTasks(member);
       st.busy=false;
@@ -3611,7 +3495,11 @@ Tap below to watch the full breakdown. 👇</p>
       return render();
     }
     if(!quiet){st.busy=true;render();}
-    return rpc("list_tasks",{}).then(function(rows){st.tasks=rows||[];st.busy=false;st.updated=new Date();if(st.msgCls==="err")st.msg="";render();}).catch(fail);
+    const request=++taskRequest;
+    return rpc("list_tasks",{}).then(function(rows){
+      if(request!==taskRequest) return;
+      st.tasks=rows||[];st.busy=false;st.updated=new Date();if(st.msgCls==="err")st.msg="";render();
+    }).catch(function(error){if(request===taskRequest)fail(error);});
   }
   function hhmm(d){return ("0"+d.getHours()).slice(-2)+":"+("0"+d.getMinutes()).slice(-2);}
   function taskTime(task){return Math.max(Date.parse(task.created_at)||0,Date.parse(task.claimed_at)||0);}
@@ -3646,6 +3534,10 @@ Tap below to watch the full breakdown. 👇</p>
     document.querySelectorAll("#tk-app [data-i]").forEach(function(el){el.textContent=t(el.getAttribute("data-i"));});
     var root=document.getElementById("tk-root"); if(!root) return;
     var m=me(), h="";
+    if(!m&&employee){
+      root.textContent=t("missingCode");
+      return;
+    }
     if(!m){
       h='<div class="tk-box tk-ask"><h3>'+t("ask")+'</h3><p>'+t("askHint")+'</p><div class="tk-row">'+
         '<input class="tk-input" id="tk-in" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="'+t("ph")+'">'+
@@ -3669,10 +3561,10 @@ Tap below to watch the full breakdown. 👇</p>
       older:mine.filter(function(row){return row.endDate&&row.endDate<today;})
     };
     var filter=st.filter, rows=views[filter];
-    h+='<div class="tk-head"><span class="tk-av" style="--mc:'+(COLOR[m]||"#888")+'">'+m+'</span><span class="nm">'+t("tasks")(m)+'</span><span class="sp"></span>'+
+    h+='<div class="tk-head"><span class="tk-av" style="--mc:'+(COLOR[m]||"#888")+'">'+esc(m)+'</span><span class="nm">'+esc(t("tasks")(m))+'</span><span class="sp"></span>'+
        (st.updated?'<span class="tk-upd">'+t("updated")+' '+hhmm(st.updated)+'</span>':'')+
        '<button class="tk-ib" id="tk-refresh" title="'+t("refresh")+'" aria-label="'+t("refresh")+'">'+ic("refresh")+'</button>'+
-       '<button class="tk-ib" id="tk-switch" title="'+t("switchMe")+'">'+ic("swap")+'<span>'+t("switchMe")+'</span></button></div>';
+       (employee?"":'<button class="tk-ib" id="tk-switch" title="'+t("switchMe")+'">'+ic("swap")+'<span>'+t("switchMe")+'</span></button>')+'</div>';
     if(st.msg) h+='<div class="tk-msg '+st.msgCls+'">'+esc(st.msg)+'</div>';
     h+='<div class="tk-seg" role="group" aria-label="'+t("filters")+'">'+["all","today","older"].map(function(key){
       return '<button type="button" id="tk-filter-'+key+'" data-f="'+key+'" aria-pressed="'+(filter===key)+'">'+t(key)+'<span class="tk-count">'+views[key].length+'</span></button>';
@@ -3732,7 +3624,10 @@ Tap below to watch the full breakdown. 👇</p>
     root.innerHTML=h;
     if(window.fillCatIcons) window.fillCatIcons(root);
     document.getElementById("tk-refresh").onclick=function(){st.msg="";load();};
-    document.getElementById("tk-switch").onclick=function(){set("tk-me","");st.tasks=[];st.msg="";render();};
+    const switchMember=document.getElementById("tk-switch");
+    if(switchMember) switchMember.onclick=function(){
+      taskRequest++;set("tk-me","");st.tasks=[];st.msg="";st.busy=false;render();
+    };
     root.querySelectorAll("[data-f]").forEach(function(b){b.onclick=function(){
       st.filter=b.getAttribute("data-f");render();
       document.getElementById(b.id)?.focus();
@@ -3764,6 +3659,16 @@ Tap below to watch the full breakdown. 👇</p>
   function onView(){
     if(location.hash==="#tasks"&&!document.documentElement.hasAttribute("data-site-locked")) load();
   }
+  window.addEventListener("adrelay:task-account",function(event){
+    const profile=event.detail.profile;
+    const next=profile?.role==="employee"?profile:null;
+    if(employee?.user_id===next?.user_id&&employee?.member_code===next?.member_code) return;
+    employee=next;
+    taskClient=event.detail.client;
+    taskRequest++;st.tasks=[];st.updated=null;st.busy=false;st.msg="";st.open={};
+    render();
+    if(profile&&!document.documentElement.hasAttribute("data-site-locked")) onView();
+  });
   window.addEventListener("hashchange",onView);
   window.addEventListener("adrelay:site-unlocked",onView);
   setInterval(function(){
@@ -3808,14 +3713,9 @@ Tap below to watch the full breakdown. 👇</p>
     if(h==="results-offer-tests-1114-1115"||h==="results-glucobase-lbg") h="results";
     else if(h.indexOf("results-")===0){rtarget=h.slice(8);h="running";}
     const role=root.dataset.accountRole;
-    if(role==="employee"){
-      h="daily";
-      target=rtarget=null;
-      if(location.hash!=="#daily") history.replaceState(history.state,"","#daily");
-    }else if(views.indexOf(h)<0 || (!role && h==="daily") || (role!=="admin" && h==="management")){
+    if(views.indexOf(h)<0 || (!role && h==="daily") || (role!=="admin" && h==="management")){
       h="running";
     }
-    document.querySelector(".brand-home").href=role==="employee"?"#daily":"#running";
     document.querySelectorAll("section.view").forEach(function(sec){
       sec.classList.toggle("active",sec.getAttribute("data-view")===h);
     });
@@ -3899,7 +3799,7 @@ Tap below to watch the full breakdown. 👇</p>
     workspaceContent.hidden=false;
   }
   if(root.hasAttribute("data-account-entry")){
-    window.addEventListener("adrelay:admin-access",function(event){
+    window.addEventListener("adrelay:workspace-access",function(event){
       if(event.detail) unlockWorkspace();
       else{
         workspaceGate.hidden=false;
@@ -4128,6 +4028,90 @@ Tap below to watch the full breakdown. 👇</p>
     }
   }
   var reportPlatforms={facebook:"Facebook",newsbreak:"NewsBreak"};
+  var groupedSource="";
+  var preferredOfferNames={yoburn:"YOBURN",glucobase:"GlucoBase",alkamelt:"AlkaMelt",visivra:"VisiVra",lungvicks:"LungVicks",vapobrain:"VapoBrain",neurotamine:"NeuroTamine",slimzol:"SlimZol"};
+
+  function summaryRows(folder,panel) {
+    return Array.from((panel.hasAttribute("data-report-overview")?folder:panel).querySelectorAll("[data-report-date]"));
+  }
+
+  function replaceLiveReportRows(folder,records,error) {
+    var english=folder.closest(".lang-en")!==null;
+    var source=folder.querySelector("[data-report-source]");
+    source.options[0].textContent=english?"Combined":"合并";
+    source.options[1].textContent=english?"Daily submissions":"日报填报";
+    source.title=english?"Combined keeps the archived total when both sources cover the same date, offer and platform.":"同一天、同一 Offer、同一平台两边都有数据时，合并视图保留历史汇总，避免重复计入。";
+    var filters=folder.querySelector("[data-report-source-label]");
+    folder.querySelector("[data-report-live-error]").hidden=!error;
+    var current=activeReport(folder);
+    if(current.hasAttribute("data-live-report-panel")){
+      activateFolderTab(folder.querySelector('[data-report-offer="all"]'));
+    }
+    folder.querySelectorAll("[data-live-report-row],[data-live-report-panel],[data-live-report-tab]").forEach(function(node){node.remove();});
+    var tabs=folder.querySelector(".ttabs");
+    var panels=new Map(Array.from(tabs.querySelectorAll("[data-report-offer]"),function(tab){
+      return [tab.dataset.reportOffer,document.getElementById(tab.getAttribute("aria-controls"))];
+    }));
+    panels.delete("all");
+    var hasOverlap=false, newOffer=0;
+    records.forEach(function(item){
+      if(!reportPlatforms[item.platform]||!item.offer) return;
+      var panel=panels.get(item.offer);
+      if(!panel){
+        var example=panels.get("yoburn");
+        panel=example.cloneNode(true);
+        panel.id="report-panel-"+(english?"en":"zh")+"-live-"+(++newOffer);
+        panel.hidden=true;
+        panel.setAttribute("data-live-report-panel","");
+        panel.querySelectorAll("[data-report-date],[data-report-merged-date]").forEach(function(row){row.remove();});
+        while(panel.children.length>2) panel.lastElementChild.remove();
+        var tab=tabs.querySelector('[data-report-offer="yoburn"]').cloneNode(true);
+        tab.id=panel.id+"-tab";
+        tab.dataset.reportOffer="live-"+newOffer;
+        tab.setAttribute("aria-controls",panel.id);
+        tab.setAttribute("aria-selected","false");
+        tab.setAttribute("data-live-report-tab","");
+        tab.classList.remove("on");
+        tab.tabIndex=-1;
+        tab.querySelector(".av").textContent=Object.hasOwn(preferredOfferNames,item.offer)?preferredOfferNames[item.offer]:item.offer;
+        panel.setAttribute("aria-labelledby",tab.id);
+        tabs.appendChild(tab);
+        example.parentElement.appendChild(panel);
+        panels.set(item.offer,panel);
+      }
+      var body=panel.querySelector("[data-report-total]").closest("table").tBodies[0];
+      var key=function(row){return row.dataset.reportDate+"|"+row.dataset.reportPlatform;};
+      var proposedKey=item.report_date+"|"+item.platform;
+      var overlap=Array.from(body.querySelectorAll("[data-report-date]:not([data-live-report-row])")).some(function(row){return key(row)===proposedKey;});
+      hasOverlap=hasOverlap||overlap;
+      var row=document.createElement("tr");
+      row.dataset.reportDate=item.report_date;
+      row.dataset.reportPlatform=item.platform;
+      row.dataset.reportCpcSpend=String(item.cpc_spend);
+      row.dataset.reportClicks=String(item.estimated_clicks);
+      row.setAttribute("data-live-report-row","");
+      if(overlap) row.setAttribute("data-report-overlap","");
+      var date=new Date(item.report_date+"T00:00:00Z");
+      var dateCell=document.createElement("th");
+      dateCell.scope="row";
+      dateCell.textContent=new Intl.DateTimeFormat(english?"en-US":"zh-CN",{month:english?"short":"numeric",day:"numeric",timeZone:"UTC"}).format(date);
+      row.appendChild(dateCell);
+      var cpc=item.estimated_clicks>0?"≈ "+formatCurrency(100*item.cpc_spend/item.estimated_clicks,2):"—";
+      if(!english) row.insertCell().textContent=reportPlatforms[item.platform];
+      [formatCurrency(Math.round(item.spend*100),2),cpc,String(item.purchases),
+       formatCurrency(Math.round(item.revenue*100),2),"—","—"].forEach(function(value){
+        var cell=row.insertCell();
+        cell.textContent=value;
+        cell.className="num";
+      });
+      var next=Array.from(body.querySelectorAll("[data-report-date]")).find(function(other){
+        return other.dataset.reportDate>item.report_date;
+      })||body.querySelector("[data-report-empty]");
+      next.before(row);
+    });
+    filters.hidden=!hasOverlap;
+  }
+
   function summarizeReportDay(records,english,destination,offerLabel){
     var totals={spend:0,orders:0,revenue:0};
     var platforms=new Set();
@@ -4137,9 +4121,10 @@ Tap below to watch the full breakdown. 👇</p>
       var spend=readCents(spendCell);
       var cpc=Number(cpcCell.textContent.replace(/[≈$\s,]/g,""));
       var spendWithCpc=row.dataset.reportCpcSpend?Math.round(Number(row.dataset.reportCpcSpend)*100):spend;
-      if(cpc>0){
+      var clicks=row.hasAttribute("data-report-clicks")?Number(row.dataset.reportClicks):cpc>0?spendWithCpc/(cpc*100):0;
+      if(clicks>0){
         cpcSpend+=spendWithCpc;
-        estimatedClicks+=spendWithCpc/(cpc*100);
+        estimatedClicks+=clicks;
       }
       if(spend>0&&(!(cpc>0)||spendWithCpc!==spend)) hasSpendWithoutCpc=true;
       totals.spend+=spend;
@@ -4313,7 +4298,12 @@ Tap below to watch the full breakdown. 👇</p>
       folder.querySelector("[data-report-platform-filter]").value=platform;
       var panel=activeReport(folder);
       var overview=panel.hasAttribute("data-report-overview");
-      var rows=Array.from((overview?folder:panel).querySelectorAll("[data-report-date]"));
+      folder.querySelector("[data-report-source]").value=groupedSource;
+      var allRows=summaryRows(folder,panel);
+      var rows=allRows.filter(function(row){
+        row.hidden=true;
+        return groupedSource==="daily"?row.hasAttribute("data-live-report-row"):!row.hasAttribute("data-report-overlap");
+      });
       var selectedDate=refreshReportDates(folder,rows,platform,date);
       var spendBody=panel.querySelector("[data-report-total]").closest("table").tBodies[0];
       var english=panel.id.startsWith("report-panel-en-");
@@ -4324,7 +4314,7 @@ Tap below to watch the full breakdown. 👇</p>
       spendBody.querySelectorAll("[data-report-merged-date]").forEach(function(row){row.remove();});
       rows.forEach(function(row){
         var rowDate=row.dataset.reportDate, rowPlatform=row.dataset.reportPlatform;
-        if(!overview&&Number(row.cells[row.cells.length-4].textContent)>0){
+        if(!overview&&!row.hasAttribute("data-live-report-row")&&Number(row.cells[row.cells.length-4].textContent)>0){
           if(!purchasePlatforms.has(rowDate)) purchasePlatforms.set(rowDate,new Set());
           purchasePlatforms.get(rowDate).add(rowPlatform);
         }
@@ -4366,10 +4356,10 @@ Tap below to watch the full breakdown. 👇</p>
             }
             return sum+((byPlatform[day]||{})[platform]||0);
           },0);
-          row.hidden=count===0;
+          row.hidden=groupedSource==="daily"||count===0;
           row.lastElementChild.textContent=String(count);
           setPurchaseHighlight(row,count);
-          hasPurchases=hasPurchases||count>0;
+          hasPurchases=hasPurchases||!row.hidden;
         });
         body.querySelector("[data-report-empty]").hidden=hasPurchases;
       });
@@ -4383,7 +4373,8 @@ Tap below to watch the full breakdown. 👇</p>
     }
     var folder=tab.closest("[data-report-tabs]");
     resultFolders.forEach(function(report){
-      activateFolderTab(report.querySelector('[data-report-offer="'+offer+'"]'));
+      var match=Array.from(report.querySelectorAll("[data-report-offer]")).find(function(button){return button.dataset.reportOffer===offer;});
+      if(match) activateFolderTab(match);
     });
     applyReportFilters(folder.querySelector("[data-report-date-filter]").value,folder.querySelector("[data-report-platform-filter]").value);
   }
@@ -4393,6 +4384,23 @@ Tap below to watch the full breakdown. 👇</p>
     function onFilterChange(){applyReportFilters(date.value,platform.value);}
     date.addEventListener("change",onFilterChange);
     platform.addEventListener("change",onFilterChange);
+    folder.querySelector("[data-report-source]").addEventListener("change",function(){
+      groupedSource=this.value;
+      onFilterChange();
+    });
+  });
+  window.addEventListener("adrelay:live-results",function(event){
+    var folder=resultFolders.find(function(item){return item.getClientRects().length;})||resultFolders[0];
+    var selectedDate=folder.querySelector("[data-report-date-filter]").value;
+    var platform=folder.querySelector("[data-report-platform-filter]").value;
+    var selectedOffer=document.getElementById(activeReport(folder).getAttribute("aria-labelledby")).dataset.reportOffer;
+    resultFolders.forEach(function(item){
+      replaceLiveReportRows(item,event.detail.rows,event.detail.error);
+      var selection=Array.from(item.querySelectorAll("[data-report-offer]")).find(function(tab){return tab.dataset.reportOffer===selectedOffer;});
+      if(selection) activateFolderTab(selection);
+    });
+    if(folder.querySelector("[data-report-source-label]").hidden) groupedSource="";
+    applyReportFilters(selectedDate,platform);
   });
   document.querySelectorAll("[data-report-attribution] > tr[data-report-purchases]").forEach(function(row){
     setPurchaseHighlight(row,Number(row.lastElementChild.textContent));
@@ -4423,8 +4431,8 @@ Tap below to watch the full breakdown. 👇</p>
   });
 })();
 </script>
-<script src="./daily-reports.js?v=3" defer></script>
-<script src="./business-panels.js?v=1" defer></script>
+<script src="./daily-reports.js?v=4" defer></script>
+<script src="./business-panels.js?v=2" defer></script>
 <script>
 document.addEventListener("DOMContentLoaded",function(){
   const root=document.documentElement;
@@ -4455,6 +4463,7 @@ document.addEventListener("DOMContentLoaded",function(){
   window.addEventListener("adrelay:language",setAccountLinks);
   window.addEventListener("hashchange",setAccountLinks);
   let setBusinessAccount=()=>{};
+  let taskClient=null;
   let verifiedUser=null;
   let requested=0;
   let signedOut=false;
@@ -4464,6 +4473,7 @@ document.addEventListener("DOMContentLoaded",function(){
     if(allowed) root.dataset.accountRole=profile.role;
     else delete root.dataset.accountRole;
     setBusinessAccount(profile);
+    window.dispatchEvent(new CustomEvent("adrelay:task-account",{detail:{profile,client:taskClient}}));
     const wasLocked=root.hasAttribute("data-site-locked");
     checking.hidden=state!=="checking";
     denied.hidden=state!=="denied";
@@ -4471,7 +4481,7 @@ document.addEventListener("DOMContentLoaded",function(){
     accountSection.hidden=!allowed;
     if(!allowed&&settings.open) settings.close();
     root.toggleAttribute("data-site-locked",!allowed);
-    window.dispatchEvent(new CustomEvent("adrelay:admin-access",{detail:profile?.role==="admin"}));
+    window.dispatchEvent(new CustomEvent("adrelay:workspace-access",{detail:allowed}));
     if(allowed&&wasLocked) window.dispatchEvent(new Event("adrelay:site-unlocked"));
     else if(allowed&&previousRole!==profile.role) window.dispatchEvent(new Event("adrelay:account-access"));
   }
@@ -4485,6 +4495,7 @@ document.addEventListener("DOMContentLoaded",function(){
       return;
     }
     const client=window.supabase.createClient("https://sovltgzuzgsijebbtyms.supabase.co","sb_publishable_3pcN0anu9HAIL2DD0gIQSQ_N3-JOgpZ");
+    taskClient=client;
     if(window.createAdRelayBusinessPanels&&window.createAdRelayDailyReports){
       setBusinessAccount=window.createAdRelayBusinessPanels(client);
     }
@@ -4529,7 +4540,7 @@ document.addEventListener("DOMContentLoaded",function(){
       setTimeout(async function(){
         if(revision!==requested) return;
         try{
-          const {data,error}=await client.from("adrelay_members").select("user_id,display_name,role,status").eq("user_id",userId).maybeSingle();
+          const {data,error}=await client.from("adrelay_members").select("user_id,display_name,role,status,member_code").eq("user_id",userId).maybeSingle();
           if(revision!==requested) return;
           const allowed=!error&&data?.status==="active"&&["admin","employee"].includes(data.role);
           verifiedUser=allowed?userId:null;
