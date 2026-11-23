@@ -4,8 +4,8 @@
     zh: {
       title: "每日填报", write: "填写投放数据", saveHint: "同一天、同一个 Offer 和平台只记一笔。再次保存会更新这笔数据。",
       date: "日期", platform: "平台", spend: "花费（USD）", cpcInput: "CPC（可选）", cpc: "CPC", orders: "出单",
-      revenue: "营收（USD）", net: "净盈亏（USD）", save: "保存日报", totals: "团队填报汇总",
-      scope: "此处汇总通过日报表单录入的数据。", from: "开始日期", to: "结束日期",
+      revenue: "营收（USD）", net: "净盈亏（USD）", save: "保存日报",
+      from: "开始日期", to: "结束日期",
       apply: "查询", mine: "我的日报", team: "员工填报明细", member: "员工", everyone: "全部成员", edit: "编辑",
       previous: "上一页", next: "下一页", empty: "此范围暂无日报", loading: "加载中…", saved: "日报已保存。",
       saveError: "未能保存日报，请检查数据和登录状态后重试。", loadError: "加载失败，请点击「查询」重试。",
@@ -14,8 +14,8 @@
     en: {
       title: "Daily reporting", write: "Submit ad results", saveHint: "Each date, offer and platform has one record. Saving again updates that record.",
       date: "Date", platform: "Platform", spend: "Spend (USD)", cpcInput: "CPC (optional)", cpc: "CPC", orders: "Sales",
-      revenue: "Revenue (USD)", net: "Net P/L (USD)", save: "Save report", totals: "Team submission totals",
-      scope: "Totals cover the entries submitted through daily reporting.", from: "Start date", to: "End date",
+      revenue: "Revenue (USD)", net: "Net P/L (USD)", save: "Save report",
+      from: "Start date", to: "End date",
       apply: "Apply", mine: "My daily reports", team: "Employee reports", member: "Employee", everyone: "All members", edit: "Edit",
       previous: "Previous", next: "Next", empty: "No entries in this date range", loading: "Loading…", saved: "Report saved.",
       saveError: "Could not save. Check the data and your session before trying again.", loadError: "Could not load. Select Apply to retry.",
@@ -125,11 +125,9 @@
       if (member.options.length) member.options[0].text = tr("everyone");
       status("daily-save-status", saveStatus);
       status("daily-list-status", listStatus);
-      const teamTable = get("daily-totals");
       const detailsTable = get("daily-details");
       get("daily-pagination").hidden = !results || (page === 0 && !results.more);
       if (!results) {
-        teamTable.replaceChildren();
         detailsTable.replaceChildren();
         return;
       }
@@ -138,7 +136,6 @@
       const usd = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
       const cpc = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 4 });
       const amounts = row => [usd.format(row.spend), String(row.purchases), usd.format(row.revenue), usd.format((Math.round(row.revenue * 100) - Math.round(row.spend * 100)) / 100)];
-      renderTable(teamTable, ["date", "spend", "orders", "revenue", "net"], results.team, row => [row.report_date, ...amounts(row)]);
       const canEditAnyRow = results.entries.some(row => row.user_id === active.user_id);
       const actionHeading = canEditAnyRow ? ["edit"] : [];
       renderTable(detailsTable,
@@ -166,12 +163,10 @@
       if (range.offer) details = details.eq("offer", range.offer);
       if (active.role === "admin" && member.value) details = details.eq("user_id", member.value);
       try {
-        const [entries, team] = await Promise.all([details, client.rpc("adrelay_daily_report_totals", {
-          first_day: range.from, last_day: range.to, selected_offer: range.offer || null
-        })]);
+        const entries = await details;
         if (current !== request) return;
-        if (entries.error || team.error) throw entries.error || team.error;
-        results = { entries: entries.data.slice(0, pageSize), team: team.data, more: entries.data.length > pageSize };
+        if (entries.error) throw entries.error;
+        results = { entries: entries.data.slice(0, pageSize), more: entries.data.length > pageSize };
         listStatus = null;
       } catch {
         if (current !== request) return;
