@@ -806,10 +806,16 @@
   .site-access-card :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
   .site-access-error{margin:8px 0 0;color:var(--danger-text,#a52516);font-size:14px}
   #workspace-access{margin:20px auto 0;padding:clamp(18px,5vw,30px)}
+  html[data-admin-entry] #legacy-site-access,html:not([data-admin-entry]) #admin-site-access{display:none}
+  .account-entry-link{display:inline-block;margin-top:12px;color:var(--accent);font-weight:650}
 </style>
 <script>
 (function(){
   var root=document.documentElement;
+  if(new URLSearchParams(location.search).get("access")==="account"){
+    root.setAttribute("data-admin-entry","");
+    return;
+  }
   var salt="143a1c0bdea3d51f3507a28dd0a54328";
   var verifier="25cb7db99e0ac47fed8f9c2c71e70c3d50e167fe49845f239f26fd09af6b7fa6";
   var sessionKey="adrelay-site-access";
@@ -977,8 +983,8 @@
 </head>
 <body>
 
-<section id="site-access" aria-labelledby="site-access-title">
-  <div class="site-access-card">
+<section id="site-access">
+  <div class="site-access-card" id="legacy-site-access">
     <p class="site-access-brand">AdRelay</p>
     <h1 id="site-access-title"><span class="t-zh">团队访问</span><span class="t-en">Team access</span></h1>
     <p class="site-access-hint"><span class="t-zh">输入团队口令，进入工作区。</span><span class="t-en">Enter the team passphrase to open the workspace.</span></p>
@@ -990,6 +996,15 @@
       <button id="site-access-submit" class="access-submit" type="submit" disabled><span class="t-zh">进入</span><span class="t-en">Enter</span></button>
       <noscript><p class="site-access-error"><span class="t-zh">请启用 JavaScript 后重试。</span><span class="t-en">Enable JavaScript and try again.</span></p></noscript>
     </form>
+    <a class="account-entry-link" href="./account.html"><span class="t-zh">用账号登录</span><span class="t-en">Sign in with an account</span></a>
+  </div>
+  <div class="site-access-card" id="admin-site-access">
+    <p class="site-access-brand">AdRelay</p>
+    <h2><span class="t-zh">管理员入口</span><span class="t-en">Administrator access</span></h2>
+    <p class="site-access-hint" id="admin-access-checking" role="status"><span class="t-zh">正在验证管理员账号…</span><span class="t-en">Checking your administrator account…</span></p>
+    <p class="site-access-error" id="admin-access-denied" role="alert" hidden><span class="t-zh">请用已开通的管理员账号登录。</span><span class="t-en">Sign in with an active administrator account.</span></p>
+    <p class="site-access-error" id="admin-access-error" role="alert" hidden><span class="t-zh">暂时无法验证账号，请刷新后重试。</span><span class="t-en">Account verification is unavailable. Refresh to try again.</span></p>
+    <a class="account-entry-link" id="admin-return-account" href="./account.html"><span class="t-zh">返回账号页</span><span class="t-en">Back to accounts</span></a>
   </div>
 </section>
 
@@ -3740,10 +3755,20 @@ Tap below to watch the full breakdown. 👇</p>
     workspaceGate.hidden=true;
     workspaceContent.hidden=false;
   }
-  try{
-    if(sessionStorage.getItem(workspaceSessionKey)===workspaceVerifier) unlockWorkspace();
-  }catch(e){}
-  if(!workspaceGate.hidden){
+  if(root.hasAttribute("data-admin-entry")){
+    window.addEventListener("adrelay:admin-access",function(event){
+      if(event.detail) unlockWorkspace();
+      else{
+        workspaceGate.hidden=false;
+        workspaceContent.hidden=true;
+      }
+    });
+  }else{
+    try{
+      if(sessionStorage.getItem(workspaceSessionKey)===workspaceVerifier) unlockWorkspace();
+    }catch(e){}
+  }
+  if(!workspaceGate.hidden&&!root.hasAttribute("data-admin-entry")){
     const canVerify=Boolean(window.crypto&&window.crypto.subtle);
     workspaceUnavailable.hidden=canVerify;
     workspaceSubmit.disabled=!canVerify;
@@ -4252,6 +4277,69 @@ Tap below to watch the full breakdown. 👇</p>
     var h=a.getAttribute("href");
     if(location.hash===h){ window.dispatchEvent(new HashChangeEvent("hashchange")); } else { location.hash=h; }
   });
+})();
+</script>
+<script>
+(function(){
+  const root=document.documentElement;
+  if(!root.hasAttribute("data-admin-entry")) return;
+
+  const checking=document.getElementById("admin-access-checking");
+  const denied=document.getElementById("admin-access-denied");
+  const unavailable=document.getElementById("admin-access-error");
+  document.getElementById("admin-return-account").href="./account.html?lang="+root.dataset.lang;
+  let verifiedUser=null;
+  let requested=0;
+  function showAccess(state){
+    const allowed=state==="allowed";
+    const wasLocked=root.hasAttribute("data-site-locked");
+    checking.hidden=state!=="checking";
+    denied.hidden=state!=="denied";
+    unavailable.hidden=state!=="unavailable";
+    root.toggleAttribute("data-site-locked",!allowed);
+    window.dispatchEvent(new CustomEvent("adrelay:admin-access",{detail:allowed}));
+    if(allowed&&wasLocked) window.dispatchEvent(new Event("adrelay:site-unlocked"));
+  }
+
+  const sdk=document.createElement("script");
+  sdk.src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
+  sdk.onerror=()=>showAccess("unavailable");
+  sdk.onload=function(){
+    if(!window.supabase){
+      showAccess("unavailable");
+      return;
+    }
+    const client=window.supabase.createClient("https://sovltgzuzgsijebbtyms.supabase.co","sb_publishable_3pcN0anu9HAIL2DD0gIQSQ_N3-JOgpZ");
+    client.auth.onAuthStateChange(function(event,session){
+      const revision=++requested;
+      const userId=session?.user.id;
+      if(!userId||event==="PASSWORD_RECOVERY"){
+        verifiedUser=null;
+        showAccess("denied");
+        return;
+      }
+      if(verifiedUser!==userId){
+        verifiedUser=null;
+        showAccess("checking");
+      }
+      // Run the membership query after the auth callback releases its session lock.
+      setTimeout(async function(){
+        if(revision!==requested) return;
+        try{
+          const {data,error}=await client.from("adrelay_members").select("role,status").eq("user_id",userId).maybeSingle();
+          if(revision!==requested) return;
+          const allowed=!error&&data?.role==="admin"&&data.status==="active";
+          verifiedUser=allowed?userId:null;
+          showAccess(error?"unavailable":allowed?"allowed":"denied");
+        }catch(error){
+          if(revision!==requested) return;
+          verifiedUser=null;
+          showAccess("unavailable");
+        }
+      },0);
+    });
+  };
+  document.head.appendChild(sdk);
 })();
 </script>
 </body>
