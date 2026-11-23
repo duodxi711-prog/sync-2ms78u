@@ -87,13 +87,15 @@
     #members { margin-top: 23px; }
     #message { margin: 14px 0 0; color: var(--muted); overflow-wrap: anywhere; }
     #message[data-error] { color: var(--alert); }
+    .team-entry { margin: 18px 0 0; padding-top: 12px; border-top: 1px solid var(--line); text-align: center; }
+    .team-entry a { color: var(--muted); font-size: 13px; text-underline-offset: 3px; }
     .member { justify-content: space-between; padding: 12px 0; border-top: 1px solid var(--line); }
     .member div:first-child { min-width: 0; }
     .member small { display: block; color: var(--muted); overflow-wrap: anywhere; }
     .approval input { width: 8rem; }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-  <script src="./account.js?v=3" defer></script>
+  <script src="./account.js?v=4" defer></script>
 </head>
 <body>
   <div class="account-layout">
@@ -132,6 +134,9 @@
         <div id="roster"></div>
       </section>
       <p id="message" role="status" aria-live="polite"></p>
+      <p class="team-entry" id="team-entry">
+        <a id="team-entry-link" data-text="teamEntry" href="./?access=team">使用团队口令进入</a>
+      </p>
     </main>
   </div>
   <noscript>请启用 JavaScript。 / Please enable JavaScript.</noscript>
