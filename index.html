@@ -788,20 +788,21 @@
   html[data-site-locked] body>header.top,
   html[data-site-locked] body>main,
   html:not([data-site-locked]) #site-access,
-  #site-access [hidden]{display:none!important}
+  #site-access [hidden],#workspace-access[hidden],#workspace-access [hidden],#workspace-content[hidden]{display:none!important}
   #site-access{min-height:100vh;min-height:100dvh;display:grid;place-items:center;padding:24px}
   .site-access-card{width:min(100%,390px);padding:30px;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 12px 32px #1c22300d}
   .site-access-brand{margin:0 0 12px;color:var(--accent);font:700 34px/1.1 Georgia,serif;letter-spacing:-.04em}
-  .site-access-card h1{font-size:20px;line-height:1.4;margin:0 0 6px}
+  .site-access-card :is(h1,h3){font-size:20px;line-height:1.4;margin:0 0 6px}
   .site-access-hint{margin:0 0 18px;color:var(--ink2);font-size:14px}
   .site-access-card label{display:block;margin-bottom:5px;font-size:14px;font-weight:600}
-  #site-access-input,#site-access-submit{width:100%;min-height:44px;border-radius:8px;font:inherit}
-  #site-access-input{padding:8px 11px;border:1px solid var(--muted,#a9b2c0);background:var(--card,#fff);color:var(--ink)}
-  #site-access-input[aria-invalid="true"]{border-color:var(--accent)}
-  #site-access-submit{margin-top:12px;padding:8px 12px;border:0;background:var(--accent-fill,var(--accent));color:#fff;font-weight:600;cursor:pointer}
-  #site-access-submit:disabled{opacity:.6;cursor:default}
-  #site-access :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  .access-password,.access-submit{width:100%;min-height:44px;border-radius:8px;font:inherit}
+  .access-password{padding:8px 11px;border:1px solid var(--muted,#a9b2c0);background:var(--card,#fff);color:var(--ink)}
+  .access-password[aria-invalid="true"]{border-color:var(--accent)}
+  .access-submit{margin-top:12px;padding:8px 12px;border:0;background:var(--accent-fill,var(--accent));color:#fff;font-weight:600;cursor:pointer}
+  .access-submit:disabled{opacity:.6;cursor:default}
+  .site-access-card :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
   .site-access-error{margin:8px 0 0;color:var(--danger-text,#a52516);font-size:14px}
+  #workspace-access{margin:20px auto 0;padding:clamp(18px,5vw,30px)}
 </style>
 <script>
 (function(){
@@ -980,10 +981,10 @@
     <p class="site-access-hint"><span class="t-zh">输入团队口令，进入工作区。</span><span class="t-en">Enter the team passphrase to open the workspace.</span></p>
     <form id="site-access-form">
       <label for="site-access-input"><span class="t-zh">团队口令</span><span class="t-en">Team passphrase</span></label>
-      <input id="site-access-input" type="password" required autocomplete="current-password" autocapitalize="none" spellcheck="false" aria-describedby="site-access-error site-access-unavailable">
+      <input id="site-access-input" class="access-password" type="password" required autocomplete="current-password" autocapitalize="none" spellcheck="false" aria-describedby="site-access-error site-access-unavailable">
       <p id="site-access-error" class="site-access-error" role="alert" hidden><span class="t-zh">口令不正确，请重试。</span><span class="t-en">Incorrect passphrase. Try again.</span></p>
       <p id="site-access-unavailable" class="site-access-error" role="alert" hidden><span class="t-zh">当前浏览器无法验证口令。请通过 HTTPS 打开此页。</span><span class="t-en">This browser cannot verify the passphrase. Open the HTTPS link.</span></p>
-      <button id="site-access-submit" type="submit" disabled><span class="t-zh">进入</span><span class="t-en">Enter</span></button>
+      <button id="site-access-submit" class="access-submit" type="submit" disabled><span class="t-zh">进入</span><span class="t-en">Enter</span></button>
       <noscript><p class="site-access-error"><span class="t-zh">请启用 JavaScript 后重试。</span><span class="t-en">Enable JavaScript and try again.</span></p></noscript>
     </form>
   </div>
@@ -1053,8 +1054,18 @@
 
 <main>
 <section class="view" data-view="workspace" aria-labelledby="workspace-heading">
-  <h2 class="workspace-title" id="workspace-heading"><span class="t-zh">工作台</span><span class="t-en">Workspace</span></h2>
-  <div class="workspace-grid">
+  <h2 class="workspace-title" id="workspace-heading" tabindex="-1"><span class="t-zh">工作台</span><span class="t-en">Workspace</span></h2>
+  <div class="site-access-card" id="workspace-access">
+    <h3><span class="t-zh">解锁工作台</span><span class="t-en">Unlock Workspace</span></h3>
+    <form id="workspace-access-form" method="post">
+      <label for="workspace-access-input"><span class="t-zh">工作台口令</span><span class="t-en">Workspace passphrase</span></label>
+      <input id="workspace-access-input" class="access-password" name="workspace-passphrase" type="password" required autocomplete="section-workspace current-password" autocapitalize="none" spellcheck="false" aria-errormessage="workspace-access-error">
+      <p id="workspace-access-error" class="site-access-error" role="alert" hidden><span class="t-zh">工作台口令不正确，请重试。</span><span class="t-en">Incorrect workspace passphrase. Try again.</span></p>
+      <p id="workspace-access-unavailable" class="site-access-error" role="alert" hidden><span class="t-zh">暂时无法验证，请刷新页面后重试。</span><span class="t-en">Verification is unavailable. Reload the page and try again.</span></p>
+      <button type="submit" class="access-submit" disabled><span class="t-zh">解锁</span><span class="t-en">Unlock</span></button>
+    </form>
+  </div>
+  <div class="workspace-grid" id="workspace-content" hidden>
     <section class="workspace-general" aria-labelledby="workspace-general-heading">
       <h3 class="sr-only" id="workspace-general-heading"><span class="t-zh">通用信息</span><span class="t-en">General Information</span></h3>
       <article class="workspace-resource" aria-labelledby="facebook-parameters-heading">
@@ -3615,6 +3626,8 @@ Tap below to watch the full breakdown. 👇</p>
       }
     }
   }
+  var workspaceGate=document.getElementById("workspace-access");
+  var workspaceInput=document.getElementById("workspace-access-input");
   function show(){
     var h=location.hash?location.hash.slice(1):"running";
     if(h==="claim"){h="tasks";}
@@ -3635,6 +3648,9 @@ Tap below to watch the full breakdown. 👇</p>
       if(on&&nav.scrollWidth>nav.clientWidth){nav.scrollLeft=a.offsetLeft-(nav.clientWidth-a.offsetWidth)/2;}
     });
     window.scrollTo(0,0);
+    if(h==="workspace"&&!workspaceGate.hidden&&!root.hasAttribute("data-site-locked")){
+      workspaceInput.focus({preventScroll:true});
+    }
     if(rtarget){
       var rd=null;
       document.querySelectorAll('details.rdetail').forEach(function(x){
@@ -3686,6 +3702,59 @@ Tap below to watch the full breakdown. 👇</p>
   });
   document.getElementById("settings-trigger").addEventListener("click",function(){
     settings.showModal();
+  });
+  const workspaceContent=document.getElementById("workspace-content");
+  const workspaceForm=document.getElementById("workspace-access-form");
+  const workspaceSubmit=workspaceForm.querySelector("button[type=submit]");
+  const workspaceError=document.getElementById("workspace-access-error");
+  const workspaceUnavailable=document.getElementById("workspace-access-unavailable");
+  const workspaceSessionKey="adrelay-workspace-access";
+  const workspaceSalt="05e0bd7d068c8da6ace80adec79236c9";
+  const workspaceVerifier="66d64571ab9efc5648ecb78dbdd4ef007a760c63ad1b2a8e63078e968cd90595";
+
+  function unlockWorkspace(){
+    workspaceInput.value="";
+    workspaceGate.hidden=true;
+    workspaceContent.hidden=false;
+  }
+  try{
+    if(sessionStorage.getItem(workspaceSessionKey)===workspaceVerifier) unlockWorkspace();
+  }catch(e){}
+  if(!workspaceGate.hidden){
+    const canVerify=Boolean(window.crypto&&window.crypto.subtle);
+    workspaceUnavailable.hidden=canVerify;
+    workspaceSubmit.disabled=!canVerify;
+  }
+  workspaceInput.addEventListener("input",function(){
+    workspaceError.hidden=true;
+    workspaceInput.removeAttribute("aria-invalid");
+  });
+  workspaceForm.addEventListener("submit",async function(event){
+    event.preventDefault();
+    const passphrase=workspaceInput.value.trim();
+    if(workspaceSubmit.disabled||!passphrase) return;
+    workspaceUnavailable.hidden=true;
+    workspaceSubmit.disabled=true;
+    try{
+      const bytes=new TextEncoder().encode(workspaceSalt+":"+passphrase);
+      const hash=await window.crypto.subtle.digest("SHA-256",bytes);
+      const digest=Array.from(new Uint8Array(hash),byte=>byte.toString(16).padStart(2,"0")).join("");
+      if(digest!==workspaceVerifier){
+        workspaceError.hidden=false;
+        workspaceInput.setAttribute("aria-invalid","true");
+        if(location.hash==="#workspace") workspaceInput.select();
+        return;
+      }
+      try{sessionStorage.setItem(workspaceSessionKey,workspaceVerifier);}catch(e){}
+      unlockWorkspace();
+      if(location.hash==="#workspace"){
+        document.getElementById("workspace-heading").focus({preventScroll:true});
+      }
+    }catch(e){
+      workspaceUnavailable.hidden=false;
+    }finally{
+      workspaceSubmit.disabled=false;
+    }
   });
   window.addEventListener("hashchange",show);
   window.addEventListener("adrelay:site-unlocked",show);
