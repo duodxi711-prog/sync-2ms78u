@@ -808,6 +808,7 @@
   #workspace-access{margin:20px auto 0;padding:clamp(18px,5vw,30px)}
   html[data-admin-entry] #legacy-site-access,html:not([data-admin-entry]) #admin-site-access{display:none}
   .account-entry-link{display:inline-block;margin-top:12px;color:var(--accent);font-weight:650}
+  html:not([data-admin-entry]) #daily-nav-link{display:none}
 </style>
 <script>
 (function(){
@@ -1034,6 +1035,7 @@
       <a href="#running" data-view="running"><span class="nav-icon nav-icon-running" aria-hidden="true"></span><span class="t-zh">Running 安排</span><span class="t-en">Running</span></a>
       <a href="#workspace" data-view="workspace"><span class="nav-icon nav-icon-workspace" aria-hidden="true"><span></span><span></span><span></span><span></span></span><span class="t-zh">工作台</span><span class="t-en">Workspace</span></a>
       <a href="#results" data-view="results"><span class="nav-icon nav-icon-results" aria-hidden="true"><span></span><span></span><span></span></span><span class="t-zh">测试结果</span><span class="t-en">Test Results</span></a>
+      <a href="./daily.html" id="daily-nav-link"><span class="nav-icon nav-icon-tasks" aria-hidden="true"></span><span class="t-zh">每日填报</span><span class="t-en">Daily Reporting</span></a>
       <a href="#tasks" data-view="tasks"><span class="nav-icon nav-icon-tasks" aria-hidden="true"></span><span class="t-zh">我的任务</span><span class="t-en">My Tasks</span></a>
       <a href="#offers" data-view="offers"><span class="nav-icon nav-icon-offers" aria-hidden="true"></span><span class="t-zh">Offer 清单</span><span class="t-en">Offer List</span></a>
       <span class="nav-group-label methods" aria-hidden="true"><span class="t-zh">投放方法</span><span class="t-en">Methods</span></span>
@@ -3670,6 +3672,7 @@ Tap below to watch the full breakdown. 👇</p>
   function setLang(l,save){
     l=(l==="en")?"en":"zh";
     root.setAttribute("data-lang",l);
+    document.getElementById("daily-nav-link").href="./daily.html?lang="+l;
     root.setAttribute("lang",l==="en"?"en":"zh-CN");
     document.title=l==="en"?"Info Sync · AdRelay":"信息同步 · AdRelay";
     document.querySelectorAll(".langsw button").forEach(function(b){
