@@ -6,10 +6,17 @@
       name: "姓名", email: "邮箱", password: "密码", newPassword: "新密码", confirmPassword: "确认新密码",
       passwordMismatch: "两次输入的密码不一致，请重新确认。", enroll: "提交账号资料",
       account: "我的账号", enter: "进入 AdRelay", teamEntry: "使用团队口令进入", refresh: "刷新状态", logout: "退出登录",
-      pending: "等待管理员审核", active: "员工账号已开通", admin: "管理员账号已开通",
+      pending: "邮箱验证成功，等待管理员审核", active: "员工账号已开通", admin: "管理员账号已开通",
       disabled: "员工账号已停用",
       saved: "已保存",
-      confirmation: "请查收验证邮件，验证后返回这里登录。", recoverySent: "如邮箱已有账号，请查收重置邮件。",
+      checkEmail: "请验证你的邮箱",
+      checkEmailHint: "注册已提交。请打开邮箱里的验证邮件，点击链接完成验证。验证后，申请会提交给管理员审核。",
+      backToSignin: "返回登录", checkingLink: "正在确认邮箱验证结果…", checkingStatus: "正在查询账号状态…",
+      pendingHint: "管理员开通后，你就可以进入 AdRelay。", finishApplication: "邮箱验证成功。请填写姓名并提交账号资料，进入管理员审核。",
+      applicationError: "邮箱已验证，提交审核时遇到问题。请点击「刷新状态」重试。",
+      invalidLink: "此邮件链接已失效或已使用。如果已验证邮箱，请直接登录。",
+      unverifiedEmail: "请先点击验证邮件中的链接，再登录。",
+      recoverySent: "如邮箱已有账号，请查收重置邮件。",
       unavailable: "账号服务暂时无法连接。", failed: "操作失败，请检查输入或稍后重试。",
       smtp: "验证邮件发送失败，请联系管理员确认发信设置。", invalid: "邮箱或密码有误，或邮箱尚未验证。",
       shortPassword: "新密码至少需要 12 个字符。"
@@ -19,10 +26,17 @@
       name: "Name", email: "Email", password: "Password", newPassword: "New password", confirmPassword: "Confirm new password",
       passwordMismatch: "The passwords do not match. Please check both entries.", enroll: "Submit account details",
       account: "My account", enter: "Open AdRelay", teamEntry: "Enter with team passphrase", refresh: "Refresh status", logout: "Sign out",
-      pending: "Awaiting admin approval", active: "Employee access is active", admin: "Administrator access is active",
+      pending: "Email verified · Awaiting admin approval", active: "Employee access is active", admin: "Administrator access is active",
       disabled: "Employee access is disabled",
       saved: "Saved",
-      confirmation: "Check your inbox to verify your email, then return here to sign in.",
+      checkEmail: "Verify your email",
+      checkEmailHint: "Your registration was submitted. Open the verification email and follow its link. Your application will then be sent for admin approval.",
+      backToSignin: "Back to sign in", checkingLink: "Checking your email verification…", checkingStatus: "Checking your account status…",
+      pendingHint: "You can open AdRelay once an administrator approves your account.",
+      finishApplication: "Your email is verified. Enter your name and submit your details for admin approval.",
+      applicationError: "Your email is verified, but your application could not be submitted. Select Refresh status to try again.",
+      invalidLink: "This email link expired or was already used. If you verified your email, sign in.",
+      unverifiedEmail: "Follow the link in your verification email before signing in.",
       recoverySent: "If an account uses this email, check your inbox for the reset link.",
       unavailable: "The account service is temporarily unavailable.", failed: "The action failed. Check your input or try again.",
       smtp: "Verification email failed. Ask the administrator to check the email service.",
@@ -35,6 +49,8 @@
   const confirmationInput = form.elements.namedItem("confirmPassword");
   const language = byId("language");
   const params = new URLSearchParams(location.search);
+  const linkParams = new URLSearchParams(location.hash.slice(1));
+  const hasLinkError = linkParams.has("error_code") || params.has("error_code");
   const view = params.get("view") || "";
   const requestedView = /^[a-z0-9_-]{1,100}$/i.test(view) ? view : "";
   let lang = params.get("lang");
@@ -52,6 +68,8 @@
   let busy = false;
   let recovery = false;
   let loadingProfile = false;
+  let checkingLink = hasLinkError || linkParams.get("type") === "signup";
+  let waitingForEmail = false;
   let message;
   const client = window.supabase?.createClient("https://sovltgzuzgsijebbtyms.supabase.co", "sb_publishable_3pcN0anu9HAIL2DD0gIQSQ_N3-JOgpZ");
   const redirect = new URL(location.pathname, location.origin).href;
@@ -74,10 +92,12 @@
     document.documentElement.lang = lang === "en" ? "en" : "zh-CN";
     document.querySelectorAll("[data-text]").forEach(node => { node.textContent = t(node.dataset.text); });
     const signedIn = Boolean(session);
-    const enrolling = signedIn && !profile && !recovery && !loadingProfile;
+    const enrolling = signedIn && Boolean(session.user.email_confirmed_at) && !profile && !recovery && !loadingProfile;
     const formMode = recovery ? "recovery" : enrolling ? "enroll" : mode;
-    form.hidden = signedIn && !enrolling && !recovery;
-    byId("auth-nav").hidden = signedIn || recovery;
+    form.hidden = waitingForEmail || checkingLink || (signedIn && !enrolling && !recovery);
+    byId("auth-nav").hidden = signedIn || recovery || waitingForEmail || checkingLink;
+    byId("check-email").hidden = !waitingForEmail || signedIn;
+    byId("checking-email-link").hidden = !checkingLink;
     byId("profile").hidden = !signedIn || recovery;
     const active = signedIn && !recovery && profile?.status === "active";
     const isAdmin = active && profile.role === "admin";
@@ -86,7 +106,7 @@
     entry.href = workspaceUrl("account", isAdmin ? "workspace" : "daily");
     const teamEntry = byId("team-entry");
     if (teamEntry) {
-      teamEntry.hidden = recovery || isAdmin;
+      teamEntry.hidden = recovery || isAdmin || waitingForEmail || checkingLink;
       byId("team-entry-link").href = workspaceUrl("team", "");
     }
     byId("name-field").hidden = !["enroll", "signup"].includes(formMode);
@@ -106,21 +126,53 @@
     }
     byId("auth-submit").textContent = t(formMode);
     byId("auth-submit").disabled = !client || busy;
+    byId("reload-account").disabled = busy || loadingProfile;
     byId("identity").textContent = profile ? profile.display_name + " · " + profile.email : (session?.user.email || "");
-    byId("membership-status").textContent = profile ? t(profile.role === "admin" && profile.status === "active" ? "admin" : profile.status) : "";
+    const statusKey = profile ? (isAdmin ? "admin" : profile.status) :
+      loadingProfile ? "checkingStatus" : enrolling ? "finishApplication" : "";
+    const membershipStatus = byId("membership-status");
+    membershipStatus.textContent = statusKey ? t(statusKey) : "";
+    membershipStatus.toggleAttribute("data-pending", statusKey === "pending");
+    byId("pending-hint").hidden = statusKey !== "pending";
     document.querySelectorAll("[data-mode]").forEach(node => node.setAttribute("aria-pressed", String(node.dataset.mode === mode)));
     if (message) notify(message.key, message.isError);
   }
 
+  async function readProfile(userId) {
+    const { data, error } = await client.from("adrelay_members")
+      .select("user_id,email,display_name,role,status,member_code").eq("user_id", userId).maybeSingle();
+    if (error) throw error;
+    return data;
+  }
+
+  async function submitApplication(name) {
+    const userId = session.user.id;
+    const { error } = await client.rpc("adrelay_register_member", { requested_name: name });
+    if (error) throw error;
+    if (userId !== session?.user.id || recovery) return;
+    const saved = await readProfile(userId);
+    if (userId !== session?.user.id || recovery) return;
+    if (!saved) throw new Error("Membership was not found after registration");
+    profile = saved;
+  }
+
   async function loadProfile() {
     if (!session || recovery) return;
-    const requestedUser = session.user.id;
-    const { data, error } = await client.from("adrelay_members")
-      .select("user_id,email,display_name,role,status,member_code").eq("user_id", requestedUser).maybeSingle();
-    if (requestedUser !== session?.user.id) return;
-    if (error) throw error;
-    profile = data;
-    if (!profile) form.elements.name.value = session.user.user_metadata?.display_name || "";
+    const user = session.user;
+    const existing = await readProfile(user.id);
+    if (user.id !== session?.user.id || recovery) return;
+    profile = existing;
+    if (profile) return;
+
+    const name = user.user_metadata?.display_name;
+    const savedName = typeof name === "string" ? name.trim() : "";
+    form.elements.name.value = savedName.slice(0, 80);
+    if (!user.email_confirmed_at || !savedName || savedName.length > 80) return;
+    try {
+      await submitApplication(savedName);
+    } catch {
+      if (user.id === session?.user.id && !recovery) notify("applicationError", true);
+    }
   }
   async function act(run) {
     if (!client || busy) return;
@@ -131,8 +183,9 @@
       await run();
     } catch (error) {
       const detail = error?.message || "";
-      const key = /email.*not authorized|sending.*email|smtp/i.test(detail) ? "smtp" :
-        /invalid login credentials|email not confirmed/i.test(detail) ? "invalid" : "failed";
+      const key = error?.code === "email_not_confirmed" || /email not confirmed/i.test(detail) ? "unverifiedEmail" :
+        /email.*not authorized|sending.*email|smtp/i.test(detail) ? "smtp" :
+        /invalid login credentials/i.test(detail) ? "invalid" : "failed";
       notify(key, true);
     } finally {
       busy = false;
@@ -169,6 +222,12 @@
       render();
     });
   });
+  byId("back-to-signin").addEventListener("click", () => {
+    waitingForEmail = false;
+    mode = "signin";
+    render();
+    form.elements.email.focus();
+  });
   byId("reload-account").addEventListener("click", () => act(loadProfile));
   byId("logout").addEventListener("click", () => act(async () => {
     const { error } = await client.auth.signOut();
@@ -204,11 +263,18 @@
           notify("saved");
         }
       } else if (session && !profile) {
-        result = await client.rpc("adrelay_register_member", { requested_name: name });
-        if (!result.error) await loadProfile();
+        try {
+          await submitApplication(name);
+        } catch {
+          notify("applicationError", true);
+        }
       } else if (mode === "signup") {
         result = await client.auth.signUp({ email, password, options: { emailRedirectTo: redirect, data: { display_name: name } } });
-        if (!result.error) notify("confirmation");
+        if (!result.error && !result.data?.session && !session) {
+          waitingForEmail = true;
+          render();
+          byId("check-email-title").focus();
+        }
       } else if (mode === "reset") {
         result = await client.auth.resetPasswordForEmail(email, { redirectTo: redirect });
         if (!result.error) notify("recoverySent");
@@ -224,19 +290,35 @@
       if (event === "PASSWORD_RECOVERY") recovery = true;
       if (!nextSession || nextSession.user.id !== session?.user.id) {
         profile = null;
+        loadingProfile = false;
       }
       if (!nextSession) recovery = false;
       session = nextSession;
-      if (["INITIAL_SESSION", "SIGNED_IN"].includes(event) && session && !recovery) {
+      if (session) waitingForEmail = false;
+      if (checkingLink && (event === "INITIAL_SESSION" || session)) {
+        checkingLink = false;
+        if (!session) notify("invalidLink", true);
+      }
+      if (["INITIAL_SESSION", "SIGNED_IN"].includes(event) && session && !recovery && !profile && !loadingProfile) {
+        const userId = session.user.id;
         loadingProfile = true;
         setTimeout(async () => {
+          if (session?.user.id !== userId) return;
           try { await loadProfile(); }
-          catch { notify("failed", true); }
-          finally { loadingProfile = false; render(); }
+          catch { if (session?.user.id === userId) notify("failed", true); }
+          finally {
+            if (session?.user.id === userId) {
+              loadingProfile = false;
+              render();
+            }
+          }
         }, 0);
       }
       render();
     });
-  } else notify("unavailable", true);
+  } else {
+    checkingLink = false;
+    notify("unavailable", true);
+  }
   render();
 })();
