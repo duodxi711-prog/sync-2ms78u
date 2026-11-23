@@ -812,8 +812,21 @@
 <script>
 (function(){
   var root=document.documentElement;
-  if(new URLSearchParams(location.search).get("access")==="account"){
+  const params=new URLSearchParams(location.search);
+  const access=params.get("access");
+  if(access==="account"){
     root.setAttribute("data-admin-entry","");
+    return;
+  }
+  if(access!=="team"){
+    const account=new URL("./account.html",location.href);
+    account.searchParams.set("v","4");
+    const lang=params.get("lang");
+    if(lang==="zh"||lang==="en") account.searchParams.set("lang",lang);
+    // Keep bookmarks for reports, tasks and individual offers through sign-in.
+    const view=location.hash.slice(1);
+    if(/^[a-z0-9_-]{1,100}$/i.test(view)) account.searchParams.set("view",view);
+    location.replace(account.href);
     return;
   }
   var salt="143a1c0bdea3d51f3507a28dd0a54328";
