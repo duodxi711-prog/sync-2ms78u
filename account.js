@@ -57,6 +57,7 @@
   let message;
   const client = window.supabase?.createClient("https://sovltgzuzgsijebbtyms.supabase.co", "sb_publishable_3pcN0anu9HAIL2DD0gIQSQ_N3-JOgpZ");
   const redirect = new URL(location.pathname, location.origin).href;
+  const dailyReports = window.createAdRelayDailyReports?.(client);
 
   function workspaceUrl(access, defaultView) {
     const dest = new URL("./", redirect);
@@ -113,6 +114,7 @@
     byId("membership-status").textContent = profile ? t(profile.role === "admin" && profile.status === "active" ? "admin" : profile.status) : "";
     document.querySelectorAll("[data-mode]").forEach(node => node.setAttribute("aria-pressed", String(node.dataset.mode === mode)));
     renderRoster();
+    dailyReports?.sync(signedIn && !recovery ? profile : null, lang, roster);
     if (message) notify(message.key, message.isError);
   }
 
