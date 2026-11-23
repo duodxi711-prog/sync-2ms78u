@@ -33,6 +33,65 @@
     let saving = false;
     let message = "";
     let reportSync = 0;
+    let resultsSync = 0;
+    let runningLoaded = false;
+    let runningLoading = false;
+    const runningSlots = new Map(Array.from(document.querySelectorAll("[data-running-slot]"), node => [node.dataset.runningSlot, node]));
+    const publicTiers = document.querySelectorAll("[data-running-public-tiers]");
+
+    function clearRunningDetails() {
+      runningLoaded = runningLoading = false;
+      runningSlots.forEach(node => node.replaceChildren());
+      publicTiers.forEach(node => { node.hidden = false; });
+    }
+
+    async function showRunningDetails() {
+      if (!isAdmin() || runningLoaded || runningLoading) return;
+      const request = revision;
+      runningLoading = true;
+      try {
+        const { data, error } = await client.from("adrelay_running_member_details").select("slot,html");
+        if (!isCurrent(request, "admin")) return;
+        if (error) throw error;
+        for (const record of data) {
+          const node = runningSlots.get(record.slot);
+          if (node) {
+            // The database stores these original site fragments. Only the database owner can write them.
+            node.innerHTML = record.html;
+          }
+        }
+        publicTiers.forEach(node => { node.hidden = Boolean(node.nextElementSibling?.childElementCount); });
+        runningLoaded = true;
+      } catch {
+        if (isCurrent(request, "admin")) document.querySelectorAll("[data-running-admin-error]").forEach(node => { node.hidden = false; });
+      } finally {
+        if (isCurrent(request, "admin")) runningLoading = false;
+      }
+    }
+
+    function publishResults(rows, error = false) {
+      window.dispatchEvent(new CustomEvent("adrelay:live-results", { detail: { rows, error } }));
+    }
+
+    async function loadResults() {
+      if (!account) return;
+      const request = ++resultsSync;
+      const pageSize = 250;
+      const rows = [];
+      try {
+        for (let offset = 0; ; offset += pageSize) {
+          const { data, error } = await client.rpc("adrelay_test_results_totals")
+            .order("report_date").order("offer").order("platform").range(offset, offset + pageSize - 1);
+          if (request !== resultsSync) return;
+          if (error) throw error;
+          rows.push(...data);
+          if (data.length < pageSize) break;
+        }
+        publishResults(rows);
+      } catch {
+        if (request === resultsSync) publishResults([], true);
+      }
+    }
 
     const lang = () => root.dataset.lang === "en" ? "en" : "zh";
     const t = key => copy[lang()][key];
@@ -172,6 +231,8 @@
         showReporting();
       }
       if (view === "management") loadManagement();
+      if (view === "running") showRunningDetails();
+      if (view === "results") loadResults();
     });
     window.addEventListener("adrelay:language", () => {
       if (!byId("daily-reports").hidden) reporting.sync(account, lang(), reportRoster);
@@ -182,7 +243,11 @@
       if (account?.user_id === profile?.user_id && account?.role === profile?.role) return;
       revision++;
       reportSync++;
+      resultsSync++;
       account = profile;
+      publishResults([]);
+      clearRunningDetails();
+      document.querySelectorAll("[data-running-admin-error]").forEach(node => { node.hidden = true; });
       roster = [];
       reportRoster = [];
       managementLoaded = loading = saving = false;
@@ -194,6 +259,8 @@
       if (!account) return;
       if (view === "daily") showReporting();
       if (view === "management") loadManagement();
+      if (view === "running") showRunningDetails();
+      if (view === "results") loadResults();
     };
   };
 })();
