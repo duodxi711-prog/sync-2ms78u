@@ -5,7 +5,7 @@
       language: "语言", signin: "登录", signup: "注册", reset: "找回密码", recovery: "设置新密码",
       name: "姓名", email: "邮箱", password: "密码", newPassword: "新密码", confirmPassword: "确认新密码",
       passwordMismatch: "两次输入的密码不一致，请重新确认。", enroll: "提交账号资料",
-      account: "我的账号", enter: "进入 AdRelay", teamEntry: "使用团队口令进入", refresh: "刷新状态", logout: "退出登录", members: "员工审核",
+      account: "我的账号", reporting: "打开每日填报", enter: "进入 AdRelay", teamEntry: "使用团队口令进入", refresh: "刷新状态", logout: "退出登录", members: "员工审核",
       pending: "等待管理员审核", active: "员工账号已开通", admin: "管理员账号已开通",
       disabled: "员工账号已停用", empty: "暂无员工申请", code: "成员代号",
       approve: "开通", disable: "停用", restore: "恢复", saved: "已保存",
@@ -18,7 +18,7 @@
       language: "Language", signin: "Sign in", signup: "Register", reset: "Reset password", recovery: "Set a new password",
       name: "Name", email: "Email", password: "Password", newPassword: "New password", confirmPassword: "Confirm new password",
       passwordMismatch: "The passwords do not match. Please check both entries.", enroll: "Submit account details",
-      account: "My account", enter: "Open AdRelay", teamEntry: "Enter with team passphrase", refresh: "Refresh status", logout: "Sign out", members: "Employee approvals",
+      account: "My account", reporting: "Open daily reporting", enter: "Open AdRelay", teamEntry: "Enter with team passphrase", refresh: "Refresh status", logout: "Sign out", members: "Employee approvals",
       pending: "Awaiting admin approval", active: "Employee access is active", admin: "Administrator access is active",
       disabled: "Employee access is disabled", empty: "No employee applications yet", code: "Member code",
       approve: "Approve", disable: "Disable", restore: "Restore", saved: "Saved",
@@ -57,7 +57,6 @@
   let message;
   const client = window.supabase?.createClient("https://sovltgzuzgsijebbtyms.supabase.co", "sb_publishable_3pcN0anu9HAIL2DD0gIQSQ_N3-JOgpZ");
   const redirect = new URL(location.pathname, location.origin).href;
-  const dailyReports = window.createAdRelayDailyReports?.(client);
 
   function workspaceUrl(access, defaultView) {
     const dest = new URL("./", redirect);
@@ -86,7 +85,7 @@
     const entry = byId("enter-adrelay");
     if (entry) {
       entry.hidden = !isAdmin;
-      entry.href = workspaceUrl("account", "workspace");
+      entry.href = requestedView === "daily" ? "./daily.html?lang=" + lang : workspaceUrl("account", "workspace");
     }
     const teamEntry = byId("team-entry");
     if (teamEntry) {
@@ -114,7 +113,11 @@
     byId("membership-status").textContent = profile ? t(profile.role === "admin" && profile.status === "active" ? "admin" : profile.status) : "";
     document.querySelectorAll("[data-mode]").forEach(node => node.setAttribute("aria-pressed", String(node.dataset.mode === mode)));
     renderRoster();
-    dailyReports?.sync(signedIn && !recovery ? profile : null, lang, roster);
+    const reporting = byId("open-reporting");
+    if (reporting) {
+      reporting.hidden = !signedIn || recovery || profile?.status !== "active";
+      reporting.href = "./daily.html?lang=" + lang;
+    }
     if (message) notify(message.key, message.isError);
   }
 
