@@ -806,9 +806,51 @@
   .site-access-card :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
   .site-access-error{margin:8px 0 0;color:var(--danger-text,#a52516);font-size:14px}
   #workspace-access{margin:20px auto 0;padding:clamp(18px,5vw,30px)}
-  html[data-admin-entry] #legacy-site-access,html:not([data-admin-entry]) #admin-site-access{display:none}
+  html[data-account-entry] #legacy-site-access,html:not([data-account-entry]) #account-site-access{display:none}
   .account-entry-link{display:inline-block;margin-top:12px;color:var(--accent);font-weight:650}
-  html:not([data-admin-entry]) #daily-nav-link{display:none}
+  html:not([data-account-role]) :is(#daily-nav-link,.view[data-view="daily"]),
+  html:not([data-account-role="admin"]) :is(#management-nav-link,.view[data-view="management"]),
+  html[data-account-role="employee"] :is(#tabs a:not(#daily-nav-link),#tabs .methods,main>.view:not([data-view="daily"])){display:none!important}
+  .business-view [hidden]{display:none!important}
+  .business-view :is(.daily-content,.management-card){min-width:0}
+  .daily-content{display:grid;gap:14px}
+  .daily-content>section,.management-card{min-width:0;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:clamp(14px,2.5vw,21px)}
+  .business-view h3{margin:0 0 8px}
+  .business-view :is(.daily-note,[role="status"],small){color:var(--ink2);font-size:13px}
+  .business-view :is(.daily-note,[role="status"]){margin:8px 0 0}
+  .business-view .daily-note{margin:0 0 12px}
+  .business-view [role="status"]:empty{display:none}
+  .business-view [data-error]{color:var(--danger-text,#a52516)}
+  .business-view :is(input,select,button){min-height:40px;padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--subtle-surface,#f8f9fb);color:var(--ink);font:inherit;font-size:14px}
+  .business-view button{cursor:pointer}
+  .business-view button:not(:disabled):hover{border-color:var(--accent)}
+  .business-view button:disabled{opacity:.6;cursor:default}
+  .business-view button.primary{background:var(--accent-fill,var(--accent));border-color:transparent;color:#fff;font-weight:650}
+  .business-view :focus-visible{outline:2px solid var(--focus-ring,var(--accent));outline-offset:2px}
+  .daily-fields,.daily-filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,125px),1fr));gap:12px;align-items:end}
+  .daily-content label{display:grid;gap:4px;font-size:14px;font-weight:600}
+  .daily-content input,.daily-content select{width:100%;min-width:0}
+  .daily-content button.primary,.daily-table,.daily-pagination{margin-top:12px}
+  #daily-member-filter{max-width:270px}
+  .daily-table{overflow-x:auto}
+  .daily-table table{width:100%;margin:0;border-collapse:collapse;font-variant-numeric:tabular-nums}
+  .daily-table :is(th,td){padding:8px 10px;text-align:left;white-space:nowrap}
+  .daily-table button{min-height:32px}
+  .management-head,.management-member,.management-member form,.daily-pagination{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap}
+  .management-head,.management-member{justify-content:space-between}
+  .management-head{margin-bottom:12px}
+  .management-head h3{margin:0}
+  .management-member{padding:13px 0;border-top:1px solid var(--line2)}
+  .management-member:last-child{padding-bottom:0}
+  .management-member small{display:block;overflow-wrap:anywhere}
+  .management-member input{width:9rem;text-transform:uppercase}
+  .management-status-badge{margin-left:8px;padding:2px 7px;border-radius:5px;background:var(--subtle-surface,#f2f4f7);color:var(--ink2);font-size:12px}
+  .management-status-badge[data-state="pending"]{background:var(--accent-bg);color:var(--accent)}
+  .management-status-badge[data-state="active"]{background:var(--good-surface,#e9f7f0);color:var(--good-text,#13764e)}
+  .nav-icon-management:is(svg){width:15px;height:15px}
+  .active .nav-icon-management path{fill:currentColor}
+  .active .nav-icon-management .shield-mark{stroke:var(--card)}
+  #settings-my-account{text-decoration:none;margin-right:4px}
 </style>
 <script>
 (function(){
@@ -816,12 +858,12 @@
   const params=new URLSearchParams(location.search);
   const access=params.get("access");
   if(access==="account"){
-    root.setAttribute("data-admin-entry","");
+    root.setAttribute("data-account-entry","");
     return;
   }
   if(access!=="team"){
     const account=new URL("./account.html",location.href);
-    account.searchParams.set("v","4");
+    account.searchParams.set("v","7");
     const lang=params.get("lang");
     if(lang==="zh"||lang==="en") account.searchParams.set("lang",lang);
     // Keep bookmarks for reports, tasks and individual offers through sign-in.
@@ -1015,13 +1057,13 @@
     </form>
     <a class="account-entry-link" href="./account.html"><span class="t-zh">用账号登录</span><span class="t-en">Sign in with an account</span></a>
   </div>
-  <div class="site-access-card" id="admin-site-access">
+  <div class="site-access-card" id="account-site-access">
     <p class="site-access-brand">AdRelay</p>
-    <h2><span class="t-zh">管理员入口</span><span class="t-en">Administrator access</span></h2>
-    <p class="site-access-hint" id="admin-access-checking" role="status"><span class="t-zh">正在验证管理员账号…</span><span class="t-en">Checking your administrator account…</span></p>
-    <p class="site-access-error" id="admin-access-denied" role="alert" hidden><span class="t-zh">请用已开通的管理员账号登录。</span><span class="t-en">Sign in with an active administrator account.</span></p>
-    <p class="site-access-error" id="admin-access-error" role="alert" hidden><span class="t-zh">暂时无法验证账号，请刷新后重试。</span><span class="t-en">Account verification is unavailable. Refresh to try again.</span></p>
-    <a class="account-entry-link" id="admin-return-account" href="./account.html"><span class="t-zh">返回账号页</span><span class="t-en">Back to accounts</span></a>
+    <h2><span class="t-zh">账号登录</span><span class="t-en">Account access</span></h2>
+    <p class="site-access-hint" id="account-access-checking" role="status"><span class="t-zh">正在验证账号…</span><span class="t-en">Checking your account…</span></p>
+    <p class="site-access-error" id="account-access-denied" role="alert" hidden><span class="t-zh">请用已开通的账号登录。</span><span class="t-en">Sign in with an active account.</span></p>
+    <p class="site-access-error" id="account-access-error" role="alert" hidden><span class="t-zh">暂时无法验证账号，请刷新后重试。</span><span class="t-en">Account verification is unavailable. Refresh to try again.</span></p>
+    <a class="account-entry-link" id="return-to-account" href="./account.html"><span class="t-zh">返回账号页</span><span class="t-en">Back to accounts</span></a>
   </div>
 </section>
 
@@ -1035,9 +1077,10 @@
       <a href="#running" data-view="running"><span class="nav-icon nav-icon-running" aria-hidden="true"></span><span class="t-zh">Running 安排</span><span class="t-en">Running</span></a>
       <a href="#workspace" data-view="workspace"><span class="nav-icon nav-icon-workspace" aria-hidden="true"><span></span><span></span><span></span><span></span></span><span class="t-zh">工作台</span><span class="t-en">Workspace</span></a>
       <a href="#results" data-view="results"><span class="nav-icon nav-icon-results" aria-hidden="true"><span></span><span></span><span></span></span><span class="t-zh">测试结果</span><span class="t-en">Test Results</span></a>
-      <a href="./daily.html" id="daily-nav-link"><span class="nav-icon nav-icon-tasks" aria-hidden="true"></span><span class="t-zh">每日填报</span><span class="t-en">Daily Reporting</span></a>
+      <a href="#daily" data-view="daily" id="daily-nav-link"><span class="nav-icon nav-icon-tasks" aria-hidden="true"></span><span class="t-zh">每日填报</span><span class="t-en">Daily Reporting</span></a>
       <a href="#tasks" data-view="tasks"><span class="nav-icon nav-icon-tasks" aria-hidden="true"></span><span class="t-zh">我的任务</span><span class="t-en">My Tasks</span></a>
       <a href="#offers" data-view="offers"><span class="nav-icon nav-icon-offers" aria-hidden="true"></span><span class="t-zh">Offer 清单</span><span class="t-en">Offer List</span></a>
+      <a href="#management" data-view="management" id="management-nav-link"><svg class="nav-icon nav-icon-management" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2.25 16 4.5v4.75c0 3.68-2.45 6.47-6 8.5-3.55-2.03-6-4.82-6-8.5V4.5L10 2.25Z"/><polyline class="shield-mark" points="7.5 9.5 9.2 11.3 12.7 7.9"/></svg><span class="t-zh">管理</span><span class="t-en">Management</span></a>
       <span class="nav-group-label methods" aria-hidden="true"><span class="t-zh">投放方法</span><span class="t-en">Methods</span></span>
       <a href="#m01" data-view="m01" data-c="m01"><span class="num">M01</span><span>Arthur</span></a>
       <a href="#m02" data-view="m02" data-c="m02"><span class="num">M02</span><span>Silva</span></a>
@@ -1083,6 +1126,7 @@
     </div>
   </div>
   <div class="settings-account" id="settings-account" hidden>
+    <a class="settings-trigger" id="settings-my-account" href="./account.html?v=7"><span class="t-zh">我的账号</span><span class="t-en">My account</span></a>
     <button type="button" class="settings-trigger" id="settings-logout"><span class="t-zh">退出登录</span><span class="t-en">Sign out</span></button>
     <p class="site-access-error" id="settings-logout-error" role="alert" hidden><span class="t-zh">暂时无法退出，请重试。</span><span class="t-en">Unable to sign out. Please try again.</span></p>
   </div>
@@ -1093,6 +1137,73 @@
 </dialog>
 
 <main>
+<section class="view business-view" data-view="daily" aria-labelledby="reporting-title">
+  <h2 class="workspace-title" id="reporting-title"><span class="t-zh">每日填报</span><span class="t-en">Daily Reporting</span></h2>
+  <p id="reporting-load-error" class="site-access-error" role="status" hidden><span class="t-zh">员工名单加载失败，切换页面后可重试。</span><span class="t-en">The employee list did not load. Reopen this tab to try again.</span></p>
+  <section id="daily-reports" aria-labelledby="reporting-title" hidden>
+    <div class="daily-content">
+      <section aria-labelledby="daily-write-title">
+        <h2 id="daily-write-title" data-daily-text="write">填写投放数据</h2>
+        <p class="daily-note" data-daily-text="saveHint">同一天、同一个 Offer 和平台只记一笔。再次保存会更新这笔数据。</p>
+        <form id="daily-form">
+          <div class="daily-fields">
+            <label><span data-daily-text="date">日期</span><input type="date" name="date" required></label>
+            <label><span>Offer</span><input name="offer" list="daily-offers" maxlength="80" required></label>
+            <datalist id="daily-offers">
+              <option value="GlucoBase"></option><option value="YoBurn"></option><option value="AlkaMelt"></option>
+              <option value="VisiVra"></option><option value="LungVicks"></option><option value="VapoBrain"></option>
+              <option value="NeuroTamine"></option><option value="SlimZol"></option>
+            </datalist>
+            <label><span data-daily-text="platform">平台</span><select name="platform"><option value="facebook">Facebook</option><option value="newsbreak">NewsBreak</option></select></label>
+            <label><span data-daily-text="spend">花费（USD）</span><input name="spend" type="number" min="0" max="9999999999.99" step="0.01" required></label>
+            <label><span data-daily-text="cpcInput">CPC（可选）</span><input name="cpc" type="number" min="0" max="99999999.9999" step="0.0001"></label>
+            <label><span data-daily-text="orders">出单</span><input name="purchases" type="number" min="0" max="2147483647" step="1" required></label>
+            <label><span data-daily-text="revenue">营收（USD）</span><input name="revenue" type="number" min="0" max="9999999999.99" step="0.01" required></label>
+          </div>
+          <button class="primary" type="submit" data-daily-text="save">保存日报</button>
+        </form>
+        <p id="daily-save-status" role="status"></p>
+      </section>
+      <section aria-labelledby="daily-totals-title">
+        <h2 id="daily-totals-title" data-daily-text="totals">团队填报汇总</h2>
+        <p class="daily-note" data-daily-text="scope">此处汇总通过日报表单录入的数据。</p>
+        <form id="daily-filter" class="daily-filters">
+          <label><span data-daily-text="from">开始日期</span><input type="date" name="from" required></label>
+          <label><span data-daily-text="to">结束日期</span><input type="date" name="to" required></label>
+          <label><span>Offer</span><input name="offer" list="daily-offers" maxlength="80"></label>
+          <button type="submit" data-daily-text="apply">查询</button>
+        </form>
+        <div class="daily-table"><table aria-labelledby="daily-totals-title" id="daily-totals"></table></div>
+      </section>
+      <section aria-labelledby="daily-details-title">
+        <h2 id="daily-details-title" data-daily-text="mine">我的日报</h2>
+        <label id="daily-member-filter" hidden>
+          <span data-daily-text="member">员工</span>
+          <select id="daily-member"></select>
+        </label>
+        <div class="daily-table"><table aria-labelledby="daily-details-title" id="daily-details"></table></div>
+        <div class="daily-pagination" id="daily-pagination" hidden>
+          <button type="button" id="daily-prev" data-daily-text="previous">上一页</button>
+          <button type="button" id="daily-next" data-daily-text="next">下一页</button>
+        </div>
+        <p id="daily-list-status" role="status"></p>
+      </section>
+    </div>
+  </section>
+</section>
+
+<section class="view business-view" data-view="management" aria-labelledby="management-title">
+  <h2 class="workspace-title" id="management-title"><span class="t-zh">管理</span><span class="t-en">Management</span></h2>
+  <section class="management-card" aria-labelledby="management-members-title">
+    <div class="management-head">
+      <h3 id="management-members-title"><span class="t-zh">员工审核</span><span class="t-en">Employee approvals</span></h3>
+      <button type="button" id="management-refresh"><span class="t-zh">刷新名单</span><span class="t-en">Refresh list</span></button>
+    </div>
+    <p id="management-status" role="status"></p>
+    <div id="management-roster"></div>
+  </section>
+</section>
+
 <section class="view" data-view="workspace" aria-labelledby="workspace-heading">
   <h2 class="workspace-title" id="workspace-heading" tabindex="-1"><span class="t-zh">工作台</span><span class="t-en">Workspace</span></h2>
   <div class="site-access-card" id="workspace-access">
@@ -3667,12 +3778,11 @@ Tap below to watch the full breakdown. 👇</p>
 
 <script>
 (function(){
-  var views=["running","workspace","results","tasks","offers","m01","m02","m03"];
+  var views=["running","workspace","results","daily","tasks","offers","management","m01","m02","m03"];
   var root=document.documentElement;
   function setLang(l,save){
     l=(l==="en")?"en":"zh";
     root.setAttribute("data-lang",l);
-    document.getElementById("daily-nav-link").href="./daily.html?lang="+l;
     root.setAttribute("lang",l==="en"?"en":"zh-CN");
     document.title=l==="en"?"Info Sync · AdRelay":"信息同步 · AdRelay";
     document.querySelectorAll(".langsw button").forEach(function(b){
@@ -3686,6 +3796,7 @@ Tap below to watch the full breakdown. 👇</p>
         history.replaceState(history.state,"",url);
       }
     }
+    window.dispatchEvent(new Event("adrelay:language"));
   }
   var workspaceGate=document.getElementById("workspace-access");
   var workspaceInput=document.getElementById("workspace-access-input");
@@ -3696,7 +3807,15 @@ Tap below to watch the full breakdown. 👇</p>
     if(h.indexOf("offer-")===0){target=h.slice(6);h="offers";}
     if(h==="results-offer-tests-1114-1115"||h==="results-glucobase-lbg") h="results";
     else if(h.indexOf("results-")===0){rtarget=h.slice(8);h="running";}
-    if(views.indexOf(h)<0) h="running";
+    const role=root.dataset.accountRole;
+    if(role==="employee"){
+      h="daily";
+      target=rtarget=null;
+      if(location.hash!=="#daily") history.replaceState(history.state,"","#daily");
+    }else if(views.indexOf(h)<0 || (!role && h==="daily") || (role!=="admin" && h==="management")){
+      h="running";
+    }
+    document.querySelector(".brand-home").href=role==="employee"?"#daily":"#running";
     document.querySelectorAll("section.view").forEach(function(sec){
       sec.classList.toggle("active",sec.getAttribute("data-view")===h);
     });
@@ -3708,6 +3827,7 @@ Tap below to watch the full breakdown. 👇</p>
       else a.removeAttribute("aria-current");
       if(on&&nav.scrollWidth>nav.clientWidth){nav.scrollLeft=a.offsetLeft-(nav.clientWidth-a.offsetWidth)/2;}
     });
+    window.dispatchEvent(new CustomEvent("adrelay:route",{detail:h}));
     window.scrollTo(0,0);
     if(h==="workspace"&&!workspaceGate.hidden&&!root.hasAttribute("data-site-locked")){
       workspaceInput.focus({preventScroll:true});
@@ -3778,7 +3898,7 @@ Tap below to watch the full breakdown. 👇</p>
     workspaceGate.hidden=true;
     workspaceContent.hidden=false;
   }
-  if(root.hasAttribute("data-admin-entry")){
+  if(root.hasAttribute("data-account-entry")){
     window.addEventListener("adrelay:admin-access",function(event){
       if(event.detail) unlockWorkspace();
       else{
@@ -3791,7 +3911,7 @@ Tap below to watch the full breakdown. 👇</p>
       if(sessionStorage.getItem(workspaceSessionKey)===workspaceVerifier) unlockWorkspace();
     }catch(e){}
   }
-  if(!workspaceGate.hidden&&!root.hasAttribute("data-admin-entry")){
+  if(!workspaceGate.hidden&&!root.hasAttribute("data-account-entry")){
     const canVerify=Boolean(window.crypto&&window.crypto.subtle);
     workspaceUnavailable.hidden=canVerify;
     workspaceSubmit.disabled=!canVerify;
@@ -3829,6 +3949,7 @@ Tap below to watch the full breakdown. 👇</p>
   });
   window.addEventListener("hashchange",show);
   window.addEventListener("adrelay:site-unlocked",show);
+  window.addEventListener("adrelay:account-access",show);
   show();
 })();
 </script>
@@ -4302,25 +4423,47 @@ Tap below to watch the full breakdown. 👇</p>
   });
 })();
 </script>
+<script src="./daily-reports.js?v=3" defer></script>
+<script src="./business-panels.js?v=1" defer></script>
 <script>
-(function(){
+document.addEventListener("DOMContentLoaded",function(){
   const root=document.documentElement;
-  if(!root.hasAttribute("data-admin-entry")) return;
+  if(!root.hasAttribute("data-account-entry")) return;
 
-  const checking=document.getElementById("admin-access-checking");
-  const denied=document.getElementById("admin-access-denied");
-  const unavailable=document.getElementById("admin-access-error");
+  const checking=document.getElementById("account-access-checking");
+  const denied=document.getElementById("account-access-denied");
+  const unavailable=document.getElementById("account-access-error");
   const settings=document.getElementById("site-settings");
   const accountSection=document.getElementById("settings-account");
   const logout=document.getElementById("settings-logout");
   const logoutError=document.getElementById("settings-logout-error");
-  const accountUrl=()=> "./account.html?lang="+root.dataset.lang;
-  document.getElementById("admin-return-account").href=accountUrl();
+  const returnToAccount=document.getElementById("return-to-account");
+  const myAccount=document.getElementById("settings-my-account");
+  function accountUrl(keepView=false){
+    const url=new URL("./account.html",location.href);
+    url.searchParams.set("v","7");
+    url.searchParams.set("lang",root.dataset.lang);
+    const view=location.hash.slice(1);
+    if(keepView&&/^[a-z0-9_-]{1,100}$/i.test(view)) url.searchParams.set("view",view);
+    return url.href;
+  }
+  function setAccountLinks(){
+    returnToAccount.href=accountUrl(true);
+    myAccount.href=accountUrl();
+  }
+  setAccountLinks();
+  window.addEventListener("adrelay:language",setAccountLinks);
+  window.addEventListener("hashchange",setAccountLinks);
+  let setBusinessAccount=()=>{};
   let verifiedUser=null;
   let requested=0;
   let signedOut=false;
-  function showAccess(state){
+  function showAccess(state,profile=null){
     const allowed=state==="allowed";
+    const previousRole=root.dataset.accountRole;
+    if(allowed) root.dataset.accountRole=profile.role;
+    else delete root.dataset.accountRole;
+    setBusinessAccount(profile);
     const wasLocked=root.hasAttribute("data-site-locked");
     checking.hidden=state!=="checking";
     denied.hidden=state!=="denied";
@@ -4328,8 +4471,9 @@ Tap below to watch the full breakdown. 👇</p>
     accountSection.hidden=!allowed;
     if(!allowed&&settings.open) settings.close();
     root.toggleAttribute("data-site-locked",!allowed);
-    window.dispatchEvent(new CustomEvent("adrelay:admin-access",{detail:allowed}));
+    window.dispatchEvent(new CustomEvent("adrelay:admin-access",{detail:profile?.role==="admin"}));
     if(allowed&&wasLocked) window.dispatchEvent(new Event("adrelay:site-unlocked"));
+    else if(allowed&&previousRole!==profile.role) window.dispatchEvent(new Event("adrelay:account-access"));
   }
 
   const sdk=document.createElement("script");
@@ -4341,6 +4485,9 @@ Tap below to watch the full breakdown. 👇</p>
       return;
     }
     const client=window.supabase.createClient("https://sovltgzuzgsijebbtyms.supabase.co","sb_publishable_3pcN0anu9HAIL2DD0gIQSQ_N3-JOgpZ");
+    if(window.createAdRelayBusinessPanels&&window.createAdRelayDailyReports){
+      setBusinessAccount=window.createAdRelayBusinessPanels(client);
+    }
     logout.addEventListener("click",async function(){
       logout.disabled=true;
       logoutError.hidden=true;
@@ -4382,11 +4529,11 @@ Tap below to watch the full breakdown. 👇</p>
       setTimeout(async function(){
         if(revision!==requested) return;
         try{
-          const {data,error}=await client.from("adrelay_members").select("role,status").eq("user_id",userId).maybeSingle();
+          const {data,error}=await client.from("adrelay_members").select("user_id,display_name,role,status").eq("user_id",userId).maybeSingle();
           if(revision!==requested) return;
-          const allowed=!error&&data?.role==="admin"&&data.status==="active";
+          const allowed=!error&&data?.status==="active"&&["admin","employee"].includes(data.role);
           verifiedUser=allowed?userId:null;
-          showAccess(error?"unavailable":allowed?"allowed":"denied");
+          showAccess(error?"unavailable":allowed?"allowed":"denied",allowed?data:null);
         }catch(error){
           if(revision!==requested) return;
           verifiedUser=null;
@@ -4396,7 +4543,7 @@ Tap below to watch the full breakdown. 👇</p>
     });
   };
   document.head.appendChild(sdk);
-})();
+});
 </script>
 </body>
 </html>
