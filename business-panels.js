@@ -69,13 +69,14 @@
       }
     }
 
-    function publishResults(rows, error = false) {
-      window.dispatchEvent(new CustomEvent("adrelay:live-results", { detail: { rows, error } }));
+    function publishResults(rows, state) {
+      window.dispatchEvent(new CustomEvent("adrelay:live-results", { detail: { rows, state, error: state === "error" } }));
     }
 
     async function loadResults() {
       if (!account) return;
       const request = ++resultsSync;
+      publishResults([], "loading");
       const pageSize = 250;
       const rows = [];
       try {
@@ -87,9 +88,9 @@
           rows.push(...data);
           if (data.length < pageSize) break;
         }
-        publishResults(rows);
+        publishResults(rows, "ready");
       } catch {
-        if (request === resultsSync) publishResults([], true);
+        if (request === resultsSync) publishResults([], "error");
       }
     }
 
@@ -209,7 +210,8 @@
       const request = ++reportSync;
       if (isAdmin()) {
         try {
-          const { data, error } = await client.from("adrelay_members").select("user_id,display_name").order("display_name");
+          const { data, error } = await client.from("adrelay_members")
+            .select("user_id,display_name,role").eq("role", "employee").order("display_name");
           if (request !== reportSync) return;
           if (error) throw error;
           reportRoster = data;
@@ -245,7 +247,7 @@
       reportSync++;
       resultsSync++;
       account = profile;
-      publishResults([]);
+      publishResults([], "reset");
       clearRunningDetails();
       document.querySelectorAll("[data-running-admin-error]").forEach(node => { node.hidden = true; });
       roster = [];
