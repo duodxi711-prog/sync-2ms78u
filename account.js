@@ -4,7 +4,7 @@
     zh: {
       language: "语言", signin: "登录", signup: "注册", reset: "找回密码", recovery: "设置新密码",
       name: "姓名", email: "邮箱", password: "密码", enroll: "提交账号资料",
-      account: "我的账号", refresh: "刷新状态", logout: "退出登录", members: "员工审核",
+      account: "我的账号", enter: "进入 AdRelay", refresh: "刷新状态", logout: "退出登录", members: "员工审核",
       pending: "等待管理员审核", active: "员工账号已开通", admin: "管理员账号已开通",
       disabled: "员工账号已停用", empty: "暂无员工申请", code: "成员代号",
       approve: "开通", disable: "停用", restore: "恢复", saved: "已保存",
@@ -16,7 +16,7 @@
     en: {
       language: "Language", signin: "Sign in", signup: "Register", reset: "Reset password", recovery: "Set a new password",
       name: "Name", email: "Email", password: "Password", enroll: "Submit account details",
-      account: "My account", refresh: "Refresh status", logout: "Sign out", members: "Employee approvals",
+      account: "My account", enter: "Open AdRelay", refresh: "Refresh status", logout: "Sign out", members: "Employee approvals",
       pending: "Awaiting admin approval", active: "Employee access is active", admin: "Administrator access is active",
       disabled: "Employee access is disabled", empty: "No employee applications yet", code: "Member code",
       approve: "Approve", disable: "Disable", restore: "Restore", saved: "Saved",
@@ -65,7 +65,13 @@
     form.hidden = signedIn && !enrolling && !recovery;
     byId("auth-nav").hidden = signedIn || recovery;
     byId("profile").hidden = !signedIn || recovery;
-    byId("members").hidden = recovery || profile?.role !== "admin" || profile?.status !== "active";
+    const isAdmin = signedIn && !recovery && profile?.role === "admin" && profile.status === "active";
+    byId("members").hidden = !isAdmin;
+    const entry = byId("enter-adrelay");
+    if (entry) {
+      entry.hidden = !isAdmin;
+      entry.href = "./?access=account&lang=" + lang + "#workspace";
+    }
     byId("name-field").hidden = !["enroll", "signup"].includes(formMode);
     byId("email-field").hidden = ["enroll", "recovery"].includes(formMode);
     byId("password-field").hidden = ["enroll", "reset"].includes(formMode);
