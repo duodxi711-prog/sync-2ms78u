@@ -320,10 +320,13 @@
   .rdetail-body>.rhero{margin-top:12px}
   .offer-test-report td.mono{overflow-wrap:anywhere}
   .offer-test-report td.num{white-space:nowrap}
-  [data-report-attribution] tr[data-purchase-level="1"]{background:var(--winner-1,#fff6f4)}
-  [data-report-attribution] tr[data-purchase-level="2"]{background:var(--winner-2,#ffe9e5)}
-  [data-report-attribution] tr[data-purchase-level="3"]{background:var(--winner-3,#ffd6cf)}
-  [data-report-attribution] tr[data-purchase-level="4"]{background:var(--winner-4,#ffb8ac)}
+  [data-report-attribution] > tr[data-purchase-level="1"]{--purchase-background:var(--winner-1,#fff6f4)}
+  [data-report-attribution] > tr[data-purchase-level="2"]{--purchase-background:var(--winner-2,#ffe9e5)}
+  [data-report-attribution] > tr[data-purchase-level="3"]{--purchase-background:var(--winner-3,#ffd6cf)}
+  [data-report-attribution] > tr[data-purchase-level="4"]{--purchase-background:var(--winner-4,#ffb8ac)}
+  [data-report-attribution] > tr[data-purchase-level]:not([data-report-unattributed]) > td{
+    background-color:var(--purchase-background,transparent);
+  }
   .offer-test-report tfoot{background:var(--subtle-surface,#f8f9fb);font-weight:700}
   .offer-test-report .pl-positive{color:var(--report-profit,#08704f)}
   .offer-test-report .pl-negative{color:var(--report-loss,#a62941)}
@@ -3938,6 +3941,13 @@ Tap below to watch the full breakdown. 👇</p>
     if(count>=2) return 2;
     return 1;
   }
+  function setPurchaseHighlight(row,count){
+    if(count>0&&!row.hasAttribute("data-report-unattributed")){
+      row.dataset.purchaseLevel=String(purchaseHighlightLevel(count));
+    }else{
+      delete row.dataset.purchaseLevel;
+    }
+  }
   var reportPlatforms={facebook:"Facebook",newsbreak:"NewsBreak"};
   function summarizeReportDay(records,english,destination,offerLabel){
     var totals={spend:0,orders:0,revenue:0};
@@ -4179,11 +4189,7 @@ Tap below to watch the full breakdown. 👇</p>
           },0);
           row.hidden=count===0;
           row.lastElementChild.textContent=String(count);
-          if(count>0&&!row.hasAttribute("data-report-unattributed")){
-            row.dataset.purchaseLevel=String(purchaseHighlightLevel(count));
-          }else{
-            delete row.dataset.purchaseLevel;
-          }
+          setPurchaseHighlight(row,count);
           hasPurchases=hasPurchases||count>0;
         });
         body.querySelector("[data-report-empty]").hidden=hasPurchases;
@@ -4208,6 +4214,9 @@ Tap below to watch the full breakdown. 👇</p>
     function onFilterChange(){applyReportFilters(date.value,platform.value);}
     date.addEventListener("change",onFilterChange);
     platform.addEventListener("change",onFilterChange);
+  });
+  document.querySelectorAll("[data-report-attribution] > tr[data-report-purchases]").forEach(function(row){
+    setPurchaseHighlight(row,Number(row.lastElementChild.textContent));
   });
   applyReportFilters("","");
   document.addEventListener("keydown",function(e){
