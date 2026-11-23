@@ -3,7 +3,8 @@
   const words = {
     zh: {
       language: "语言", signin: "登录", signup: "注册", reset: "找回密码", recovery: "设置新密码",
-      name: "姓名", email: "邮箱", password: "密码", enroll: "提交账号资料",
+      name: "姓名", email: "邮箱", password: "密码", newPassword: "新密码", confirmPassword: "确认新密码",
+      passwordMismatch: "两次输入的密码不一致，请重新确认。", enroll: "提交账号资料",
       account: "我的账号", enter: "进入 AdRelay", refresh: "刷新状态", logout: "退出登录", members: "员工审核",
       pending: "等待管理员审核", active: "员工账号已开通", admin: "管理员账号已开通",
       disabled: "员工账号已停用", empty: "暂无员工申请", code: "成员代号",
@@ -15,7 +16,8 @@
     },
     en: {
       language: "Language", signin: "Sign in", signup: "Register", reset: "Reset password", recovery: "Set a new password",
-      name: "Name", email: "Email", password: "Password", enroll: "Submit account details",
+      name: "Name", email: "Email", password: "Password", newPassword: "New password", confirmPassword: "Confirm new password",
+      passwordMismatch: "The passwords do not match. Please check both entries.", enroll: "Submit account details",
       account: "My account", enter: "Open AdRelay", refresh: "Refresh status", logout: "Sign out", members: "Employee approvals",
       pending: "Awaiting admin approval", active: "Employee access is active", admin: "Administrator access is active",
       disabled: "Employee access is disabled", empty: "No employee applications yet", code: "Member code",
@@ -30,10 +32,12 @@
   };
   const byId = id => document.getElementById(id);
   const form = byId("auth-form");
+  const confirmationField = byId("confirm-password-field");
+  const confirmationInput = form.elements.namedItem("confirmPassword");
   const language = byId("language");
   let lang = new URLSearchParams(location.search).get("lang");
   try {
-    lang = lang || localStorage.getItem("sync-lang");
+    lang = lang || localStorage.getItem("adrelay-account-lang");
     if (localStorage.getItem("adrelay-theme") === "dark") document.documentElement.dataset.theme = "dark";
   } catch {}
   lang = lang === "en" ? lang : "zh";
@@ -78,7 +82,15 @@
     form.elements.name.required = !byId("name-field").hidden;
     form.elements.email.required = !byId("email-field").hidden;
     form.elements.password.required = !byId("password-field").hidden;
-    form.elements.password.autocomplete = ["signup", "recovery"].includes(formMode) ? "new-password" : "current-password";
+    const isNewPassword = ["signup", "recovery"].includes(formMode);
+    form.elements.password.autocomplete = isNewPassword ? "new-password" : "current-password";
+    const passwordLabel = byId("password-label");
+    if (passwordLabel) passwordLabel.textContent = t(isNewPassword ? "newPassword" : "password");
+    if (confirmationField && confirmationInput) {
+      confirmationField.hidden = !isNewPassword;
+      confirmationInput.required = isNewPassword;
+      confirmationInput.disabled = !isNewPassword;
+    }
     byId("auth-submit").textContent = t(formMode);
     byId("auth-submit").disabled = !client || busy;
     byId("identity").textContent = profile ? profile.display_name + " · " + profile.email : (session?.user.email || "");
@@ -173,11 +185,33 @@
   }
   language.addEventListener("change", () => {
     lang = language.value;
-    try { localStorage.setItem("sync-lang", lang); } catch {}
+    try {
+      localStorage.setItem("adrelay-account-lang", lang);
+      localStorage.setItem("sync-lang", lang);
+      const url = new URL(location.href);
+      if (url.searchParams.has("lang")) {
+        url.searchParams.set("lang", lang);
+        history.replaceState(history.state, "", url);
+      }
+    } catch {}
     render();
   });
+  function clearConfirmationError() {
+    confirmationInput?.removeAttribute("aria-invalid");
+    if (message?.key === "passwordMismatch") notify();
+  }
+  form.elements.password.addEventListener("input", clearConfirmationError);
+  confirmationInput?.addEventListener("input", clearConfirmationError);
   document.querySelectorAll("[data-mode]").forEach(button => {
-    button.addEventListener("click", () => { mode = button.dataset.mode; notify(); render(); });
+    button.addEventListener("click", () => {
+      if (mode === button.dataset.mode) return;
+      mode = button.dataset.mode;
+      form.elements.password.value = "";
+      if (confirmationInput) confirmationInput.value = "";
+      clearConfirmationError();
+      notify();
+      render();
+    });
   });
   byId("reload-account").addEventListener("click", () => act(loadProfile));
   byId("logout").addEventListener("click", () => act(async () => {
@@ -188,13 +222,22 @@
     event.preventDefault();
     const name = form.elements.name.value.trim();
     const email = form.elements.email.value.trim();
+    if (!client || busy) return;
     const password = form.elements.password.value;
-    form.elements.password.value = "";
-    if ((recovery || (!session && mode === "signup")) && password.length < 12) {
+    const isNewPassword = recovery || (!session && mode === "signup");
+    if (isNewPassword && password.length < 12) {
       notify("shortPassword", true);
       form.elements.password.focus();
       return;
     }
+    if (isNewPassword && confirmationInput && password !== confirmationInput.value) {
+      confirmationInput.setAttribute("aria-invalid", "true");
+      notify("passwordMismatch", true);
+      confirmationInput.focus();
+      return;
+    }
+    form.elements.password.value = "";
+    if (confirmationInput) confirmationInput.value = "";
     await act(async () => {
       let result;
       if (recovery) {
