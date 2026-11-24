@@ -67,6 +67,8 @@
     border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(42deg);
   }
   .active .nav-icon-tasks::after{border-color:var(--card)}
+  .active .nav-icon-task-list .task-list-frame{fill:currentColor}
+  .active .nav-icon-task-list .task-list-rows{stroke:var(--card)}
   .nav-icon-offers{--tag-shape:polygon(0 55%,55% 0,93% 0,100% 7%,100% 45%,45% 100%,36% 100%,0 64%)}
   .nav-icon-offers::before{inset:0;background:currentColor;clip-path:var(--tag-shape)}
   .nav-icon-offers::after{
@@ -1126,7 +1128,7 @@
       <a href="#workspace" data-view="workspace"><span class="nav-icon nav-icon-workspace" aria-hidden="true"><span></span><span></span><span></span><span></span></span><span class="t-zh">工作台</span><span class="t-en">Workspace</span></a>
       <a href="#results" data-view="results"><span class="nav-icon nav-icon-results" aria-hidden="true"><span></span><span></span><span></span></span><span class="t-zh">测试结果</span><span class="t-en">Test Results</span></a>
       <a href="#daily" data-view="daily" id="daily-nav-link"><span class="nav-icon nav-icon-tasks" aria-hidden="true"></span><span class="t-zh">每日填报</span><span class="t-en">Daily Reporting</span></a>
-      <a href="#tasks" data-view="tasks"><span class="nav-icon nav-icon-tasks" aria-hidden="true"></span><span class="t-zh">我的任务</span><span class="t-en">My Tasks</span></a>
+      <a href="#tasks" data-view="tasks"><svg class="nav-icon nav-icon-task-list" width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="task-list-frame" d="M4 3h1.5l.65-1.5h3.7l.65 1.5H12a1.5 1.5 0 0 1 1.5 1.5V13a1.5 1.5 0 0 1-1.5 1.5H4A1.5 1.5 0 0 1 2.5 13V4.5A1.5 1.5 0 0 1 4 3Z"/><path class="task-list-rows" d="M5.25 6.5h.15m2 0h3.35m-5.5 2.5h.15m2 0h3.35m-5.5 2.5h.15m2 0h3.35"/></svg><span class="t-zh">我的任务</span><span class="t-en">My Tasks</span></a>
       <a href="#offers" data-view="offers"><span class="nav-icon nav-icon-offers" aria-hidden="true"></span><span class="t-zh">Offer 清单</span><span class="t-en">Offer List</span></a>
       <a href="#management" data-view="management" id="management-nav-link"><svg class="nav-icon nav-icon-management" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2.25 16 4.5v4.75c0 3.68-2.45 6.47-6 8.5-3.55-2.03-6-4.82-6-8.5V4.5L10 2.25Z"/><polyline class="shield-mark" points="7.5 9.5 9.2 11.3 12.7 7.9"/></svg><span class="t-zh">管理</span><span class="t-en">Management</span></a>
       <span class="nav-group-label methods" aria-hidden="true"><span class="t-zh">投放方法</span><span class="t-en">Methods</span></span>
