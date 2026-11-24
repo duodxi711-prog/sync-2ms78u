@@ -888,12 +888,46 @@
   var salt="143a1c0bdea3d51f3507a28dd0a54328";
   var verifier="25cb7db99e0ac47fed8f9c2c71e70c3d50e167fe49845f239f26fd09af6b7fa6";
   var sessionKey="adrelay-site-access";
-  try{
-    if(sessionStorage.getItem(sessionKey)===verifier){
-      root.removeAttribute("data-site-locked");
-      return;
+  root.setAttribute("data-team-entry","");
+
+  function hasTeamSession(){
+    try{return sessionStorage.getItem(sessionKey)===verifier;}catch(e){return false;}
+  }
+  function returnToTeamGate(){
+    root.setAttribute("data-site-locked","");
+    const settings=document.getElementById("site-settings");
+    if(settings?.open) settings.close();
+    location.reload();
+  }
+
+  document.addEventListener("DOMContentLoaded",function(){
+    const signOut=document.getElementById("settings-team-logout");
+    const signOutError=document.getElementById("settings-team-logout-error");
+    signOut.addEventListener("click",function(){
+      try{
+        sessionStorage.removeItem("adrelay-workspace-access");
+        sessionStorage.removeItem(sessionKey);
+      }catch(e){
+        if(hasTeamSession()){
+          signOutError.hidden=false;
+          return;
+        }
+      }
+      returnToTeamGate();
+    });
+  });
+
+  // A page restored from browser history may still have the unlocked view in memory.
+  window.addEventListener("pageshow",function(event){
+    if(event.persisted&&!root.hasAttribute("data-site-locked")&&!hasTeamSession()){
+      returnToTeamGate();
     }
-  }catch(e){}
+  });
+
+  if(hasTeamSession()){
+    root.removeAttribute("data-site-locked");
+    return;
+  }
 
   document.addEventListener("DOMContentLoaded",function(){
     var form=document.getElementById("site-access-form");
@@ -1011,7 +1045,8 @@
   }
   .settings-version>span:last-child{font-weight:650}
   .settings-account{border-top:1px solid var(--line2);padding:12px 18px}
-  .settings-account[hidden],.settings-account [hidden]{display:none!important}
+  .settings-account[hidden],.settings-account [hidden],
+  html:not([data-team-entry]) #settings-team,html[data-site-locked] #settings-team{display:none!important}
   .settings-account .settings-trigger{color:var(--accent)}
   @media screen and (min-width:960px){
     .site-settings{inset:auto auto 18px 234px;margin:0}
@@ -1142,6 +1177,10 @@
     <a class="settings-trigger" id="settings-my-account" href="./account.html?v=7"><span class="t-zh">我的账号</span><span class="t-en">My account</span></a>
     <button type="button" class="settings-trigger" id="settings-logout"><span class="t-zh">退出登录</span><span class="t-en">Sign out</span></button>
     <p class="site-access-error" id="settings-logout-error" role="alert" hidden><span class="t-zh">暂时无法退出，请重试。</span><span class="t-en">Unable to sign out. Please try again.</span></p>
+  </div>
+  <div class="settings-account" id="settings-team">
+    <button type="button" class="settings-trigger" id="settings-team-logout"><span class="t-zh">退出团队访问</span><span class="t-en">Exit team access</span></button>
+    <p class="site-access-error" id="settings-team-logout-error" role="alert" hidden><span class="t-zh">暂时无法退出，请重试。</span><span class="t-en">Unable to exit team access. Please try again.</span></p>
   </div>
   <div class="settings-version">
     <span><span class="t-zh">当前版本</span><span class="t-en">Version</span></span>
